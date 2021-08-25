@@ -3,9 +3,6 @@
 User defined model
 ==================
 
-User-defined model format
--------------------------
-
 As it's described in the definition of functions, the user-defined models can be accepted as an input to be trained and evaluated in a package functions. The format of these functions must be in accordance with the following description:
 
 **Parameters**
