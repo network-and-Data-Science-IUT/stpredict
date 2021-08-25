@@ -55,7 +55,7 @@ stpredict provides a flexible data structure to receive a spatio-temporal data i
 :numref:`target fig 1` represent a sample input data tables. As it is obvious the ids of secondary spatial scale can be included in the spatial and temporal data tables or be received in a separate input (i.e. spatial scale table), and the temporal units can be specified using multiple temporal scales with free form ids or using an integrated format of date and time.
 
 .. _target fig 1:
-.. figure:: input.svg
+.. figure:: Input.svg
    :align: center
    :scale: 50 %
    :width: 1500px
