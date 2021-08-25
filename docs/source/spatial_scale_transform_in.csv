@@ -1,0 +1,239 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or str
+| **default:** -
+| **details:** a data frame or address of a data frame containing
+| temporal or spatial covariates and the id of spatial (and temporal)
+| units.
+| 
+| Spatial ids:
+| The id of the units in the finest spatial scale of input data must be
+| included in the *data* with the name 'spatial id level 1'.
+| The id of units in the secondary spatial scales of input data could be
+| included in the *data* in columns named 'spatial id level x', where x
+| shows the related scale level or could be given in a
+| *spatial_scale_table*.
+| 
+| Temporal ids (only for temporal *data_type*):
+| The id of temporal units recorded in the input data for each temporal
+| scale must be included as a separate column in the *data* with a name
+| in a format 'temporal id level x', where 'x' is the related temporal
+| scale level beginning with level 1 for the smallest scale.
+| The temporal units could have a free but sortable format like year
+| number, week number and so on. The combination of these temporal scale
+| levels' ids should form a unique identifier.
+| However, the integrated format of date and time is also supported. In
+| the case of using integrated format, only the smallest temporal scale
+| must be included in the *data* with the column name of 'temporal id'.
+| The expected format of each scale is shown in :numref:`target tab 1`.
+| 
+| All the remaining columns are considered as covariates."
+"| 2
+| 
+| 
+| 
+| ","| data_type
+| 
+| 
+| 
+| ","| **type:** {'spatial','temporal'}
+| **default:** -
+| **details:** type of input data, If data in addition to spatial
+| dimension has an temporal dimension the data_type is 'temporal',
+| otherwise it is 'spatial'."
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| spatial_scale_table
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or None
+| **default:** None
+| **details:** If the ids of secondary spatial scale units are not
+| included in the input data, a data frame must be passed to the
+| function containing different spatial scales information, with the
+| first column named 'spatial id level 1', and including the id of the
+| units in the smallest spatial scale and the rest of the columns
+| including the id of bigger scale units for each unit of the smallest
+| scale.
+| If the column names do not match the format 'spatial id level x' the
+| content of each column must be specified using the *column_identifier*
+| argument. the address of the data frame could also be passed."
+"| 4
+| 
+| 
+| ","| spatial_scale_level
+| 
+| 
+| ","| **type:** {2, 3, ...}
+| **default:** 2
+| **details:** Level of spatial scale which data scale will be
+| transformed to."
+"| 5
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| aggregation_mode
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'sum','mean'} or dict
+| **default:** 'mean'
+| **details:** Aggregation operator which is used to derive covariate
+| values for samples of bigger spatial scale from samples of smaller
+| spatial scale. This operator could be different for each covariate,
+| which in this case, a dictionary must be passed with the covariate
+| names (or tuple of multiple covariate names) as its keys and 'mean' or
+| 'sum' as its values.
+| 
+| **example:** {'temperature':'mean','precipitation':'sum'}"
+"| 6
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| column_identifier
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| details:If the input *data* column names do not match the specific
+| format of temporal and spatial ids (i.e., 'temporal id', 'temporal id
+| level x', 'spatial id level x'), a dictionary must be passed to
+| specify the content of each column.
+| The keys must be a string in one of the formats: {'temporal
+| id','temporal id level x','spatial id level x'}
+| The values of 'temporal id level x' and 'spatial id level x' must be
+| the name of the column containing the temporal or spatial ids in the
+| scale level x respectively.
+| If the input *data* has integrated format for temporal ids, the name
+| of the corresponding column must be specified with the key 'temporal
+| id'.
+| 
+| **example:** {'temporal id level 1': 'week','temporal id level 2':
+| 'year','spatial id level 1': 'county_fips', 'spatial id level 2':
+| 'state_fips'}"
+"| 7
+| 
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options:
+| 0: no logging
+| 1: only important information logging
+| 2: all details logging"

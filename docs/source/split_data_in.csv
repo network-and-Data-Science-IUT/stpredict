@@ -1,0 +1,230 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| ","| **type:** dataframe or string
+| **default:** -
+| **details:** a data frame or address of a data frame containing
+| preprocessed data. This data frame must have a column name format
+| conforming to :numref:`target fig 3`."
+"| 2
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| splitting_type
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'instance', 'fold'}
+| **default:** 'instance'
+| **details:** type of splitting
+| if 'instance', the splitting is performed based on
+| *instace_testing_size*, *instance_validation_size*, and
+| *instance_random_partitioning*
+| if 'fold', the splitting is performed based on *fold_total_number* and
+| fold_number"
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| instance_testing_size
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int or float or None
+| **default:** None
+| **details:**  The number of temporal units to be considered as testing
+| set
+| If int, is considered as the number of temporal units to be included
+| in the testing set
+| If float, is considered as the proportion of temporal units in the
+| dataset to be included in the testing split, thus should be between
+| 0.0 and 1.0.
+| this input is considered if the *splitting_type* input is 'instance'
+| 
+| **example:** 7 or 0.3"
+"| 4
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| instance_validation\
+| _size
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int or float or None
+| **default:** None
+| **details:** The number of temporal units to be considered as a
+| validation set. 
+| If int, is considered as the number of temporal units to be included
+| in the validation set.
+| If float, is considered as the proportion of temporal units in the
+| dataset to be included in the validation split, thus should be between
+| 0.0 and 1.0.
+| This input is considered if the *splitting_type* input is 'instance'.
+| 
+| Note that if the *instance_testing_size* have value, and
+| *instance_validation_size* is of type float, it is considered as the
+| proportion of the temporal units in the remaining data after removing
+| the testing set.
+| 
+| **example:** 7 or 0.3"
+"| 5
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| instance_random\
+| _partitioning
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** False
+| **details:** type of partitioning the validation data 
+| If False, the validation part will be selected from the last temporal
+| units in the data, otherwise the temporal units of validation part are
+| selected randomly from the recorded temporal units in the data.
+| 
+| this input is considered if the *splitting_type* input is 'instance'"
+"| 6
+| 
+| 
+| 
+| 
+| ","| fold_total_number
+| 
+| 
+| 
+| 
+| ","| **type:** int or None
+| **default:** None
+| **details:** total number of folds
+| If int, is considered as the total number of folds in the cross
+| validation method of partitioning
+| this input is considered if the *splitting_type* input is 'fold'"
+"| 7
+| 
+| 
+| 
+| ","| fold_number
+| 
+| 
+| 
+| ","| **type:** int or None
+| **default:** None
+| **details:** the fold number which validation data will be selected
+| from
+| this input is considered if the *splitting_type* input is 'fold'"
+"| 8
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| forecast_horizon
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** forecast horizon to gap consideration in data splitting
+| process
+| By the gap, we mean the number of temporal units which are excluded
+| from data to simulate the situation of real prediction in which we do
+| not have access to the information of the forecast horizon - 1 units
+| before the time point of the target variable."
+"| 9
+| 
+| 
+| 
+| 
+| 
+| ","| granularity
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** If the augmentation is applied in the transformation of
+| temporal scale in the data_preprocess function, the number of smaller
+| scale units in a bigger scale unit (granularity) is needed for
+| detecting the sequence of the temporal units in the input data. If
+| augmentation is not applied, the granularity must be set to one."
+"| 10
+| 
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options:
+| 0: no logging
+| 1: only important information logging
+| "

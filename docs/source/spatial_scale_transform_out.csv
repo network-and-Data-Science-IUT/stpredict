@@ -1,0 +1,8 @@
+#,Output Name,Output Description
+"| 1
+| 
+| ","| transformed_data
+| 
+| ","| **type:** data frame
+| **details:** a data frame containing the covariate values for desired
+| spatial scale units."

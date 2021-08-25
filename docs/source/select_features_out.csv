@@ -1,0 +1,17 @@
+#,Output Name,Output Description
+"| 1
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| ","| **type:** data frame
+| **default:** -
+| **details:** a data frame containing only covariates (or features)
+| which are selected by feature selection process based on
+| *ordered_covariates_or_features*.
+| "

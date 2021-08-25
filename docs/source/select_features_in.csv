@@ -1,0 +1,51 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or string
+| **default:** -
+| **details:** a data frame or address of a data frame containing
+| preprocessed data. This data frame must have a column name format
+| conforming to :numref:`target fig 3`.
+| 
+| **example:** 'my_directory/my_data.csv'"
+"| 2
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| ordered_covariates\
+| _or_features
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<string>
+| **default:** -
+| **details:** a list of covariates or features which are selected from
+| the input data frame.
+| If the list contains covariate names, the selected feature set
+| includes the covariates and all their historical values in the input
+| data frame.
+| 
+| **example:** ['temperature', 'population', 'cofirmed_cases']
+| or ['temperature t', 'population', 'cofirmed_cases t', 'temperature
+| t-1']"

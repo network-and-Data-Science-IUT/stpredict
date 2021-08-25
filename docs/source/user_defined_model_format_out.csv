@@ -1,0 +1,22 @@
+#,Output Name,Output Description
+"| 1
+| 
+| ","| train_predictions
+| 
+| ","| **type:** list
+| **details:** The predicted values of target variable in the training
+| part"
+"| 2
+| 
+| ","| validation_predictions
+| 
+| ","| **type:** list
+| **details:** The predicted values of target variable in the validation
+| part"
+"| 3
+| 
+| ","| trained_model
+| 
+| ","| **type:** object
+| **details:** The trained model on the the training part
+| "

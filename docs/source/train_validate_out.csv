@@ -1,0 +1,79 @@
+#,Output Name,Output Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| ","| best_model
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** string or function
+| **details:** best model based on *performance_benchmark*
+| If the best model is one of the predefined models, the name of the
+| model will be returned, otherwise, the user-defined function will be
+| returned.
+| 
+| **example:** 'knn' or lstm()"
+"| 2
+| 
+| 
+| 
+| 
+| ","| best_model\
+| _parameters
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **details:** a dict containing the name and values of the best model
+| hyperparameters. If no hyperparameter is specified for the model, None
+| is returned.
+| 
+| **example:** {'n_neighbors':10, 'metric':'minkowski'}"
+"| 3
+| 
+| 
+| ","| best_history_length
+| 
+| 
+| ","| **type:** int
+| **details:** The best history length, which the best performance is
+| obtained by training the best model on data frame with this history
+| length"
+"| 4
+| 
+| 
+| ","| best_feature_or\
+| _covariate_set
+| 
+| ","| **type:** list <str>
+| **details:** a list of features or covariates, which the best
+| performance is obtained by training the best model using the
+| corresponding feature set."
+"| 5
+| 
+| 
+| 
+| 
+| ","| best_model_base\
+| _models
+| 
+| 
+| 
+| ","| **type:** list or None
+| **details:** If the selected best model is not a mixed model None is
+| returned, but if it is a mixed model, list of models which is used as
+| the base models of this model is returned.
+| 
+| **example:** {'n_neighbors':10, 'metric':'minkowski'}"
+"| 6
+| 
+| ","| best_trained_model
+| 
+| ","| **type:** object
+| **details:** The best model trained on the whole training data. 
+| "

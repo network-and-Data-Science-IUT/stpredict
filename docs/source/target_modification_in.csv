@@ -1,0 +1,251 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or str
+| default:-
+| **details:** The data frame or address of data frame containing target
+| variable values for different spatial and temporal units. The *data*
+| includes the following columns:
+| 
+| Spatial id:
+| The id of the units in the finest spatial scale of input data must be
+| included in the *data* with the name 'spatial id level 1'.
+| 
+| Temporal ids:
+| The id of temporal units recorded in the input data for each temporal
+| scale must be included as a separate column in the *data* with a name
+| in a format 'temporal id level x', where 'x' is the related temporal
+| scale level beginning with level 1 for the smallest scale.
+| The temporal units could have a free but sortable format like year
+| number, week number and so on.
+| However, the integrated format of date and time is also supported. In
+| the case of using integrated format, only the smallest temporal scale
+| must be included in the *data* with the column name of 'temporal id'.
+| The expected format of each scale is shown in:numref:`target tab 1`.
+| Note. When using the integrated format, for the week scale the date of
+| the week's first day must be specified as a temporal id.
+| 
+| Target:
+| The values of the target variable must be included in a column named
+| 'target'  in the *data*.
+| 
+| Note. extra columns are allowed.
+| 
+| **example:** './USA COVID-19 temporal data.csv'"
+"| 2
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| target_mode
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'normal','cumulative', 'differential', 'moving average'}
+| **default:** 'normal'
+| **details:** The desired mode of target variable for modeling:
+| 
+| 'normal':
+| No modification.
+| 
+| 'cumulative':
+| Modify the target variable to show the cumulative value of this
+| variable from the first temporal unit in the data.
+| 
+| 'differential':
+| Modify the target variable to show the difference between the value of
+| the variable in current and previous temporal unit.
+| 
+| 'moving average' :
+| Modify the target variable values to represent the moving average of
+| the variable on the next higher-level temporal scale units. More
+| clearly the value of the target variable for each temporal unit is the
+| average of the variable values on the previous temporal unit, with a
+| bigger scale (e.g. for initial temporal scale day, the target value
+| for each day is the average of variable values on the previous week of
+| that day).
+| The next higher-level scale is determined based on the temporal id
+| levels in input *data*, and if the temporal ids have a integrated
+| format, it is determined based on the scale of the input *data* and
+| the following sequence of temporal scales:
+| Second, Minute, Hour, Day, Week, Month, Year
+| "
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| column_identifier
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** If the input data column names do not match the specific
+| format of temporal and spatial ids and target variable (i.e.,
+| 'temporal id', 'temporal id level x', 'spatial id level x', 'target'),
+| a dictionary must be passed to specify the content of each column.
+| The keys must be a string in one of the formats: {'temporal
+| id','temporal id level x','spatial id level x', 'target'}
+| The values of 'temporal id level x' and 'spatial id level x' must be
+| the name of the column containing the temporal or spatial ids in the
+| scale level x respectively.
+| If the input data has integrated format for temporal ids, the name of
+| the corresponding column must be specified with the key 'temporal
+| id'.
+| The value of the 'target' is the column name of the target variable.
+| 
+| **example:** {'temporal id level 1': 'week','temporal id level 2':
+| 'year','spatial id level 1': 'county_fips', 'spatial id level 2':
+| 'state_fips', 'target':'covid-19 deaths'}
+| "
+"| 4
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options:
+| 0: no logging
+| 1: only important information logging"

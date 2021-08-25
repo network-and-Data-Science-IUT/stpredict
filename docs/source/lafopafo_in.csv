@@ -1,0 +1,635 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<dataframe> or list<string>
+| **default:** -
+| **details:** 
+| list<dataframe>: a list of preprocessed data frames for history
+| length=1, 2, ..., max history length, sorted based on the data frame
+| history length.
+| list<string>: a list of addresses of the preprocessed data frames for
+| history length=1, 2, ..., max history length, sorted based on the data
+| frame history length.
+| The preprocessed data frames must have a column name format
+| conforming to :numref:`target fig 3`."
+"| 2
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| forecast_horizon
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** forecast horizon to gap consideration in data splitting
+| process.
+| By the gap, we mean the number of temporal units which are excluded
+| from data to simulate the situation of real prediction in which we do
+| not have access to the information of the forecast_horizon - 1 units
+| before the time point of the target variable."
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| feature_sets
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict
+| **default:** {'covariate': 'mRMR'}
+| details:
+| If dict, the key indicates that in the process of feature selection
+| based on the rank, the ranking must be performed on the covariates or
+| on the whole features (covariates and their historical values)
+| and the value specifies the method of ranking from the supported
+| methods 'correlation' and 'mRMR'. The candid feature sets will be
+| obtained by slicing the ranked list of covariates or features from the
+| first item to item number n where n is varied from 1 to the total
+| number of list items, and if items are covariates, the covariates in
+| each resulting subset along with their corresponding historical values
+| will form a candid feature set in the feature selection process.
+| 
+| dict options: {'covariate': 'correlation'}, {'covariate': 'mRMR'},
+| {'feature': 'correlation'}, {'feature': 'mRMR'} 
+| 
+| **example:**
+| {'covariate': 'correlation'}"
+"| 4
+| 
+| 
+| 
+| 
+| 
+| ","| forced_covariates
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<string>
+| **default:** []
+| **details:** a list of covariates which are placed in the feature sets
+| by force with their historical values.
+| 
+| **example:**
+| [ 'temperature', 'precipitation']"
+"| 5
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| models
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<string, dict, or function>
+| **default:** ['knn']
+| **details:** a list of predefined model names and user-defined model
+| functions. The supported options are:
+| 
+| 'knn': K nearest neighbour regressor for *model_type* of regression, K
+| nearest neighbour classifier for *model_type* of classification.
+| 
+| 'gbm': Gradient boosting regression for *model_type* of regression,
+| Gradient boosting classification for *model_type* of classification.
+| 
+| 'glm': Elastic net linear regression for *model_type* of regression,
+| logistic regression for *model_type* of classification.
+| 
+| 'nn': Neural network with adjustable number of layers and neurons for
+| *model_type* of regression and classification.
+| 
+| [callable]: a user-defined function that accepts the data frames of
+| features in the training and validation set and a target variable
+| values of the training set in a form of ndarray, and returns the
+| predictions on the training and validation set and the trained model
+| (see :ref:`target user_defined_model`). 
+| 
+| If the user prefers to specify the hyperparameters of the predefined
+| model, the related item in the list must be in a form of a dictionary
+| with the name of the model as the key and the dictionary of
+| hyperparameters as its value. To perform a grid search on hyper
+| parameters values, a list of values could be specified in the
+| dictionary of hyper parameters.
+| 
+| **example:** [{'knn':{'n_neighbors':10, 'metric':'minkowski'}}, 'nn',
+| lstm()]
+| or
+| [{'knn':{'n_neighbors':[5,10], 'metric':'minkowski'}},
+| {'nn':{'hidden_layers_number':[1,2,3],'hidden_layers_neurons':[8,16]}}]
+| 
+| Note. Since for 'knn', 'glm', and 'gbm' we use the implementation of
+| the Scikit Learn package1, all of the hyperparameters defined in this
+| package are supported. For 'nn' model the implementation of TensorFlow
+| is used, and the list of supported hyperparameters is as below:
+| ['hidden_layers_structure', 'hidden_layers_number',
+| 'hidden_layers_neurons', 'hidden_layers_activations',
+| 'output_activation', 'loss', 'optimizer', 'metrics',
+| 'early_stopping_monitor', 'early_stopping_patience', 'batch_size',
+| 'validation_split','epochs']
+| The structure of the neural network can be specified using
+| 'hidden_layers_structure' which takes a list of two item tuples each
+| corresponds to a hidden layer in a network with the first item of each
+| tuple as the number of neurons in the layer and second item as the
+| activation function of the layer.
+| 
+| Another way is to specify 'hidden_layers_number',
+| 'hidden_layers_neurons', and 'hidden_layers_activations' which will
+| result in network with the number of hidden layers according to 
+| 'hidden_layers_number' having the same activation function and number
+| of neurons according to the values of 'hidden_layers_neurons' and
+| 'hidden_layers_activations' parameters. The 'output_activation' hyper
+| parameter is the activation function of the output layer. Note that to
+| search over different structures, each of these parameters could have
+| a list of values.
+| The supported values for the rest of the hyperparameters are the same
+| as the TensorFlow package."
+"| 6
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| mixed_models
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<string, dict, or function>
+| **default:** []
+| **details:** A list of models to be considered as a mixed_model which
+| uses a combination of simple models' predictions as input to predict
+| the target variable. The predictions of the models specified in the
+| models input will be used to feed the mixed models. The supported
+| values for the mixed_models input are exactly the same as the models
+| input.
+| 
+| **example:** [{'knn':{'n_neighbors':10, 'metric':'minkowski'}}, 'nn',
+| lstm()]"
+"| 7
+| 
+| ","| model_type
+| 
+| ","| **type:** {'regression','classification'}
+| **default:** 'regression'
+| **details:** type of the prediction task."
+"| 8
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| instance_testing\
+| _size
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int or float
+| **default:** 0.2
+| **details:** The number of temporal units to be considered as testing
+| set.
+| If int, is considered as the number of temporal units to be included
+| in the testing set.
+| If float, is considered as the proportion of temporal units in the
+| dataset to be included in the testing split, thus should be between
+| 0.0 and 1.0.
+| 
+| **example:** 7 or 0.3"
+"| 9
+| 
+| 
+| ","| feature_scaler
+| 
+| 
+| ","| **type:** {'logarithmic','normalize','standardize',None}
+| **default:** None
+| **details:** Type of scaling the features in the input data set for
+| modeling."
+"| 10
+| 
+| 
+| ","| target_scaler
+| 
+| 
+| ","| **type:** {'logarithmic','normalize','standardize',None}
+| **default:** None
+| **details:** Type of scaling the target variable in the input data set
+| for modeling."
+"| 11
+| 
+| 
+| 
+| ","| performance\
+| _benchmark
+| 
+| 
+| ","| **type:** {'MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AUC', 'AUPR',
+| 'likelihood', 'AIC', 'BIC'}
+| **default:** 'MAPE'
+| **details:** a performance measure which is used to select best_model,
+| best_history_length, and best_feature_set."
+"| 12
+| 
+| 
+| 
+| 
+| 
+| ","| performance\
+| _measure
+| 
+| 
+| 
+| 
+| ","| **type:** list<{'MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AUC',
+| 'AUPR', 'likelihood', 'AIC', 'BIC'}>
+| **default:** ['MAPE']
+| **details:** a list of performance measures to be included in the
+| performance report.
+| 
+| **example:** ['MAE', 'MAPE']"
+"| 13
+| 
+| 
+| 
+| 
+| 
+| ","| performance\
+| _mode
+| 
+| 
+| 
+| 
+| ","| **type:** 'normal' or 'cumulative' or  'moving_average+x'
+| **default:** 'normal'
+| The mode of target variable based on which the performance measures
+| are calculated.
+| If the user desires to use moving average mode, the window of the
+| moving average must also be specified as x in the format
+| 'moving_average+x'."
+"| 14
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| scenario
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'max', 'min', 'mean', 'current', None}
+| **default:**  'current'
+| **details:** The scenario based on which the future values of
+| futuristic covariates will be determined in the process of forecasting
+| the future temporal units.
+| If min, the minimum observed values for each spatial unit are
+| considered as future values of the futuristic covariate for that
+| spatial unit. The same manner is performed for max and mean.
+| If current, the value of the covariate in the last temporal unit for
+| each spatial unit is considered as the future value of that
+| covariate.
+| If None, the values of futuristic covariates must be provided in the
+| input data.
+| 
+| **example:** 'min'"
+"| 15
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| validation\
+| _performance\
+| _report
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** True
+| **details:** performance report of train_validate process.
+| If True, a table containing a report on models and their corresponding
+| errors (based on *performance_measures*) will be saved  in the sub
+| directory 'performance/validation process' in the same directory as
+| the code is running and as in '.csv' format.
+| Each row of the table represents the performance of a specific model
+| for the given history length and feature set, and each column
+| represents one of the user specified performance_measures."
+"| 16
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| testing\
+| _performance\
+| _report
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** True
+| **details:** performance report of train_test process.
+| If True, a table containing a report on performance measures of the
+| best model for the test set will be saved in the sub directory
+| 'performance/testing process' in the same directory as the code is
+| running and as in '.csv' format.
+| Each column of this table represents one of the user specified
+| *performance_measures*."
+"| 17
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| save_predictions
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** True
+| details:
+| If True, the prediction values of trained models with the best
+| configuration (best history length and feature set) for the training
+| data and validation data through train_validate process will be saved
+| in the sub directory 'predictions/validation process/' in the same
+| directory as the code is running and as in '.csv' format, and the
+| prediction values of the overall best model for the test set will be
+| saved in the sub directory 'predictions/test process/' as in '.csv'
+| format.
+| The name of saving csv files has a suffix with the 'T = x' where x
+| represents the total number of temporal units in the training and
+| validation set.
+| Note.
+| In the Last Fold Partitioning forecaster each test point has separate
+| training and validation stage which will result in several csv files
+| saved."
+"| 18
+| 
+| 
+| 
+| 
+| 
+| ","| plot_predictions
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** False
+| details:
+| If True, the real and predicted values of the target variable for some
+| of the spatial id's in the *data* input will be plotted and saved in
+| the sub directory 'plots/' in the same directory as the code is
+| running."
+"| 19
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options:
+| 0: no logging
+| 1: only important information logging"

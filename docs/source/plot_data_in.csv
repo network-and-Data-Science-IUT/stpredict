@@ -1,0 +1,320 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or str
+| default:-
+| **details:** a data frame containing temporal (and spatial) covariates
+| or its address.
+| 
+| The data must includes following columns:
+| 
+| Spatial ids: The id of the units in the finest spatial scale of input
+| data must be included in the *data* in a column with the name 'spatial
+| id level 1'.
+| The id of units in the secondary spatial scales of input data could be
+| included in the *data* in columns named 'spatial id level x', where x
+| shows the related scale level or could be given in a
+| *spatial_scale_table*. Note that spatial id(s) must have unique
+| values.
+| 
+| Temporal ids: The id of time units recorded in the input data for each
+| temporal scale must be included as a separate column in the *data*
+| with a name in a format 'temporal id level x', where 'x' is the
+| related temporal scale level beginning with level 1 for the smallest
+| scale. The temporal units could have a free but sortable format like
+| year number, week number and so on. The combination of these
+| temporal scale levels' ids should form a unique identifier. However the
+| integrated format of date and time is also supported. In the case of
+| using integrated format, only the smallest temporal scale must be
+| included in the *data* with the column name of 'temporal id'. The
+| expected format of each scale is shown in :numref:`target tab 1`.
+| 
+| **example:**  'my_directory/my_data.csv'
+| "
+"| 2
+| 
+| 
+| 
+| 
+| 
+| ","| temporal_covariate
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list <string> or 'default'
+| **default:** 'default'
+| **details:** the name of temporal covariate(s) to be plotted. If
+| 'default' is passed, all the covariates in the input data will be
+| plotted.
+| 
+| **example:** ['temperature']"
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| temporal_range
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** a dictionary containing the temporal interval of each
+| temporal scale to be considered for the plot. The value for each
+| temporal scale level in the dictionary is the list of length 2
+| representing the start and end point of the temporal interval on that
+| scale.
+| If None is passed, the entire time range available is considered for
+| plot.
+| 
+| **example:** {'temporal id':['2020/12/01', '2021/01/17']}
+| {'temporal id level 1':[1,8],'temporal id level 2':[2020,2020]}"
+"| 4
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| spatial_id
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:**  list<any type> or None
+| **default:** None
+| **details:** The ids of the spatial scale units that the values of
+| variables in that units will be considered for plot.
+| If None is passed, the first spatial unit in the data will be
+| considered for plot.
+| 
+| **example:** [01001],[1001],['Alabama']"
+"| 5
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| column_identifier
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** If the input data column names does not match the
+| specific format of temporal and spatial ids (i.e. 'temporal id',
+| 'temporal id level x','spatial id level x'), a dictionary must be
+| passed to specify the content of each column.
+| The keys must be a string in one of the formats: {'temporal
+| id','temporal id level x','spatial id level x'}
+| The values of 'temporal id level x' and 'spatial id level x' must be
+| the name of the column containing the temporal or spatial ids in the
+| scale level x respectively.
+| If the input data have integrated format for temporal ids, the name of
+| the corresponding column must be specified with the key 'temporal
+| id'.
+| 
+| **example:** {'temporal id level 1': 'week','temporal id level 2':
+| 'year','spatial id level 1': 'county_fips', 'spatial id level 2':
+| 'state_fips'}"
+"| 6
+| 
+| 
+| ","| spatial_scale
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** The spatial scale level that the values of variables in
+| the units of that scale will be considered for plot."
+"| 7
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| temporal_scale
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** The temporal scale level that the values of variables in
+| the units of that scale will be considered for plot.
+| Note.If the temporal id have an integrated format, the scale of the
+| specified level will be determined based on the input scale and the
+| sequence of temporal scales:
+| Second, Minute, Hour, Day, Week, Month, Year
+| In plot_data function, temporal scale lets the user select which time
+| scale will be displayed on the x axis."
+"| 8
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| spatial_scale_table
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame, string, or None
+| **default:** None
+| **details:** If the ids of secondary spatial scale units are not
+| included in the input data, a data frame must be passed to the
+| function containing different spatial scales information, with the
+| first column named 'spatial id level 1', and including the id of the
+| units in the smallest spatial scale and the rest of the columns
+| including the id of bigger scale units for each unit of the smallest
+| scale.
+| If the column names do not match the format 'spatial id level x' the
+| content of each column must be specified using column_identifier
+| argument.
+| the address of the data frame could also be passed."
+"| 9
+| 
+| 
+| 
+| ","| month_format_print
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** False
+| **details:** If True, the name of the month is displayed instead of
+| the month number. For example, January for True and 01 for False
+| option."
+"| 10
+| 
+| 
+| 
+| 
+| ","| saving_plot_path
+| 
+| 
+| 
+| 
+| ","| **type:** string or None
+| **default:** None
+| **details:** The path to save a plots
+| If None is passed, the plot will not be saved.
+| 
+| **example:** './'"

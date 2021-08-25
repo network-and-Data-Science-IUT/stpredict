@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1117 430" style="enable-background:new 0 0 1117 430;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#62DCD1;}
+	.st1{fill:#15D29B;}
+	.st2{fill:#24BCBE;}
+	.st3{fill:#15BC85;}
+	.st4{fill:#FFA753;}
+	.st5{opacity:0.1;fill:#666666;}
+	.st6{opacity:0.25;fill:#666666;}
+	.st7{font-family:'TimesNewRomanPSMT';}
+	.st8{font-size:18px;}
+	.st9{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st10{font-family:'TimesNewRomanPS-BoldMT';}
+	.st11{font-size:16px;}
+	.st12{stroke:#000000;stroke-width:0.75;stroke-miterlimit:10;}
+	.st13{fill:#231F20;}
+</style>
+<rect x="5.75" y="6" class="st0" width="122.33" height="57.69"/>
+<rect x="128.92" y="6" class="st1" width="122.33" height="57.69"/>
+<rect x="251.92" y="6" class="st2" width="122.33" height="57.69"/>
+<rect x="373.92" y="6" class="st2" width="122.33" height="57.69"/>
+<rect x="496.08" y="6" class="st3" width="124.16" height="57.69"/>
+<rect x="619.92" y="6" class="st3" width="122.33" height="57.69"/>
+<rect x="742.92" y="6" class="st3" width="122.33" height="57.69"/>
+<rect x="864.92" y="6" class="st3" width="122.33" height="57.69"/>
+<rect x="987.92" y="6" class="st4" width="122.33" height="57.69"/>
+<rect x="7" y="64" class="st5" width="1104" height="163"/>
+<rect x="5" y="260.46" class="st6" width="1106" height="162.79"/>
+<text transform="matrix(1 0 0 1 147.8746 85.8965)" class="st7 st8">2020/01/13</text>
+<text transform="matrix(1 0 0 1 48.8821 85.8972)" class="st7 st8">01001</text>
+<text transform="matrix(1 0 0 1 292.8578 85.8965)" class="st7 st8">55601</text>
+<text transform="matrix(1 0 0 1 428.1425 85.897)" class="st7 st8">50</text>
+<text transform="matrix(1 0 0 1 556.6448 84.8966)" class="st7 st8">2</text>
+<text transform="matrix(1 0 0 1 673.6448 84.8966)" class="st7 st8">5</text>
+<text transform="matrix(1 0 0 1 797.2501 84.8966)" class="st7 st8">2</text>
+<text transform="matrix(1 0 0 1 919.2501 84.8966)" class="st7 st8">1</text>
+<text transform="matrix(0.9562 0 0 1 1038.4999 86.077)" class="st7 st8">39</text>
+<g>
+	<path d="M1110,7v415H6.67V7H1110 M1111,6H5.67v417H1111V6L1111,6z"/>
+</g>
+<line class="st9" x1="6.49" y1="62.36" x2="1110.18" y2="62.36"/>
+<line class="st9" x1="128.67" y1="6.41" x2="128.67" y2="422.71"/>
+<line class="st9" x1="251.5" y1="6.41" x2="251.5" y2="422.71"/>
+<line class="st9" x1="374.67" y1="6.7" x2="374.67" y2="423"/>
+<line class="st9" x1="496.67" y1="6.7" x2="496.67" y2="423"/>
+<line class="st9" x1="620.67" y1="6.7" x2="620.67" y2="423"/>
+<line class="st9" x1="742.67" y1="6.13" x2="742.67" y2="423"/>
+<line class="st9" x1="864.67" y1="6.62" x2="864.67" y2="423"/>
+<line class="st9" x1="987.67" y1="6.62" x2="987.67" y2="423"/>
+<text transform="matrix(1 0 0 1 35.1544 38.3744)" class="st10 st11">Spatial id</text>
+<text transform="matrix(1 0 0 1 148.372 36.801)" class="st10 st11">Temporal id</text>
+<text transform="matrix(1 0 0 1 276.0139 39.2247)" class="st10 st11">Population</text>
+<text transform="matrix(1.1724 0 0 1 391.6405 29.97)"><tspan x="0" y="0" class="st10 st11">Number of </tspan><tspan x="-7.58" y="19.2" class="st10 st11">hospital beds</tspan></text>
+<text transform="matrix(1 0 0 1 505.2598 38.8719)" class="st10 st11">Temperature t-1</text>
+<text transform="matrix(1 0 0 1 634.8705 38.8719)" class="st10 st11">Temperature t</text>
+<text transform="matrix(1 0 0 1 746.0166 30.2239)"><tspan x="0" y="0" class="st10 st11">Social distancing </tspan><tspan x="23.9" y="19.2" class="st10 st11">policy t+1</tspan></text>
+<text transform="matrix(1 0 0 1 869.0166 30.2244)"><tspan x="0" y="0" class="st10 st11">Social distancing </tspan><tspan x="23.9" y="19.2" class="st10 st11">policy t+2</tspan></text>
+<text transform="matrix(1 0 0 1 1026.6854 41.6594)" class="st10 st11">Target</text>
+<line class="st12" x1="6.68" y1="127" x2="1110.86" y2="127"/>
+<line class="st12" x1="6.82" y1="160.58" x2="1111" y2="160.58"/>
+<line class="st12" x1="6.82" y1="193.37" x2="1111" y2="193.37"/>
+<line class="st12" x1="6.82" y1="293.16" x2="1111" y2="293.16"/>
+<line class="st12" x1="6" y1="325.73" x2="1111" y2="325.73"/>
+<text transform="matrix(1 0 0 1 147.8744 348.8276)" class="st7 st8">2021/06/07</text>
+<text transform="matrix(1 0 0 1 48.8818 348.8283)" class="st7 st8">56045</text>
+<text transform="matrix(1 0 0 1 292.8575 348.8276)" class="st7 st8">6967</text>
+<text transform="matrix(1 0 0 1 428.1422 348.8281)" class="st7 st8">69</text>
+<text transform="matrix(1 0 0 1 556.8658 347.8277)" class="st7 st8">4</text>
+<text transform="matrix(1 0 0 1 668.1885 347.8277)" class="st7 st8">6.7</text>
+<text transform="matrix(1 0 0 1 797.2498 347.8277)" class="st7 st8">1</text>
+<text transform="matrix(1 0 0 1 919.2498 347.8277)" class="st7 st8">2</text>
+<text transform="matrix(0.9562 0 0 1 1038.4995 349.0081)" class="st7 st8">88</text>
+<text transform="matrix(1 0 0 1 67.8818 306.8283)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 147.8744 284.8276)" class="st7 st8">2020/01/13</text>
+<text transform="matrix(1 0 0 1 48.8818 284.8283)" class="st7 st8">56045</text>
+<text transform="matrix(1 0 0 1 292.8575 284.8276)" class="st7 st8">6967</text>
+<text transform="matrix(1 0 0 1 428.1422 284.8281)" class="st7 st8">69</text>
+<text transform="matrix(1 0 0 1 547.6446 283.8277)" class="st7 st8">11.2</text>
+<text transform="matrix(1 0 0 1 674.9385 283.8277)" class="st7 st8">7</text>
+<text transform="matrix(1 0 0 1 797.2498 283.8277)" class="st7 st8">5</text>
+<text transform="matrix(1 0 0 1 919.2498 283.8277)" class="st7 st8">3</text>
+<text transform="matrix(0.9562 0 0 1 1038.4995 285.0081)" class="st7 st8">75</text>
+<text transform="matrix(1 0 0 1 147.8744 150.8276)" class="st7 st8">2021/06/07</text>
+<text transform="matrix(1 0 0 1 48.8818 150.8283)" class="st7 st8">01001</text>
+<text transform="matrix(1 0 0 1 292.8575 150.8276)" class="st7 st8">55601</text>
+<text transform="matrix(1 0 0 1 428.1422 150.8281)" class="st7 st8">50</text>
+<text transform="matrix(1 0 0 1 556.6446 149.8277)" class="st7 st8">8</text>
+<text transform="matrix(1 0 0 1 666.784 149.8277)" class="st7 st8">5.5</text>
+<text transform="matrix(1 0 0 1 797.2498 149.8277)" class="st7 st8">2</text>
+<text transform="matrix(1 0 0 1 919.2498 149.8277)" class="st7 st8">3</text>
+<text transform="matrix(0.9562 0 0 1 1038.4995 151.0081)" class="st7 st8">43</text>
+<text transform="matrix(1 0 0 1 67.8818 109.8283)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<line class="st12" x1="6.73" y1="96.89" x2="1110.91" y2="96.89"/>
+<text transform="matrix(1 0 0 1 186.544 306.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 186.544 109.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 560.4387 305.6728)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 560.4387 108.6728)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 677.4387 305.6728)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 677.4387 108.6729)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 802.544 305.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 802.544 108.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 923.544 305.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 923.544 108.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 311.544 306.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 311.544 109.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 436.544 306.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 436.544 109.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 1044.8235 306.6733)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 1044.8235 109.6734)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<line class="st12" x1="6.07" y1="226.65" x2="1110.25" y2="226.65"/>
+<text transform="matrix(1 0 0 1 147.8742 184.6295)" class="st7 st8">2021/06/14</text>
+<text transform="matrix(1 0 0 1 48.8817 184.6302)" class="st7 st8">01001</text>
+<text transform="matrix(1 0 0 1 292.8574 184.6295)" class="st7 st8">55601</text>
+<text transform="matrix(1 0 0 1 428.142 184.6299)" class="st7 st8">50</text>
+<text transform="matrix(1 0 0 1 549.8949 183.6296)" class="st7 st8">5.5</text>
+<text transform="matrix(1 0 0 1 673.6444 183.6296)" class="st7 st8">3</text>
+<text transform="matrix(1 0 0 1 797.2496 183.6296)" class="st7 st8">3</text>
+<text transform="matrix(1 0 0 1 919.2496 183.6296)" class="st7 st8">4</text>
+<text transform="matrix(0.9562 0 0 1 1035.4994 184.8099)" class="st7 st8">NA</text>
+<text transform="matrix(1 0 0 1 148.0958 216.4946)" class="st7 st8">2021/06/21</text>
+<text transform="matrix(1 0 0 1 49.1033 216.4953)" class="st7 st8">01001</text>
+<text transform="matrix(1 0 0 1 293.079 216.4946)" class="st7 st8">55601</text>
+<text transform="matrix(1 0 0 1 428.3636 216.4951)" class="st7 st8">50</text>
+<text transform="matrix(1 0 0 1 556.866 215.4947)" class="st7 st8">3</text>
+<text transform="matrix(1 0 0 1 667.0054 215.4947)" class="st7 st8">2.7</text>
+<text transform="matrix(1 0 0 1 797.4713 215.4947)" class="st7 st8">4</text>
+<text transform="matrix(1 0 0 1 919.4713 215.4947)" class="st7 st8">2</text>
+<text transform="matrix(0.9562 0 0 1 1035.7211 216.675)" class="st7 st8">NA</text>
+<line class="st12" x1="6.75" y1="358.08" x2="1110.93" y2="358.08"/>
+<line class="st12" x1="5.93" y1="390.87" x2="1110.93" y2="390.87"/>
+<text transform="matrix(1 0 0 1 147.8747 413.2109)" class="st7 st8">2021/06/21</text>
+<text transform="matrix(1 0 0 1 48.8822 413.2117)" class="st7 st8">56045</text>
+<text transform="matrix(1 0 0 1 292.8578 413.2109)" class="st7 st8">6967</text>
+<text transform="matrix(1 0 0 1 428.1425 413.2114)" class="st7 st8">69</text>
+<text transform="matrix(1 0 0 1 556.6449 412.2111)" class="st7 st8">7</text>
+<text transform="matrix(1 0 0 1 670.4388 412.2111)" class="st7 st8">10</text>
+<text transform="matrix(1 0 0 1 797.2501 412.2111)" class="st7 st8">3</text>
+<text transform="matrix(1 0 0 1 919.2501 412.2111)" class="st7 st8">4</text>
+<text transform="matrix(0.9562 0 0 1 1035.4999 413.3914)" class="st7 st8">NA</text>
+<text transform="matrix(1 0 0 1 147.8747 380.2109)" class="st7 st8">2021/06/14</text>
+<text transform="matrix(1 0 0 1 48.8822 380.2116)" class="st7 st8">56045</text>
+<text transform="matrix(1 0 0 1 292.8578 380.2109)" class="st7 st8">6967</text>
+<text transform="matrix(1 0 0 1 428.1425 380.2114)" class="st7 st8">69</text>
+<text transform="matrix(1 0 0 1 550.1161 379.2111)" class="st7 st8">6.7</text>
+<text transform="matrix(1 0 0 1 674.9388 379.2111)" class="st7 st8">7</text>
+<text transform="matrix(1 0 0 1 797.2501 379.211)" class="st7 st8">5</text>
+<text transform="matrix(1 0 0 1 919.2501 379.211)" class="st7 st8">3</text>
+<text transform="matrix(0.9562 0 0 1 1035.4999 380.3914)" class="st7 st8">NA</text>
+<text transform="matrix(1 0 0 1 67.8814 241.3542)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 186.5435 241.1992)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 560.4382 240.1987)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 677.4382 240.1987)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 802.5436 240.1992)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 923.5436 240.1992)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 311.5435 241.1992)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 436.5435 241.1992)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<text transform="matrix(1 0 0 1 1044.823 241.1992)"><tspan x="0" y="0" class="st13 st7 st11">. </tspan><tspan x="0" y="4" class="st13 st7 st11">. </tspan><tspan x="0" y="8" class="st13 st7 st11">.</tspan></text>
+<line class="st12" x1="4.45" y1="260.09" x2="1109.45" y2="260.09"/>
+</svg>

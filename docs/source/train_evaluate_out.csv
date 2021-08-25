@@ -1,0 +1,25 @@
+#,Output Name,Output Description
+"| 1
+| 
+| ","| train_predictions
+| 
+| ","| **type:** list<float> or list<int>
+| **details:** predictions on *training_data* which is of type float if
+| *model_type* is regression, and int if *model_type* is classification"
+"| 2
+| 
+| 
+| ","| validation_predictions
+| 
+| 
+| ","| **type:** list<float> or list<int>
+| **details:** predictions on *validation_data* which is of type float
+| if *model_type* is regression, and int if *model_type* is
+| classification"
+"| 3
+| 
+| ","| trained_model
+| 
+| ","| **type:** object
+| **details:** the trained model on the *training_data*
+| "

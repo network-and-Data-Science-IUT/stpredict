@@ -1,0 +1,50 @@
+#,Output Name,Output Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| preprocessed_data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or list of data frames
+| **details:**  If the user_specified *history_length* is a single
+| integer, the function returns a data frame including the historical
+| values of the covariates with this *history_length* and the target
+| variable values at the user-specified *forecast_horizon*, but if the
+| passed *history_length* is a dictionary of covariates' max history
+| lengths, the function returns a list of historical data frames ordered
+| based on their max history length in {1,...,max(h)} where max(h) is
+| the greatest maximum history length of covariates. Each data frame
+| includes historical values of each covariate with the history length
+| equal to the dataframe max history length or smaller (if the maximum
+| history length of that covariate specified in *history_length* is less
+| than the data frame max history length). An example of the resulting
+| preprocessed data frames for an *history_length* of type dictionary
+| with different max history lengths for each covariate is shown in
+| :numref:`target tab 2`, And :numref:`target fig 3` shows an instance
+| of a historical data frame."

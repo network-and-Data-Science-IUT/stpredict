@@ -1,0 +1,366 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame, string or dict
+| **default:** -
+| **details:** a data frame or data address of all the covariates and
+| the target variable. The data on temporal (time dependent) covariates
+| and spatial (time independent) covariates could also be passed to the
+| function separately. In this case, the data frame or address of data
+| on temporal covariates and target variable must be included in the
+| dictionary with the 'temporal_data' key, and the data frame or address
+| of data on spatial covariates must be the value of key
+| 'spatial_data'.
+| 
+| The temporal_data must include the following columns:
+| 
+| Spatial ids: The id of the units in the finest spatial scale of input
+| data must be included in the temporal_data in a column with the name
+| 'spatial id level 1'.
+| 
+| Temporal ids: The id of time units recorded in the input data for each
+| temporal scale must be included as a separate column in the
+| temporal_data with a name in a format 'temporal id level x', where 'x'
+| is the related temporal scale level beginning with level 1 for the
+| smallest scale. The temporal units could have a free but sortable
+| format like year number, week number and so on. The combination of
+| these temporal scale levels' ids should form a unique identifier.
+| However, the integrated format of date and time is also supported. In
+| the case of using integrated format, only the smallest temporal scale
+| must be included in the temporal_data with the column name of
+| 'temporal id'. The expected format of each scale is shown in
+| :numref:`target tab 1`.
+| 
+| Temporal covariates: The temporal covariates must be specified in a
+| temporal_data with the column name in a format 'temporal covariate x'
+| where 'x' is the covariate number.
+| 
+| Target: The column of the target variable in the temporal_data must be
+| named 'target'.
+| 
+| The spatial_data must include the following columns:
+| 
+| Spatial ids: The id of the units in the finest spatial scale of input
+| data must be included in the spatial_data with the name 'spatial id
+| level 1'.
+| 
+| Spatial covariates : The spatial covariates must be specified in a
+| spatial_data with the column names in a format 'spatial covariate x',
+| where the 'x' is the covariate number.
+| 
+| **example:** {'temporal_data' : './Covid 19 temporal data.csv',
+| 'spatial_data' : './Covid 19 spatial data.csv'}"
+"| 2
+| 
+| 
+| ","| forecast_horizon
+| 
+| 
+| ","| **type:** int
+| default:-
+| **details:** The number of temporal units in the future to be
+| forecasted."
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| history_length
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int or dict
+| **default:** 1
+| **details:** The number of temporal units in the past which their
+| information is used to predict. This history length could be different
+| for each temporal covariate, that in this case, a dictionary must be
+| passed with the temporal covariate names as it's keys and the
+| corresponding history lengths as it's values. The keys could also be a
+| tuple of multiple covariate names.
+| 
+| **example:** {('temperature','precipitation'):2,'social distancing
+| policy':5}"
+"| 4
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| column_identifier
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** If the input *data* column names do not match the
+| specific format of temporal and spatial ids and covariates (i.e.,
+| 'temporal id', 'temporal id level x', 'spatial id level x', 'temporal
+| covariate x', 'spatial covariate x','target'), a dictionary must be
+| passed to specify the content of each column.
+| The keys must be a string in one of the formats: {'temporal
+| id','temporal id level x','spatial id level x', 'temporal covariate',
+| 'spatial covariate','target'}
+| The values of 'temporal id level x' and 'spatial id level x' must be
+| the name of the column containing the temporal or spatial ids in the
+| scale level x respectively.
+| If the input *data* has integrated format for temporal ids, the name
+| of the corresponding column must be specified with the key 'temporal
+| id'.
+| The values of  'temporal covariate' and 'spatial covariate' are the
+| list of temporal and spatial covariates respectively, and the value of
+| the 'target' is the column name of the target variable.
+| 
+| **example:** {'temporal id level 1': 'week','temporal id level 2':
+| 'year','spatial id level 1': 'county_fips', 'spatial id level 2':
+| 'state_fips', 'temporal covariates':['temperature', 'social distance
+| policy'], 'spatial covariates':['population','hospital
+| beds'],'target':'covid-19 deaths'}"
+"| 5
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| futuristic_covariates
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** a dict of temporal covariates whose values at the future
+| temporal units will be considered for prediction. The keys are the
+| name of temporal covariates (or tuple of multiple covariate names) and
+| the values are the list of length 2 representing the start and end
+| point of the temporal interval in the future in which values of
+| covariates will be included in the historical data frame.
+| 
+| **example:** {'temperature': [2,4], ('temperature', 'social distancing
+| policy'): [6,6]}"
+"| 6
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| future_data_table
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or string or None
+| **default:** None
+| **details:** data address or data frame containing futuristic
+| covariates values in the temporal units in the corresponding interval
+| in the future, where the future refers to the temporal units after the
+| last unit with recorded information for the covariates and target
+| variable in input *data*.
+| These values can also be included in the input *data* (temporal data)
+| in the rows corresponding to the future temporal units having values
+| for the futuristic covariates and NA for other covariates.
+| Note that all the temporal and spatial id's in the input *data* must
+| be included in the *future_data_table*. An example of
+| *future_data_table* is shown in :numref:`target fig 2`."
+"| 7
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| step
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** The number of instances in the time sequence to be
+| considered as a temporal unit in the process of constructing
+| historical data. Normally the step is equal to one, and each instance
+| is considered as a temporal unit, but if the augmentation is used in
+| the temporal scale transformation, the step must be set to the moving
+| average window size."
+"| 8
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options:
+| 0: no logging
+| 1: only important information logging"

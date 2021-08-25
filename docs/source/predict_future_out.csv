@@ -1,0 +1,8 @@
+#,Output Name,Output Description
+"| 1
+| 
+| ","| trained_model
+| 
+| ","| **type:** object
+| **details:** The model  trained on the *data* input.
+| "

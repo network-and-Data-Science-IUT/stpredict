@@ -1,0 +1,471 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dataframe, string
+| **default:** -
+| **details:** 
+| dataframe: a preprocessed data frame.
+| string: an address to a preprocessed data frame.
+| The preprocessed data frame must have a column name format
+| conforming to :numref:`target fig 3`."
+"| 2
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| instance_testing\
+| _size
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int or float
+| **default:** -
+| **details:** The number of temporal units to be considered as a
+| testing set.
+| If int, is considered as the number of temporal units to be included
+| in the testing set.
+| If float, is considered as the proportion of temporal units in the
+| dataset to be included in the testing split, thus should be between
+| 0.0 and 1.0.
+| 
+| **example:** 7 or 0.3"
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| forecast_horizon
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** -
+| **details:** forecast horizon to gap consideration in data splitting
+| process.
+| by the gap, we mean the number of temporal units which are excluded
+| from data to simulate the situation of real prediction in which we do
+| not have access to the information of forecast horizon - 1 units
+| before the time point of the target variable."
+"| 4
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| feature_or\
+| _covariate_set
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<string>
+| **default:** -
+| **details:** a list of covariates or features which are selected from
+| the input data frame for modeling.
+| If the list contains covariate names, the selected features includes
+| the covariates and all their historical values in the input data
+| frame.
+| 
+| **example:** ['temperature', 'population']
+| or ['temperature t', 'population', 'temperature t-1']"
+"| 5
+| 
+| 
+| 
+| ","| history_length
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** The history length of data or the number of temporal
+| units in the past which features in the input data have recorded
+| values for them."
+"| 6
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| model
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'knn', 'gbm', 'glm', 'nn'} or callable
+| **default:** 'knn'
+| **details:** a model to be trained using training data and predict the
+| target variable values of the test set.
+| 
+| 'knn': K nearest neighbour regressor for *model_type* of regression, K
+| nearest neighbour classifier for *model_type* of classification.
+| 
+| 'gbm': Gradient boosting regression for *model_type* of regression,
+| Gradient boosting classification for *model_type* of classification.
+| 
+| 'glm': Elastic net linear regression for *model_type* of regression,
+| logistic regression for *model_type* of classification.
+| 
+| 'nn': Neural network with adjustable number of layers and neurons for
+| *model_type* of regression and classification.
+| 
+| [callable]: a user-defined function that accepts the data frames of
+| features in the training and validation set and a target variable
+| values of the training set in a form of ndarray, and returns the
+| predictions on the training and validation set and the trained model
+| (See :ref:`target user_defined_model`).
+| 
+| 
+| **example:** 'nn' or lstm()"
+"| 7
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| base_models
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<string, dict, or function> or None
+| **default:** None
+| **details:** a list of predefined model names and user-defined model
+| functions which will be considered as base models to form a mixed
+| model by taking their predictions as the inputs of the main model.
+| If None is passed, the model uses the input data features as the
+| predictors.
+| 
+| The supported options are the same as the *model* input. If the user
+| prefers to specify the hyperparameters of the predefined model, the
+| related item in the list must be in a form of a dictionary with the
+| name of the model as the key and the dictionary of hyperparameters as
+| its value. The specified hyper parameters for each model must conform
+| to the description of *model_parameters* input.
+| 
+| **example:** [{'knn':{'n_neighbors':10, 'metric':'minkowski'}}, 'nn',
+| lstm()]"
+"| 8
+| 
+| ","| model_type
+| 
+| ","| **type:** {'regression','classification}
+| **default:** 'regression'
+| **details:** type of prediction task."
+"| 9
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| model_parameters
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** For the predefined models the model hyper parameters can
+| be passed to the function using this argument and in a format of a
+| dictionary.
+| Since for 'knn', 'glm', and 'gbm' we use the implementation of the
+| Scikit Learn package1, all of the hyperparameters defined in this
+| package are supported. For the 'nn' model the implementation of
+| TensorFlow is used, and the list of supported hyperparameters is as
+| below:
+| ['hidden_layers_structure', 'hidden_layers_number',
+| 'hidden_layers_neurons', 'hidden_layers_activations',
+| 'output_activation', 'loss', 'optimizer', 'metrics',
+| 'early_stopping_monitor', 'early_stopping_patience', 'batch_size',
+| 'validation_split','epochs']
+| The structure of the neural network can be specified using
+| 'hidden_layers_structure' which takes a list of two item tuples each
+| corresponds to a hidden layer in a network with the first item of each
+| tuple as the number of neurons in the layer and second item as the
+| activation function of the layer.
+| Another way is to specify 'hidden_layers_number',
+| 'hidden_layers_neurons', and 'hidden_layers_activations' which will
+| result in network with the number of hidden layers according to 
+| 'hidden_layers_number' having the same activation function and number
+| of neurons according to the values of 'hidden_layers_neurons' and
+| 'hidden_layers_activations' parameters. The 'output_activation' hyper
+| parameter is the activation function of the output layer. The
+| supported values for the rest of the hyperparameters are the same as
+| the TensorFlow package.
+| 
+| **example:** {'n_neighbors':10, 'metric':'minkowski'}
+| {'hidden_layers_neurons':[2,4,8],
+| 'hidden_layers_activations':['relu',None,'exponential']}"
+"| 10
+| 
+| 
+| ","| feature_scaler
+| 
+| 
+| ","| **type:** {'logarithmic','normalize','standardize',None}
+| **default:** None
+| **details:** Type of scaling the features in the input data set for
+| modeling."
+"| 11
+| 
+| 
+| ","| target_scaler
+| 
+| 
+| ","| **type:** {'logarithmic','normalize','standardize',None}
+| **default:** None
+| **details:** Type of scaling the target variable in the input data set
+| for modeling."
+"| 12
+| 
+| ","| labels
+| 
+| ","| **type:** list<any type> or None
+| **default:** None
+| **details:** The class labels of the target variable."
+"| 13
+| 
+| 
+| 
+| 
+| 
+| ","| performance\
+| _measure
+| 
+| 
+| 
+| 
+| ","| **type:** list<{'MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AUC',
+| 'AUPR', 'likelihood', 'AIC', 'BIC'}>
+| **default:** ['MAPE']
+| **details:** a list of performance measures to be included in the
+| performance report.
+| 
+| **example:** ['MAE', 'MAPE']"
+"| 14
+| 
+| 
+| 
+| 
+| 
+| ","| performance\
+| _mode
+| 
+| 
+| 
+| 
+| ","| **type:** 'normal' or 'cumulative' or  'moving_average+x'
+| **default:** 'normal'
+| The mode of target variable based on which the performance measures
+| are calculated.
+| If the user desires to use moving average mode, the window of the
+| moving average must also be specified as x in the format
+| 'moving_average+x'."
+"| 15
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| performance\
+| _report
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** True
+| details:
+| If True, a table containing a report on model errors (based on
+| *performance_measures*) will be saved in the sub directory
+| 'performance/testing process' in the same directory as the code is
+| running and as in '.csv' format. The table includes only one row
+| containing the error values, and each column represents one of the
+| user specified performance_measures."
+"| 16
+| 
+| 
+| 
+| 
+| ","| save_predictions
+| 
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** True
+| details:
+| if True, the prediction values of trained models for testing data will
+| be saved in the sub directory 'predictions/testing process' in the
+| same directory as the code is running as in '.csv' format."
+"| 17
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options
+| available options:
+| 0: no logging
+| 1: only important information logging 
+| 2: all details logging
+| "

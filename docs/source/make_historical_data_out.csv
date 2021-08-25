@@ -1,0 +1,20 @@
+#,Output Name,Output Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| ","| historical_data
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dataframe
+| **details:** a data frame including historical values of each
+| covariates with the specified history length for that covariate and
+| the target variable values at the user-specified *forecast_horizon*.
+| If the *futuristic_covariates* is not None the output also includes
+| the values of these covariates at the time points in the specified
+| interval for that covariate in the future."

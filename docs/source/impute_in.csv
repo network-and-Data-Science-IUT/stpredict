@@ -1,0 +1,181 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame
+| **default:** -
+| **details:** Data frame of temporal covariates including missing
+| values.
+| The *data* must include the following columns with names in the
+| specified format in the description, or if the columns have arbitrary
+| names their content must be specified using the *column_identifier*
+| argument.
+| 
+| 
+| Spatial id:
+| The id of the units in the finest spatial scale of input data must be
+| included in the *data* with the name 'spatial id level 1'. The spatial
+| id must have unique values.
+| 
+| Temporal ids:
+| The id of temporal units recorded in the input data for each temporal
+| scale must be included as a separate column in the  *data* with a name
+| in a format 'temporal id level x', where 'x' is the related temporal
+| scale level beginning with level 1 for the smallest scale.
+| The temporal units could have a free but sortable format like year
+| number, week number and so on. The combination of these temporal scale
+| levels' ids should form a unique identifier.
+| However, the integrated format of date and time is also supported. In
+| the case of using integrated format, only the smallest temporal scale
+| must be included in the  *data* with the column name of 'temporal id'.
+| The expected format of each scale is shown in :numref:`target tab 1`.
+| 
+| Temporal covariates:
+| The temporal (time-dependent) covariates must be specified in a
+| temporal_data with the format 'temporal covariate x' where 'x' is the
+| covariate number.
+| 
+| Target:
+| The column of the target variable in the temporal_data must be named
+| 'target'."
+"| 2
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| column_identifier
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** If the input *data* column names do not match the
+| specific format of temporal and spatial ids and covariates (i.e.,
+| 'temporal id', 'temporal id level x', 'spatial id level x', 'temporal
+| covariate x', 'target'), a dictionary must be passed to specify the
+| content of each column.
+| The keys must be a string in one of the formats: {'temporal
+| id','temporal id level x','spatial id level x'}
+| The values of 'temporal id level x' and 'spatial id level x' must be
+| the name of the column containing the temporal or spatial ids in the
+| scale level x respectively.
+| If the input data has integrated format for temporal ids, the name of
+| the corresponding column must be specified with the key 'temporal
+| id'.
+| 
+| **example:** {'temporal id level 1': 'week','temporal id level 2':
+| 'year','spatial id level 1': 'county_fips', 'spatial id level 2':
+| 'state_fips'}"
+"| 3
+| 
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options:
+| 0: no logging
+| 1: only important information logging
+| 2: all details logging"

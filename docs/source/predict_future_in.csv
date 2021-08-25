@@ -1,0 +1,399 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| ","| **type:** dataframe, string
+| **default:** -
+| **details:** 
+| dataframe: a preprocessed data frame which will be used to train model
+| for forecasting.
+| string: an address to a preprocessed data frame."
+"| 2
+| 
+| 
+| 
+| 
+| ","| future_data
+| 
+| 
+| 
+| 
+| ","| **type:** dataframe, string
+| **default:** -
+| **details:** 
+| dataframe: a preprocessed data of the future temporal units for which
+| target variable values will be forecasted.
+| string: an address to a preprocessed data frame. "
+"| 3
+| 
+| 
+| ","| forecast_horizon
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** Forecast horizon used in preprocessing the *data* and
+| *future_data* inputs."
+"| 4
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| feature_or\
+| _covariate_set
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<string>
+| **default:** -
+| **details:** a list of covariates or features which are selected from
+| the input data frame for modeling.
+| If the list contains covariate names, the selected features includes
+| the covariates and all their historical values in the input data
+| frame.
+| 
+| **example:** ['temperature', 'population']
+| or ['temperature t', 'population', 'temperature t-1']"
+"| 5
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| model
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'knn', 'gbm', 'glm', 'nn'} or callable
+| **default:** 'knn'
+| **details:** a model to be trained using training data and predict the
+| target variable values of the future data.
+| 
+| 'knn': K nearest neighbour regressor for *model_type* of regression, K
+| nearest neighbour classifier for *model_type* of classification.
+| 
+| 'gbm': Gradient boosting regression for *model_type* of regression,
+| Gradient boosting classification for *model_type* of classification.
+| 
+| 'glm': Elastic net linear regression for *model_type* of regression,
+| logistic regression for *model_type* of classification.
+| 
+| 'nn': Neural network with adjustable number of layers and neurons for
+| *model_type* of regression and classification.
+| 
+| [callable]: a user-defined function that accepts the data frames of
+| features in the training and validation set and a target variable
+| values of the training set in a form of ndarray, and returns the
+| predictions on the training and validation set and the trained model
+| (See :ref:`target user_defined_model`).
+| 
+| 
+| **example:** 'nn' or lstm()"
+"| 6
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| base_models
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list<string, dict, or function> or None
+| **default:** None
+| **details:** a list of predefined model names and user-defined model
+| functions which will be considered as base models to form a mixed
+| model by taking their predictions as the inputs of the main *model*.
+| If None is passed, the *model* uses the input data features as the
+| predictors.
+| 
+| The supported options are the same as the *model* input. If the user
+| prefers to specify the hyperparameters of the predefined model, the
+| related item in the list must be in a form of a dictionary with the
+| name of the model as the key and the dictionary of hyperparameters as
+| its value. The specified hyper parameters for each model must conform
+| to the description of *model_parameters* input.
+| 
+| **example:** [{'knn':{'n_neighbors':10, 'metric':'minkowski'}}, 'nn',
+| lstm()]"
+"| 7
+| 
+| ","| model_type
+| 
+| ","| **type:** {'regression','classification'}
+| **default:** 'regression'
+| **details:** type of the prediction task."
+"| 8
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| model_parameters
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** For the predefined models the model hyper parameters can
+| be passed to the function using this argument and in a format of a
+| dictionary.
+| Since for 'knn', 'glm', and 'gbm' we use the implementation of the
+| Scikit Learn package1, all of the hyperparameters defined in this
+| package are supported. For the 'nn' model the implementation of
+| TensorFlow is used, and the list of supported hyperparameters is as
+| below:
+| ['hidden_layers_structure', 'hidden_layers_number',
+| 'hidden_layers_neurons', 'hidden_layers_activations',
+| 'output_activation', 'loss', 'optimizer', 'metrics',
+| 'early_stopping_monitor', 'early_stopping_patience', 'batch_size',
+| 'validation_split','epochs']
+| The structure of the neural network can be specified using
+| 'hidden_layers_structure' which takes a list of two item tuples each
+| corresponds to a hidden layer in a network with the first item of each
+| tuple as the number of neurons in the layer and second item as the
+| activation function of the layer.
+| Another way is to specify 'hidden_layers_number',
+| 'hidden_layers_neurons', and 'hidden_layers_activations' which will
+| result in network with the number of hidden layers according to 
+| 'hidden_layers_number' that have the same activation function and
+| neuron number according to the values of 'hidden_layers_neurons' and
+| 'hidden_layers_activations' parameters. The 'output_activation'
+| parameter is the activation function of the output layer. The
+| supported values for the rest of the hyperparameters are the same as
+| the TensorFlow package.
+| 
+| **example:** {'n_neighbors':10, 'metric':'minkowski'}
+| {'hidden_layers_neurons':[2,4,8],
+| 'hidden_layers_activations':['relu',None,'exponential']}"
+"| 9
+| 
+| 
+| ","| feature_scaler
+| 
+| 
+| ","| **type:** {'logarithmic','normalize','standardize',None}
+| **default:** None
+| **details:** Type of scaling the features in the input data set for
+| modeling."
+"| 10
+| 
+| 
+| ","| target_scaler
+| 
+| 
+| ","| **type:** {'logarithmic','normalize','standardize',None}
+| **default:** None
+| **details:** Type of scaling the target variable in the input data set
+| for modeling."
+"| 11
+| 
+| ","| labels
+| 
+| ","| **type:** list<any type> or None
+| **default:** None
+| **details:** The class labels of the target variable."
+"| 12
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| scenario
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'max', 'min', 'mean', 'current', None}
+| **default:**  'current'
+| **details:** The scenario based on which the future values of
+| futuristic covariates will be determined in the process of forecasting
+| the future temporal units.
+| If min, the minimum observed values for each spatial unit are
+| considered as future values of the futuristic covariate for that
+| spatial unit. The same manner is performed for max and mean.
+| If current, the value of the covariate in the last temporal unit for
+| each spatial unit is considered as the future value of that
+| covariate.
+| If None, the values of futuristic covariates must be provided in the
+| input *data*.
+| 
+| **example:** 'min'"
+"| 13
+| 
+| 
+| 
+| 
+| ","| save_predictions
+| 
+| 
+| 
+| 
+| ","| **type:** bool
+| **default:** True
+| details:
+| If True, the prediction values for the future temporal units will be
+| saved in the sub directory 'predictions/future prediction/' in the
+| same directory as the code is running and as in '.csv' format."
+"| 14
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options:
+| 0: no logging
+| 1: only important information logging"

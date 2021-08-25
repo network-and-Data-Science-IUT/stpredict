@@ -1,0 +1,22 @@
+#,Input Name,Input Description
+"| 1
+| 
+| ","| X_training
+| 
+| ","| **type:** dataframe
+| **details:** the dataframe of features in the training set which is
+| used to train the models."
+"| 2
+| 
+| ","| X_validation
+| 
+| ","| **type:** dataframe
+| **details:** the dataframe of features in the validation set which is
+| used to evaluate models' performance."
+"| 3
+| 
+| ","| Y_training
+| 
+| ","| **type:** array
+| **details:** The values of the target variable in the training set.
+| "

@@ -1,0 +1,24 @@
+#,Output Name,Output Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| errors
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** list <float>
+| **default:** -
+| **details:** a list of errors based on the *performace_measures* input
+| and between *true_values* and *predicted_values*.
+
+.. note :: | if *ture_values* contains at least one zero value then for 'MAPE', a warning 
+   | for division by zero will be displayed."

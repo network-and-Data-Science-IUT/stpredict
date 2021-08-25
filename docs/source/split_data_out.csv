@@ -1,0 +1,53 @@
+#,Output Name,Output Description
+"| 1
+| ","| training_data
+| ","| **type:** data frame
+| **details:** the training part of data after splitting process"
+"| 2
+| 
+| 
+| ","| validation_data
+| 
+| 
+| ","| **type:** data frame or None
+| **details:** the validation part of data after splitting process. If
+| *splitting_type* is 'instance' and *input_validation_size* is not
+| specified, None is returned."
+"| 3
+| 
+| 
+| ","| testing_data
+| 
+| 
+| ","| **type:** data frame or None
+| **details:** The testing part of data after splitting process. If
+| *splitting_type* is 'instance' and *input_testing_size* is not
+| specified, None is returned."
+"| 4
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| gap_data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or None
+| **details:** The data on temporal units between the part of data used
+| for fit and evaluate the model (training + validation) and testing set
+| which are excluded from data to simulate the situation of real
+| prediction in which we do not have access to the information of
+| forecast horizon - 1 units before the time point of the target
+| variable.
+| If *instance_testing_size* input is 0 this part is not considered and
+| None is returned.
+| "

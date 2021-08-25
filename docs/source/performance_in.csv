@@ -1,0 +1,86 @@
+#,Input Name,Input Description
+"| 1
+| 
+| ","| true_values
+| 
+| ","| **type:** list <float>
+| **default:** -
+| **details:** ground truth for target values."
+"| 2
+| 
+| 
+| ","| predicted_values
+| 
+| 
+| ","| **type:** list <float> or list<list<float>>
+| **default:** -
+| **details:** predicted values for the target or the predicted
+| probability for each class of the target variable."
+"| 3
+| 
+| 
+| 
+| 
+| ","| performance_measures
+| 
+| 
+| 
+| 
+| ","| **type:** list<{'MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AUC',
+| 'AUPR', 'likelihood', 'AIC', 'BIC'}>
+| **default:** ['MAPE']
+| **details:** a list of performance measures.
+| 
+| **example:** ['MAE', 'MAPE']"
+"| 4
+| 
+| 
+| 
+| ","| trivial_values
+| 
+| 
+| 
+| ","| **type:** list <float>
+| **default:** []
+| **details:** The actual values from the prior season of the time
+| series to calculate the mean absolute scaled error by considering the
+| forecast horizon as the seasonal period ."
+"| 5
+| 
+| 
+| ","| model_type
+| 
+| 
+| ","| **type:** {'regression','classification'}
+| **default:** 'regression'
+| **details:** type of the prediction task which produced
+| *predicted_values*."
+"| 6
+| 
+| 
+| 
+| ","| num_params
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** number of independent parameters of the model which
+| produced *predicted_values*. Only be used to calculate the 'AIC' and
+| 'BIC' measures."
+"| 7
+| 
+| 
+| 
+| 
+| ","| labels
+| 
+| 
+| 
+| 
+| ","| **type:** list<any type> or None
+| **default:** None
+| **details:** The class labels of the target variable.
+| 
+| 
+| "
