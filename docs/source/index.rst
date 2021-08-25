@@ -42,7 +42,7 @@ We would thanks Nasrin Rafiei for contribution in the development of the package
    home
    installation
    :hidden:
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Getting started
 
 .. toctree::
