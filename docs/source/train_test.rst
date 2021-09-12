@@ -30,7 +30,7 @@ training and testing process on the preprocessed data based on best configuratio
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.predict import train_test()
+   from stpredict.predict import train_test
    
    df = pd.read_csv('./historical_data h=1.csv')
    trained_model = train_test(data = df, instance_testing_size = 0.2, forecast_horizon = 4,

@@ -28,7 +28,7 @@ split_data
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.predict import split_data()
+   from stpredict.predict import split_data
    
    df = pd.read_csv('./historical_data h=1.csv')
    training_data, validation_data, testing_data, gap_data = split_data(data = df, 

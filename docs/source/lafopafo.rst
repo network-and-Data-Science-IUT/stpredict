@@ -27,7 +27,7 @@ Implementation of all the modeling and forecasting stages including feature sele
 
 .. code-block:: python
 
-   from stpredict.predict import lafopafo()
+   from stpredict.predict import lafopafo
 
    lafopafo(data = ['./historical_data h=1.csv', './historical_data h=2.csv',
                     './historical_data h=3.csv'], forecast_horizon = 4)

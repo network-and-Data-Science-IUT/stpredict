@@ -27,7 +27,7 @@ Finding the best history length and feature set based on models performance on t
 
 .. code-block:: python
 
-   from stpredict.predict import predict()
+   from stpredict.predict import predict
    
    predict(data = ['./historical_data h=1.csv', './historical_data h=2.csv',
                    './historical_data h=3.csv'], forecast_horizon = 4)

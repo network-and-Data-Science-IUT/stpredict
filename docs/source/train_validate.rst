@@ -28,7 +28,7 @@ training and validation process on preprocessed historical data to find the best
 
 .. code-block:: python
 
-   from stpredict.predict import train_validate()
+   from stpredict.predict import train_validate
 
    best_model, best_model_parameters, best_history_length, 
    best_feature_or_covariate_set, best_model_base_models, best_trained_model = train_validate(

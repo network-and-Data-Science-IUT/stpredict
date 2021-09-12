@@ -29,7 +29,7 @@ This function receives true_values and predicted_values and a list of performanc
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.predict import performance()
+   from stpredict.predict import performance
    
    true_values_list = [1, 3, 2, 2, 3, 1]
    predicted_values_list = [[0.7,0.3,0.0], [0.2,0.0,0.8], [0.1,0.3,06], 

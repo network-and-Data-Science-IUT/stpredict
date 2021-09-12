@@ -30,7 +30,7 @@ Transforming input data to the historical format and extract features. This func
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.preprocess import make_historical_data()
+   from stpredict.preprocess import make_historical_data
 
    df1 = pd.read_csv('USA COVID-19 temporal data.csv')
    df2 = pd.read_csv('USA COVID-19 spatial data.csv')

@@ -7,7 +7,7 @@ Plot the temporal covariates evolution in the user specified time interval.
 
 **Usage**
 
-.. py:function:: plot_data(data, temporal_covariate = 'default', temporal_range = None, spatial_id = None, column_identifier = None, spatial_scale = 1, temporal_scale = 1,  spatial_scale_table = None,month_format_print = False, saving_plot_path = None)
+.. py:function:: plot_data(data, temporal_covariate = 'default', temporal_range = None, spatial_id = None, column_identifier = None, spatial_scale = 1, temporal_scale = 1,  spatial_scale_table = None, month_format_print = False, saving_plot_path = None)
 
 **Parameters**
 
@@ -21,9 +21,9 @@ Plot the temporal covariates evolution in the user specified time interval.
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.preprocess import plot_data()
+   from stpredict.preprocess import plot_data
 
    df = pd.read_csv('USA COVID-19 temporal data.csv')
 
-   plot_data(data = df, temporal_covariate = ['temperature'])
+   plot_data(data = df, spatial_scale_table = None, temporal_covariate = ['temperature'])
 

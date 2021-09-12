@@ -29,7 +29,7 @@ Modify the target variable based on specified target mode
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.preprocess import target_modification()
+   from stpredict.preprocess import target_modification
 
    df = pd.read_csv('USA COVID-19 temporal data.csv')
 

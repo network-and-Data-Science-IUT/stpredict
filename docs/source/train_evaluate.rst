@@ -28,7 +28,7 @@ training the models on the training set and predict the target variable values f
 .. code-block:: Python
 
    import pandas as pd
-   from stpredict.predict import train_evaluate()
+   from stpredict.predict import train_evaluate
    
    df = pd.read_csv('./historical_data h=1.csv')
    training_df = df.iloc[:-200]

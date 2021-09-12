@@ -28,7 +28,7 @@ creating a data frame from the input data frame containing only features in the 
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.predict import select_features()
+   from stpredict.predict import select_features
    
    df = pd.read_csv('./historical_data h=1.csv')
    data = select_features(data = df, ordered_covariates_or_features =['temperature t', 'population',
