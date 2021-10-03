@@ -7,7 +7,7 @@ training the models on the training set and predict the target variable values f
 
 **Usage**
 
-.. py:function:: preprocess.train_evaluate(training_data, validation_data, model, model_type, model_parameters = None, labels=None, base_models = None, verbose = 0)
+.. py:function:: predict.train_evaluate(training_data, validation_data, model, model_type, model_parameters = None, labels=None, base_models = None, verbose = 0)
 
 **Parameters**
 

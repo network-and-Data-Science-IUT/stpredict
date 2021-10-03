@@ -7,7 +7,7 @@ training and testing process on the preprocessed data based on best configuratio
 
 **Usage**
 
-.. py:function:: preprocess.train_test(data, instance_testing_size, forecast_horizon, feature_or_covariate_set, history_length, model='knn', base_models=None, model_type='regression', model_parameters=None, feature_scaler='logarithmic', target_scaler='logarithmic', labels=None, performance_measures=['MAPE'], performance_mode='normal', performance_report=True, save_predictions=True, verbose=0)
+.. py:function:: predict.train_test(data, instance_testing_size, forecast_horizon, feature_or_covariate_set, history_length, model='knn', base_models=None, model_type='regression', model_parameters=None, feature_scaler='logarithmic', target_scaler='logarithmic', labels=None, performance_measures=['MAPE'], performance_mode='normal', performance_report=True, save_predictions=True, verbose=0)
 
 
 **Parameters**

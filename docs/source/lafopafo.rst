@@ -7,7 +7,7 @@ Implementation of all the modeling and forecasting stages including feature sele
 
 **Usage**
 
-.. py:function:: lafopafo(data, forecast_horizon=1, feature_sets={'covariate': 'mRMR'}, forced_covariates=[], models=['knn'], mixed_models=[], model_type='regression', instance_testing_size=0.2, fold_total_number=5, feature_scaler=None, target_scaler=None, performance_benchmark='MAPE', performance_measures=['MAPE'], performance_mode='normal', scenario='current', validation_performance_report=True, testing_performance_report=True, save_predictions=True, plot_predictions=False, verbose=0)
+.. py:function:: predict.lafopafo(data, forecast_horizon=1, feature_sets={'covariate': 'mRMR'}, forced_covariates=[], models=['knn'], mixed_models=[], model_type='regression', instance_testing_size=0.2, fold_total_number=5, feature_scaler=None, target_scaler=None, performance_benchmark='MAPE', performance_measures=['MAPE'], performance_mode='normal', scenario='current', validation_performance_report=True, testing_performance_report=True, save_predictions=True, plot_predictions=False, verbose=0)
 
 **Parameters**
 

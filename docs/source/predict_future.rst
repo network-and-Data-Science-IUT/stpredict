@@ -7,7 +7,7 @@ training the model on the training set and predict the target variable values in
 
 **Usage**
 
-.. py:function:: predict_future(data, future_data, forecast_horizon, feature_or_covariate_set, model = 'knn', base_models = [], model_type = 'regression', model_parameters = None, feature_scaler = None, target_scaler = None, labels = None, scenario  = 'current', save_predictions = True, verbose = 0)
+.. py:function:: predict.predict_future(data, future_data, forecast_horizon, feature_or_covariate_set, model = 'knn', base_models = [], model_type = 'regression', model_parameters = None, feature_scaler = None, target_scaler = None, labels = None, scenario  = 'current', save_predictions = True, verbose = 0)
 
 
 **Parameters**

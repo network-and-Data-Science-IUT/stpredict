@@ -7,7 +7,7 @@ This function receives true_values and predicted_values and a list of performanc
 
 **Usage**
 
-.. py:function:: preprocess.performance(true_values, predicted_values, performance_measures = ['MAPE'], trivial_values = [], model_type = 'regression', num_params = 1, labels = None)
+.. py:function:: predict.performance(true_values, predicted_values, performance_measures = ['MAPE'], trivial_values = [], model_type = 'regression', num_params = 1, labels = None)
 
 **Parameters**
 

@@ -7,7 +7,7 @@ creating a data frame from the input data frame containing only features in the 
 
 **Usage**
 
-.. py:function:: preprocess.select_features(data, ordered_covariates_or_features)
+.. py:function:: predict.select_features(data, ordered_covariates_or_features)
 
 **Parameters**
 
