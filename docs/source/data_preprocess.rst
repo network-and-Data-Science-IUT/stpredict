@@ -1,4 +1,4 @@
-data_preprocess
+preprocess_data
 ===============
 
 **Description**
@@ -8,7 +8,7 @@ The preprocessing procedure has several steps. First the imputation of missing v
 
 **Usage**
 
-.. py:function:: preprocess.data_preprocess(data, forecast_horizon, history_length = 1, column_identifier = None, spatial_scale_table = None, spatial_scale_level = 1, temporal_scale_level = 1, target_mode = 'normal', imputation = True, aggregation_mode = 'mean', augmentation = False, futuristic_covariates = None, future_data_table = None, save_address = None, verbose = 0)
+.. py:function:: preprocess.preprocess_data(data, forecast_horizon, history_length = 1, column_identifier = None, spatial_scale_table = None, spatial_scale_level = 1, temporal_scale_level = 1, target_mode = 'normal', imputation = True, aggregation_mode = 'mean', augmentation = False, futuristic_covariates = None, future_data_table = None, save_address = None, verbose = 0)
 
 
 **Parameters**
@@ -35,12 +35,12 @@ The preprocessing procedure has several steps. First the imputation of missing v
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.preprocess import data_preprocess
+   from stpredict.preprocess import preprocess_data
 
    df1 = pd.read_csv('USA COVID-19 temporal data.csv')
    df2 = pd.read_csv('USA COVID-19 spatial data.csv')
 
-   historical_data = data_preprocess(data = {'temporal_data':df1,'spatial_data':df2},
+   historical_data = preprocess_data(data = {'temporal_data':df1,'spatial_data':df2},
                                      forecast_horizon = 2, history_length = 2,
                                      futuristic_covariates = {'Social distancing policy':[1,2]})
 

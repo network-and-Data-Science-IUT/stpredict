@@ -48,7 +48,27 @@
 | 
 | 
 | 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
 | ","| feature_sets
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
 | 
 | 
 | 
@@ -73,15 +93,25 @@
 | based on the rank, the ranking must be performed on the covariates or
 | on the whole features (covariates and their historical values)
 | and the value specifies the method of ranking from the supported
-| methods 'correlation' and 'mRMR'. The candid feature sets will be
-| obtained by slicing the ranked list of covariates or features from the
-| first item to item number n where n is varied from 1 to the total
-| number of list items, and if items are covariates, the covariates in
-| each resulting subset along with their corresponding historical values
-| will form a candid feature set in the feature selection process.
+| methods 'correlation', 'mRMR', and 'variance'. 
+| If 'correlation', covariates(or features) are ranked based on their 
+| correlation with target variable. If 'mRMR' the ranking will be 
+| conducted based on mRMR method in which the correlation between
+| the features themselves also affects the choice of rank.
+| If 'variance' the variance-based sensitivity analysis method will be
+| used in which covariates(features) are prioritized based on the 
+| fraction of target variable variance that can be attributed to their
+| variance.
+| The candid feature sets will be obtained by slicing the ranked list 
+| of covariates or features from the first item to item number n where
+| n is varied from 1 to the total number of list items, and if items are
+| covariates, the covariates in each resulting subset along with their
+| corresponding historical values will form a candid feature set in the
+| feature selection process.
 | 
 | dict options: {'covariate': 'correlation'}, {'covariate': 'mRMR'},
-| {'feature': 'correlation'}, {'feature': 'mRMR'} 
+| {'covariate': 'variance'}, {'feature': 'correlation'}, 
+| {'feature': 'mRMR'}, {'feature': 'variance'}
 | 
 | **example:**
 | {'covariate': 'correlation'}"

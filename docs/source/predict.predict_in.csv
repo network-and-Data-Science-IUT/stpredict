@@ -70,7 +70,27 @@
 | 
 | 
 | 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
 | ","| feature_sets
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
 | 
 | 
 | 
@@ -95,15 +115,25 @@
 | based on the rank, the ranking must be performed on the covariates or
 | on the whole features (covariates and their historical values)
 | and the value specifies the method of ranking from the supported
-| methods 'correlation' and 'mRMR'. The candid feature sets will be
-| obtained by slicing the ranked list of covariates or features from the
-| first item to item number n where n is varied from 1 to the total
-| number of list items, and if items are covariates, the covariates in
-| each resulting subset along with their corresponding historical values
-| will form a candid feature set in the feature selection process.
+| methods 'correlation', 'mRMR', and 'variance'. 
+| If 'correlation', covariates(or features) are ranked based on their 
+| correlation with target variable. If 'mRMR' the ranking will be 
+| conducted based on mRMR method in which the correlation between
+| the features themselves also affects the choice of rank.
+| If 'variance' the variance-based sensitivity analysis method will be
+| used in which covariates(features) are prioritized based on the 
+| fraction of target variable variance that can be attributed to their
+| variance.
+| The candid feature sets will be obtained by slicing the ranked list 
+| of covariates or features from the first item to item number n where
+| n is varied from 1 to the total number of list items, and if items are
+| covariates, the covariates in each resulting subset along with their
+| corresponding historical values will form a candid feature set in the
+| feature selection process.
 | 
 | dict options: {'covariate': 'correlation'}, {'covariate': 'mRMR'},
-| {'feature': 'correlation'}, {'feature': 'mRMR'} 
+| {'covariate': 'variance'}, {'feature': 'correlation'}, 
+| {'feature': 'mRMR'}, {'feature': 'variance'}
 | 
 | **example:**
 | {'covariate': 'correlation'}"
@@ -279,15 +309,16 @@
 | dictionary of hyper parameters.
 | 
 | **example:** [{'knn':{'n_neighbors':10, 'metric':'minkowski'}}, 'nn',
-| lstm()]
+| lstm]
 | or
 | [{'knn':{'n_neighbors':[5,10], 'metric':'minkowski'}},
 | {'nn':{'hidden_layers_number':[1,2,3],'hidden_layers_neurons':[8,16]}}]
 | 
 | Note. Since for 'knn', 'glm', and 'gbm' we use the implementation of
 | the Scikit Learn package1, all of the hyperparameters defined in this
-| package are supported. For 'nn' model the implementation of TensorFlow
-| is used, and the list of supported hyperparameters is as below:
+| package are supported. For 'nn' model the implementation of
+| TensorFlow is used, and the list of supported hyperparameters is
+| as below:
 | ['hidden_layers_structure', 'hidden_layers_number',
 | 'hidden_layers_neurons', 'hidden_layers_activations',
 | 'output_activation', 'loss', 'optimizer', 'metrics',
@@ -340,7 +371,7 @@
 | input.
 | 
 | **example:** [{'knn':{'n_neighbors':10, 'metric':'minkowski'}}, 'nn',
-| lstm()]"
+| lstm]"
 "| 7
 | 
 | ","| model_type
@@ -349,6 +380,37 @@
 | **default:** 'regression'
 | **details:** type of the prediction task"
 "| 8
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| test_type
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'whole-as-one', 'one-by-one'}
+| **default:** 'whole-as-one'
+| **details:** If whole-as-one, the prediction for all the test samples is 
+| made with the best model, feature set and history length
+| which are obtained based on the prediction results of an 
+| identical training and validation set. The training and
+| validation sets in this mode are obtained by removing all 
+| the test instances from the data.
+| If one-by-one, each test sample has an different training 
+| and validation sets which obtained by removing only this test
+| sample, and all of its subsequent test samples from the data."
+"| 9
 | 
 | 
 | 
@@ -382,7 +444,7 @@
 | In both cases, before splitting the validation set, first the last
 | part of the dataset with the size of *instance_testing_size* is selected
 | as the testing part."
-"| 9
+"| 10
 | 
 | 
 | 
@@ -413,7 +475,7 @@
 | 0.0 and 1.0.
 | 
 | **example:** 7 or 0.3"
-"| 10
+"| 11
 | 
 | 
 | 
@@ -450,7 +512,7 @@
 | 'training-validation'.
 | 
 | **example:** 7 or 0.3"
-"| 11
+"| 12
 | 
 | 
 | 
@@ -481,7 +543,7 @@
 | 'training-validation'
 | Warning: Except for educational purposes, this should always be set to
 | False."
-"| 12
+"| 13
 | 
 | 
 | 
@@ -494,7 +556,7 @@
 | **details:** total number of folds in the cross validation process
 | this input is considered if the *splitting_type* input is set to
 | 'cross-validation'."
-"| 13
+"| 14
 | 
 | 
 | ","| feature_scaler
@@ -504,7 +566,7 @@
 | **default:** None
 | **details:** Type of scaling the features in the input data set for
 | modeling"
-"| 14
+"| 15
 | 
 | 
 | ","| target_scaler
@@ -514,7 +576,7 @@
 | **default:** None
 | **details:** Type of scaling the target variable in the input data set
 | for modeling"
-"| 15
+"| 16
 | 
 | 
 | 
@@ -527,7 +589,7 @@
 | **default:** 'MAPE'
 | **details:** a performance measure which is used to select best_model,
 | best_history_length, and best_feature_set"
-"| 16
+"| 17
 | 
 | 
 | 
@@ -546,7 +608,7 @@
 | performance report
 | 
 | **example:** ['MAE', 'MAPE']"
-"| 17
+"| 18
 | 
 | 
 | 
@@ -565,7 +627,7 @@
 | If the user desires to use moving average mode, the window of the
 | moving average must also be specified as x in the format
 | 'moving_average+x'"
-"| 18
+"| 19
 | 
 | 
 | 
@@ -608,7 +670,7 @@
 | input data.
 | 
 | **example:** 'min'"
-"| 19
+"| 20
 | 
 | 
 | 
@@ -636,7 +698,7 @@
 | Each row of the table represents the performance of a specific model
 | for the given history length and feature set, and each column
 | represents one of the user specified *performance_measures*."
-"| 20
+"| 21
 | 
 | 
 | 
@@ -661,10 +723,7 @@
 | running and as in '.csv' format.
 | Each column of this table represents one of the user specified
 | *performance_measures*."
-"| 21
-| 
-| 
-| 
+"| 22
 | 
 | 
 | 
@@ -690,9 +749,6 @@
 | 
 | 
 | 
-| 
-| 
-| 
 | ","| **type:** bool
 | **default:** True
 | details:
@@ -704,13 +760,23 @@
 | prediction values of the overall best model for the test set will be
 | saved in the sub directory 'predictions/test process/' as in '.csv'
 | format.
-| The name of saving csv files has a suffix with the format 'T = x'
-| where x represents the total number of temporal units in the training
-| and validation set.
 | Note.
 | If the *splitting_type* is set to 'cross-validation' only test set
 | predictions will be saved."
-"| 22
+"| 23
+| 
+| 
+| 
+| ","| save_ranked
+| _features
+| 
+| 
+| ","| **type:** bool
+| **default:** True
+| details:
+| If True, the features ranking will be saved in the sub directory
+| 'ranked features/' in the same directory as the code is running."
+"| 24
 | 
 | 
 | 
@@ -726,7 +792,7 @@
 | If True, the real and predicted values of the target variable for some
 | of the spatial id's in the data input will be plotted and saved in the
 | sub directory 'plots/' in the same directory as the code is running."
-"| 23
+"| 25
 | 
 | 
 | 

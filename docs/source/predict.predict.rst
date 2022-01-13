@@ -7,7 +7,7 @@ Finding the best history length and feature set based on models performance on t
 
 **Usage**
 
-.. py:function:: predict.predict(data, forecast_horizon,  feature_sets = {'covariate':'mRMR'}, forced_covariates = [], models = ['knn'],  mixed_models = ['knn'], model_type = 'regression', splitting_type = 'training-validation',  instance_testing_size = 0.2, instance_validation_size = 0.3, instance_random_partitioning = False, fold_total_number = 5, feature_scaler = None, target_scaler = None, performance_benchmark = 'MAPE',  performance_measure = ['MAPE'], performance_mode = 'normal', scenario = ‘current’, validation_performance_report = True, testing_performance_report = True, save_predictions = True, plot_predictions = False, verbose = 0)
+.. py:function:: predict.predict(data, forecast_horizon,  feature_sets = {'covariate':'mRMR'}, forced_covariates = [], models = ['knn'],  mixed_models = ['knn'], model_type = 'regression', test_type = 'whole-as-one', splitting_type = 'training-validation',  instance_testing_size = 0.2, instance_validation_size = 0.3, instance_random_partitioning = False, fold_total_number = 5, feature_scaler = None, target_scaler = None, performance_benchmark = 'MAPE',  performance_measure = ['MAPE'], performance_mode = 'normal', scenario = ‘current’, validation_performance_report = True, testing_performance_report = True, save_predictions = True, save_ranked_features = True, plot_predictions = False, verbose = 0)
 
 **Parameters**
 

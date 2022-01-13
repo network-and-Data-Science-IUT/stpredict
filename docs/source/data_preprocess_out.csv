@@ -14,9 +14,7 @@
 | 
 | 
 | 
-| 
 | ","| preprocessed_data
-| 
 | 
 | 
 | 
@@ -46,5 +44,4 @@
 | than the data frame max history length). An example of the resulting
 | preprocessed data frames for an *history_length* of type dictionary
 | with different max history lengths for each covariate is shown in
-| :numref:`target tab 2`, And :numref:`target fig 3` shows an instance
-| of a historical data frame."
+| :numref:`target tab 2`, and :numref:`target fig 3` shows an instance of a historical data frame."
