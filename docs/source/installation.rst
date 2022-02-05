@@ -17,8 +17,8 @@ The dependencies are as follow:
 - Keras
 - matplotlib
 - numpy
-- pandas
-- scikit-learn 0.24+
+- pandas 1.1.5
+- scikit-learn 0.24 or later
 - scipy
 - seaborn
 - statsmodels
