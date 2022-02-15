@@ -5,7 +5,8 @@ with warnings.catch_warnings():
     import pandas as pd
     import numpy as np
 
-def apply_performance_mode(training_target, test_target, training_prediction, test_prediction, performance_mode):
+def apply_performance_mode(training_target, test_target, training_prediction, test_prediction,
+                           performance_mode, same_train_test = False):
     
     '''
     ::: input :::
@@ -18,8 +19,10 @@ def apply_performance_mode(training_target, test_target, training_prediction, te
     training_prediction : list of predicted values for the training set
     test_prediction : list of predicted values for the test set
     
-    performance_mode = 'normal' , 'cumulative' , 'moving_average + x' the desired mode of the target variable
+    performance_mode : 'normal' , 'cumulative' , 'moving_average + x' the desired mode of the target variable
                         when calculating the performance
+                        
+    same_train_test : a flag to identify the state that the same data set is used for training and test
                         
     ::: output :::
     
@@ -57,11 +60,16 @@ def apply_performance_mode(training_target, test_target, training_prediction, te
     test_target.loc[:,('prediction')] = test_prediction
     
     data = training_target.append(test_target)
-    data = data.sort_values(by = ['temporal id','spatial id'])
-    temporal_ids = data['temporal id'].unique()
     training_temporal_ids = training_target['temporal id'].unique()
     test_temporal_ids = test_target['temporal id'].unique()
     
+    if same_train_test == True:
+        data = training_target.copy()
+        test_temporal_ids = []
+        test_prediction = []
+    
+    data = data.sort_values(by = ['temporal id','spatial id'])
+    temporal_ids = data['temporal id'].unique()
     
     # if performance mode is cumulative, the cumulative values of the target and prediction is calculated
     if performance_mode == 'cumulative':
@@ -141,6 +149,9 @@ def apply_performance_mode(training_target, test_target, training_prediction, te
     data = data.sort_values(by=['temporal id', 'spatial id'])
     training_set = data[data['type'] == 1]
     test_set = data[data['type'] == 2]
+    
+    if same_train_test == True:
+        test_set = training_set.copy()
     
     if (len(test_set) < 1) and (performance_mode == 'moving_average'):
         raise Exception("The number of remaining instances in the test set is less than one when applying moving average performance_mode (the first 'window - 1' temporal units is removed in the process)")

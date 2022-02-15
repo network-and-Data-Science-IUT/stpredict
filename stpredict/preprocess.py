@@ -1333,7 +1333,7 @@ def make_historical_data(data, forecast_horizon, history_length = 1, column_iden
                 elif futuristic_covariates[covar][1] > forecast_horizon:
                     raise ValueError("The end point of futuristic covariates temporal interval must be smaller than forecast_horizon.\n")
                 else:
-                    history_length_dict[covar] = futuristic_covariates[covar][1] - futuristic_covariates[covar][0] + 1
+                    history_length_dict['future '+covar] = futuristic_covariates[covar][1] - futuristic_covariates[covar][0] + 1
 
         else:
             raise TypeError("The futuristic_covariates must be of type dict.\n")
@@ -1402,10 +1402,11 @@ def make_historical_data(data, forecast_horizon, history_length = 1, column_iden
         # if covariate is time dependant
         if covar in temporal_covariates:
             
-            covar_history_length = history_length_dict[covar]
+            
             temporal_data_frame = data[[covar]] # selecting column of the covariate that is being processed
             # shift data to the size of futuristic temporal interval end point
             if covar in futuristic_covariates.keys():
+                covar_history_length = history_length_dict['future '+covar]
                 threshold = futuristic_covariates[covar][0]
     
                 while threshold != futuristic_covariates[covar][1]+1:
@@ -1414,7 +1415,8 @@ def make_historical_data(data, forecast_horizon, history_length = 1, column_iden
                     result = pd.concat([result, temp], axis=1)
                     threshold += 1
                 
-            else:    
+            if covar in history_length_dict.keys():    
+                covar_history_length = history_length_dict[covar]
                 # the first temporal unit of historical data is determined based on the maximum history length of covariates
                 # therefore data of covariates with smaller history length should be shifted forward
                 if covar_history_length < max_history_length:
@@ -1496,7 +1498,7 @@ def make_historical_data(data, forecast_horizon, history_length = 1, column_iden
 ############################  base function data preprocess ####################################
 ################################################################################################ 
 
-def data_preprocess(data, forecast_horizon, history_length = 1, column_identifier = None, spatial_scale_table = None,
+def preprocess_data(data, forecast_horizon, history_length = 1, column_identifier = None, spatial_scale_table = None,
                     spatial_scale_level = 1, temporal_scale_level = 1,
                     target_mode = 'normal', imputation = True, aggregation_mode = 'mean', augmentation = False,
                     futuristic_covariates = None, future_data_table = None, save_address = None, verbose = 0):
@@ -1822,8 +1824,12 @@ def data_preprocess(data, forecast_horizon, history_length = 1, column_identifie
                   
         for covar in temporal_covariates:
             if covar not in history_length.keys():
-                history_length[covar] = 1
-                unspecified_covariate.append(covar)
+                if futuristic_covariates is None:
+                    history_length[covar] = 1
+                    unspecified_covariate.append(covar)
+                elif covar not in futuristic_covariates.keys():
+                    history_length[covar] = 1
+                    unspecified_covariate.append(covar)
 
         if len(unspecified_covariate)>0:
             if verbose < 2:
@@ -1835,7 +1841,7 @@ def data_preprocess(data, forecast_horizon, history_length = 1, column_identifie
         for key, value in history_length.items():
             if value == 0: history_length[key] = 1
                 
-        current_history_length = {covar : 0 for covar in temporal_covariates} 
+        current_history_length = {covar : 0 for covar in history_length.keys()} 
         
         max_history_length = max(history_length.values())
         
@@ -1847,7 +1853,7 @@ def data_preprocess(data, forecast_horizon, history_length = 1, column_identifie
             print("Warning: The number of temporal units in the data is not enough to construct a historical data with the specified forecast horizon and the history length(s):\n{0}".format(impossible_histories))
         
         for stage in range(1,max_history_length+1):
-            for covar in temporal_covariates:
+            for covar in history_length.keys():
                   if current_history_length[covar]+1 <= history_length[covar]:
                         current_history_length[covar] = current_history_length[covar] + 1
                         

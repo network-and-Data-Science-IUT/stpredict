@@ -168,8 +168,9 @@ def likelihood(y_true, y_pred, labels):
 
 def aic_classification(y_true, y_pred, k, labels):
     # k = number of independent variables to build model
+    n = len(y_true)
     likelihood_error = likelihood(y_true, y_pred, labels)
-    aic = 2*k - 2*log(likelihood_error)
+    aic = (2*k)/n + (2*likelihood_error)/n
     return aic
 
 def bic_classification(y_true, y_pred, k, labels):
@@ -177,7 +178,7 @@ def bic_classification(y_true, y_pred, k, labels):
     # n = sample size (#observations)
     n = len(y_true)
     likelihood_error = likelihood(y_true, y_pred, labels)
-    bic = k*log(n) - 2*log(likelihood_error)
+    bic = k*log(n) + 2*likelihood_error
     return bic
 
 def performance(

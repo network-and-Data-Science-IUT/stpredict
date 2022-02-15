@@ -17,7 +17,7 @@ TEST_TYPES = ['one-by-one', 'whole-as-one']
 
 TARGET_MODES = ['normal', 'cumulative', 'differential', 'moving_average']
 
-RANKING_METHODS = ['mRMR', 'CORRELATION']
+RANKING_METHODS = ['mRMR', 'correlation', 'variance']
 
 FEATURE_SELECTION_TYPES = ['covariate', 'feature']
 
@@ -27,13 +27,13 @@ MODEL_TYPES = ['regression', 'classification']
 
 PERFORMANCE_MEASURES = ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AIC', 'BIC', 'likelihood', 'AUC', 'AUPR']
 
-REGRESSION_PERFORMANCE_MEASURES = ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AIC', 'BIC']
+REGRESSION_PERFORMANCE_MEASURES = ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score']
 
 CLASSIFICATION_PERFORMANCE_MEASURES = ['AIC', 'BIC', 'likelihood', 'AUC', 'AUPR']
 
 PERFORMANCE_BENCHMARKS = ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AIC', 'BIC', 'likelihood', 'AUC', 'AUPR']
 
-REGRESSION_PERFORMANCE_BENCHMARKS = ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AIC', 'BIC']
+REGRESSION_PERFORMANCE_BENCHMARKS = ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score']
 
 CLASSIFICATION_PERFORMANCE_BENCHMARKS = ['AIC', 'BIC', 'likelihood', 'AUC', 'AUPR']
 

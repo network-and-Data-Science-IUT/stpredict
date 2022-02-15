@@ -7,7 +7,7 @@ with warnings.catch_warnings():
     pd.options.mode.chained_assignment = None
 
 def get_normal_target(training_target, test_target, training_prediction, test_prediction, target_mode,
-                      target_granularity=None):
+                      target_granularity=None, same_train_test=False):
     """
     training_target : a data frame including columns 'spatial id', 'temporal id', 'Target', 'Normal target'
                         from the training set
@@ -17,6 +17,7 @@ def get_normal_target(training_target, test_target, training_prediction, test_pr
     test_prediction : list of predicted values for the test set
     target_mode = 'normal' , 'cumulative' , 'moving average', 'differential' the mode of the target variable
     target_granularity : number of smaller temporal units which is averaged to get the moving average target
+    same_train_test : a flag to identify the state that the same data set is used for training and test
     """
 
     if target_mode == 'normal':
@@ -27,8 +28,12 @@ def get_normal_target(training_target, test_target, training_prediction, test_pr
     
     training_dates = list(training_target['temporal id'].unique())
     test_dates = list(test_target['temporal id'].unique())
-    
     data = training_target.append(test_target)
+    
+    if same_train_test == True:
+        test_dates = []
+        test_prediction = []
+        data = training_target
     
     # if target mode is cumulative we need to return the target variable to its original state
     if target_mode == 'cumulative':
@@ -120,5 +125,9 @@ def get_normal_target(training_target, test_target, training_prediction, test_pr
     training_target = training_set.drop(['type', 'prediction', 'train_real_test_prediction'], axis=1)
     test_target = test_set.drop(['type', 'prediction', 'train_real_test_prediction'], axis=1)
 
+    if same_train_test == True:
+        test_target = training_target
+        test_prediction = training_prediction
+        
     return training_target, test_target, training_prediction, test_prediction
 

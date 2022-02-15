@@ -6,7 +6,7 @@ with warnings.catch_warnings():
     import pandas as pd
     import matplotlib.pyplot as plt
     from os import listdir
-    from os.path import isfile, join
+    from os.path import isfile, join, exists
     import datetime
     from datetime import timedelta
     from dateutil.relativedelta import relativedelta
@@ -176,7 +176,8 @@ def plot_table(train_df,validation_df,test_df,test_type,performance_benchmark,te
 
     test_df = prepare_df(test_df,base_columns,measure_names,performance_benchmark,test_type,'table')
     train_df = prepare_df(train_df,base_columns,measure_names,performance_benchmark,test_type,'table')
-    validation_df = prepare_df(validation_df,base_columns,measure_names,performance_benchmark,test_type,'table')
+    if validation_df is not None:
+        validation_df = prepare_df(validation_df,base_columns,measure_names,performance_benchmark,test_type,'table')
     
     # the location of best obtained results for each set, in the table 
     best_loc = []
@@ -184,7 +185,8 @@ def plot_table(train_df,validation_df,test_df,test_type,performance_benchmark,te
     
     if test_type == 'whole-as-one':
         table, best_loc = table_add(table, test_df, best_loc, measure_names, performance_benchmark, True)
-        table, best_loc = table_add(table, validation_df, best_loc, measure_names, performance_benchmark, True)
+        if validation_df is not None:
+            table, best_loc = table_add(table, validation_df, best_loc, measure_names, performance_benchmark, True)
         table, best_loc = table_add(table, train_df, best_loc, measure_names, performance_benchmark, True)
         colWidths = [0.15, 0.15, 0.17, 0.15] + [0.15]*len(measure_names)
         for index,measure_name in enumerate(measure_names):
@@ -197,7 +199,8 @@ def plot_table(train_df,validation_df,test_df,test_type,performance_benchmark,te
         table = table + [['1','Test','Model','History length','#Features'] + measure_names]
         for test_point in range(1,test_point_number+1):
             table, best_loc = table_add(table, test_df[test_df['Test point'] == str(test_point)], best_loc, measure_names, performance_benchmark, True)
-            table, best_loc = table_add(table, validation_df[validation_df['Test point'] == str(test_point)], best_loc, measure_names, performance_benchmark, True)
+            if validation_df is not None:
+                table, best_loc = table_add(table, validation_df[validation_df['Test point'] == str(test_point)], best_loc, measure_names, performance_benchmark, True)
             table, best_loc = table_add(table, train_df[train_df['Test point'] == str(test_point)], best_loc, measure_names, performance_benchmark, True)
         colWidths = [0.15, 0.15, 0.15, 0.17, 0.15] + [0.15]*len(measure_names)
         for index,measure_name in enumerate(measure_names):
@@ -343,7 +346,8 @@ def plot_bar(train_df,validation_df,test_type,performance_benchmark,test_point_n
     color_dict = {model:color_list[i] for i , model in enumerate(models)}
         
     train_df = prepare_df(train_df,base_columns,measure_names,performance_benchmark,test_type,'bar')
-    validation_df = prepare_df(validation_df,base_columns,measure_names,performance_benchmark,test_type,'bar')
+    if validation_df is not None:
+        validation_df = prepare_df(validation_df,base_columns,measure_names,performance_benchmark,test_type,'bar')
     
     if test_type == 'whole-as-one':
         test_point_number = 1
@@ -353,8 +357,8 @@ def plot_bar(train_df,validation_df,test_type,performance_benchmark,test_point_n
     npages = models_number // (models_per_plot*5)
     if models_number % (models_per_plot*5) > 0:
         npages += 1
-        
-    barWidth = 0.015
+    
+    barWidth = 0.015 if validation_df is not None else 0.030
     pos = 0.195*np.arange(max_history)
     
         
@@ -390,33 +394,49 @@ def plot_bar(train_df,validation_df,test_type,performance_benchmark,test_point_n
                 for index,model in enumerate(subplot_models):
 
                     # Set position of bar on X axis
-                    current_train_pos=[x + (2*index)*barWidth for x in pos]
-                    current_validation_pos=[x + (2*index+1)*barWidth for x in pos]
+                    if validation_df is not None:
+                        current_train_pos=[x + (2*index)*barWidth for x in pos]
+                        current_validation_pos=[x + (2*index+1)*barWidth for x in pos]
+                    else:
+                        current_train_pos=[x + index*barWidth for x in pos]
 
                     if test_type == 'whole-as-one':
                         train_performance = list(train_df.loc[train_df['model name'] == model,performance_benchmark])
-                        validation_performance = list(validation_df.loc[validation_df['model name'] == model,performance_benchmark])
+                        if validation_df is not None:
+                            validation_performance = list(validation_df.loc[validation_df['model name'] == model,performance_benchmark])
 
                     if test_type == 'one-by-one':
                         train_performance = list(train_df.loc[(train_df['Test point'] == test_point)&(train_df['model name'] == model),performance_benchmark])
-                        validation_performance = list(validation_df.loc[(validation_df['Test point'] == test_point)&(validation_df['model name'] == model),performance_benchmark])
+                        if validation_df is not None:
+                            validation_performance = list(validation_df.loc[(validation_df['Test point'] == test_point)&(validation_df['model name'] == model),performance_benchmark])
                     
-
-                    if max(list(train_performance)+list(validation_performance))-min(list(train_performance)+list(validation_performance))>10000 and\
-                                min(list(train_performance)+list(validation_performance))>=0:
+                    if validation_df is not None:
+                        performance_list = list(train_performance)+list(validation_performance)
+                    else:
+                        performance_list = list(train_performance)
+                    if max(performance_list)-min(performance_list)>10000 and min(performance_list)>=0:
                         log_flag = True
 
                     # Make the plot
-                    ax.bar(current_train_pos, train_performance, color=color_dict[model], width=barWidth, edgecolor='white',hatch='//////')
-                    ax.bar(current_validation_pos, validation_performance, color=color_dict[model], width=barWidth, edgecolor='white', label=model)
+                    if validation_df is not None:
+                        ax.bar(current_train_pos, train_performance, color=color_dict[model], width=barWidth, edgecolor='white',hatch='//////')
+                        ax.bar(current_validation_pos, validation_performance, color=color_dict[model], width=barWidth, edgecolor='white', label=model)
+                    else:
+                        ax.bar(current_train_pos, train_performance, color=color_dict[model], width=barWidth, edgecolor='white', label=model)
                     
 
                 ax.set_ylabel(performance_benchmark,fontweight='bold')
-                ax.set_xticks(ticks = [r + (len(subplot_models)-0.5)*barWidth for r in pos])
+                if validation_df is not None:
+                    ax.set_xticks(ticks = [r + (len(subplot_models)-0.5)*barWidth for r in pos])
+                else:
+                    ax.set_xticks(ticks = [r + ((len(subplot_models)/2)-0.5)*barWidth for r in pos])
                 ax.set_xticklabels(labels = [str(history) for history in range (1,max_history+1)])
-                ax.set_title('The predictive models performance', fontweight='bold')
+                if validation_df is not None:
+                    ax.set_title('The predictive models performance', fontweight='bold')
+                else:
+                    ax.set_title('The predictive models performance on\nthe training dataset', fontweight='bold')
                     
-                if subplot == 0:
+                if subplot == 0 and validation_df is not None:
                     train_patch = mpatches.Patch(edgecolor='gray', facecolor='w', label='Training', hatch='//////')
                     validation_patch = mpatches.Patch(color='gray', label='Validation')
                     leg1 = ax.legend(handles=[train_patch,validation_patch], loc='upper left', bbox_to_anchor=(1, 1))
@@ -457,29 +477,34 @@ def performance_summary(forecast_horizon,test_type,performance_benchmark):
     
     validation_dir = './performance/validation process/'
     testing_dir = './performance/test process/'
-    if not os.path.exists('./plots/'):
+    if not exists('./plots/'):
         os.makedirs('./plots/')
 
 
     path = validation_dir
     files = [f for f in listdir(path) if isfile(join(path, f))]
-    prefix = 'validation performance report forecast horizon = {0}, T ='.format(forecast_horizon)
+    prefix = 'training performance report forecast horizon = {0}, test-point #'.format(forecast_horizon)
     files = [file for file in files if file.startswith(prefix)]
-    file_temporal_units = [int(file.split('T = ')[1][:-4]) for file in files]
-    file_temporal_units.sort()
+    file_test_points = [int(file.split('test-point #')[1][:-4]) for file in files]
+    file_test_points.sort()
 
     if test_type == 'whole-as-one':
+        
+        test_csv_file = testing_dir + 'test performance report forecast horizon = {0}.csv'.format(forecast_horizon)
+        train_csv_file = validation_dir + 'training performance report forecast horizon = {0}.csv'.format(forecast_horizon)
+        validation_csv_file = validation_dir + 'validation performance report forecast horizon = {0}.csv'.format(forecast_horizon)
 
-        temporal_units_number = file_temporal_units[0]
-
-        test_df = pd.read_csv(testing_dir + 'test performance report forecast horizon = {0}.csv'.format(forecast_horizon))
+        test_df = pd.read_csv(test_csv_file)
         test_df.insert(0, 'Dataset', 'Test')
 
-        train_df = pd.read_csv(validation_dir + 'training performance report forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
+        train_df = pd.read_csv(train_csv_file)
         train_df.insert(0, 'Dataset', 'Training')
-
-        validation_df = pd.read_csv(validation_dir + 'validation performance report forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
-        validation_df.insert(0, 'Dataset', 'Validation')
+        
+        if exists(validation_csv_file):
+            validation_df = pd.read_csv(validation_csv_file)
+            validation_df.insert(0, 'Dataset', 'Validation')
+        else:
+            validation_df = None
         
         try:
             plot_table(train_df,validation_df,test_df,test_type,performance_benchmark,None)
@@ -488,7 +513,7 @@ def performance_summary(forecast_horizon,test_type,performance_benchmark):
 
     elif test_type == 'one-by-one':
 
-        test_point_number = len(file_temporal_units)    
+        test_point_number = len(file_test_points)    
         test_df = pd.read_csv(testing_dir + 'test performance report forecast horizon = {0}.csv'.format(forecast_horizon))
         test_df = test_df.rename(columns = {'test point':'Test point'})
         test_df.insert(1, 'Dataset', 'Test')
@@ -498,17 +523,23 @@ def performance_summary(forecast_horizon,test_type,performance_benchmark):
         validation_df = pd.DataFrame()
         for test_point in range(1,test_point_number+1):
 
-            temporal_units_number = file_temporal_units[test_point-1]
+            tp_number = file_test_points[test_point-1]
+            
+            train_csv_file = validation_dir + 'training performance report forecast horizon = {0}, test-point #{1}.csv'.format(forecast_horizon,tp_number)
+            validation_csv_file = validation_dir + 'validation performance report forecast horizon = {0}, test-point #{1}.csv'.format(forecast_horizon,tp_number)
 
-            temp_train_df = pd.read_csv(validation_dir + 'training performance report forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
+            temp_train_df = pd.read_csv(train_csv_file)
             temp_train_df.insert(0, 'Test point', str(test_point))
             temp_train_df.insert(1, 'Dataset', 'Training')
             train_df = train_df.append(temp_train_df)
-
-            temp_validation_df = pd.read_csv(validation_dir + 'validation performance report forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
-            temp_validation_df.insert(0, 'Test point', str(test_point))
-            temp_validation_df.insert(1, 'Dataset', 'Validation')
-            validation_df = validation_df.append(temp_validation_df)
+            
+            if exists(validation_csv_file):
+                temp_validation_df = pd.read_csv(validation_csv_file)
+                temp_validation_df.insert(0, 'Test point', str(test_point))
+                temp_validation_df.insert(1, 'Dataset', 'Validation')
+                validation_df = validation_df.append(temp_validation_df)
+            else:
+                validation_df = None
 
         try:
             plot_table(train_df,validation_df,test_df,test_type,performance_benchmark,test_point_number)
@@ -522,26 +553,30 @@ def performance_bar_plot(forecast_horizon,test_type,performance_benchmark):
 
     validation_dir = './performance/validation process/'
     testing_dir = './performance/test process/'
-    if not os.path.exists('./plots/'):
+    if not exists('./plots/'):
         os.makedirs('./plots/')
 
     path = validation_dir
     files = [f for f in listdir(path) if isfile(join(path, f))]
-    prefix = 'validation performance report forecast horizon = {0}, T ='.format(forecast_horizon)
+    prefix = 'training performance report forecast horizon = {0}, test-point #'.format(forecast_horizon)
     files = [file for file in files if file.startswith(prefix)]
-    file_temporal_units = [int(file.split('T = ')[1][:-4]) for file in files]
-    file_temporal_units.sort()
+    file_test_points = [int(file.split('test-point #')[1][:-4]) for file in files]
+    file_test_points.sort()
 
     if test_type == 'whole-as-one':
-
-        temporal_units_number = file_temporal_units[0]
-
-        train_df = pd.read_csv(validation_dir + 'training performance report forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
-        train_df.insert(0, 'Dataset', 'Training')
-
-        validation_df = pd.read_csv(validation_dir + 'validation performance report forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
-        validation_df.insert(0, 'Dataset', 'Validation')
         
+        train_csv_file = validation_dir + 'training performance report forecast horizon = {0}.csv'.format(forecast_horizon)
+        validation_csv_file = validation_dir + 'validation performance report forecast horizon = {0}.csv'.format(forecast_horizon)
+        
+        train_df = pd.read_csv(train_csv_file)
+        train_df.insert(0, 'Dataset', 'Training')
+        
+        if exists(validation_csv_file):
+            validation_df = pd.read_csv(validation_csv_file)
+            validation_df.insert(0, 'Dataset', 'Validation')
+        else: 
+            validation_df = None
+            
         try:
             plot_bar(train_df,validation_df,test_type,performance_benchmark,None)
         except Exception:
@@ -549,7 +584,7 @@ def performance_bar_plot(forecast_horizon,test_type,performance_benchmark):
 
     elif test_type == 'one-by-one':
 
-        test_point_number = len(file_temporal_units)    
+        test_point_number = len(file_test_points)    
         test_df = pd.read_csv(testing_dir + 'test performance report forecast horizon = {0}.csv'.format(forecast_horizon))
         test_df.insert(0, 'Test point', 'Overall')
         test_df.insert(1, 'Dataset', 'Test')
@@ -558,18 +593,24 @@ def performance_bar_plot(forecast_horizon,test_type,performance_benchmark):
         train_df = pd.DataFrame()
         validation_df = pd.DataFrame()
         for test_point in range(1,test_point_number+1):
+            
+            tp_number = file_test_points[test_point-1]
+            
+            train_csv_file = validation_dir + 'training performance report forecast horizon = {0}, test-point #{1}.csv'.format(forecast_horizon,tp_number)
+            validation_csv_file = validation_dir + 'validation performance report forecast horizon = {0}, test-point #{1}.csv'.format(forecast_horizon,tp_number)
 
-            temporal_units_number = file_temporal_units[test_point-1]
-
-            temp_train_df = pd.read_csv(validation_dir + 'training performance report forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
+            temp_train_df = pd.read_csv(train_csv_file)
             temp_train_df.insert(0, 'Test point', test_point)
             temp_train_df.insert(1, 'Dataset', 'Training')
             train_df = train_df.append(temp_train_df)
-
-            temp_validation_df = pd.read_csv(validation_dir + 'validation performance report forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
-            temp_validation_df.insert(0, 'Test point', test_point)
-            temp_validation_df.insert(1, 'Dataset', 'Validation')
-            validation_df = validation_df.append(temp_validation_df)
+            
+            if exists(validation_csv_file):
+                temp_validation_df = pd.read_csv(validation_csv_file)
+                temp_validation_df.insert(0, 'Test point', test_point)
+                temp_validation_df.insert(1, 'Dataset', 'Validation')
+                validation_df = validation_df.append(temp_validation_df)
+            else:
+                validation_df = None
 
         try:
             plot_bar(train_df,validation_df,test_type,performance_benchmark,test_point_number)

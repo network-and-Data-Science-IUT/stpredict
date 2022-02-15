@@ -1,70 +1,39 @@
 import warnings
 from .whole_as_one import whole_as_one
-from .preprocess import preprocess_data
 from .one_by_one import lafopafo
 
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 
-def stpredict(data, forecast_horizon,
-                    history_length = 1, 
-                    column_identifier = None, 
-                    feature_sets = {'covariate': 'mRMR'}, 
-                    models = ['knn'], 
-                    model_type = 'regression',
-                    test_type = 'whole-as-one',
-                    mixed_models = [], 
-                    performance_benchmark = 'MAPE',
-                    performance_measures = ['MAPE'], 
-                    performance_mode = 'normal', 
-                    splitting_type = 'training-validation',
-                    instance_testing_size = 0.2, 
-                    instance_validation_size = 0.3,
-                    instance_random_partitioning = False,
-                    fold_total_number = 5, 
-                    imputation = True, 
-                    target_mode = 'normal',
-                    feature_scaler = None,
-                    target_scaler = None, 
-                    forced_covariates = [], 
-                    futuristic_covariates = None, 
-                    scenario = 'current', 
-                    future_data_table = None,
-                    temporal_scale_level = 1, 
-                    spatial_scale_level = 1, 
-                    spatial_scale_table = None,
-                    aggregation_mode = 'mean', 
-                    augmentation = False,
-                    validation_performance_report = True, 
-                    testing_performance_report = True,
-                    save_predictions = True, 
-                    save_ranked_features = True,
-                    plot_predictions = False, 
-                    verbose = 0):
-
-
-
-    data_list = preprocess_data(data = data, 
-                                forecast_horizon = forecast_horizon, 
-                                history_length = history_length,
-                                column_identifier = column_identifier, 
-                                spatial_scale_table = spatial_scale_table,
-                                spatial_scale_level = spatial_scale_level, 
-                                temporal_scale_level = temporal_scale_level,
-                                target_mode = target_mode, 
-                                imputation = imputation, 
-                                aggregation_mode = aggregation_mode, 
-                                augmentation = augmentation, 
-                                futuristic_covariates = futuristic_covariates, 
-                                future_data_table = future_data_table, 
-                                save_address = None, 
-                                verbose = verbose)
+def predict(data: list,
+            forecast_horizon: int = 1,
+            feature_sets: dict = {'covariate': 'mRMR'},
+            forced_covariates: list = [],
+            models: list = ['knn'],
+            mixed_models: list = [],
+            model_type: str = 'regression',
+            test_type: str = 'whole-as-one',
+            splitting_type: str = 'training-validation',
+            instance_testing_size: int or float = 0.2,
+            instance_validation_size: int or float = 0.3,
+            instance_random_partitioning: bool = False,
+            fold_total_number: int = 5,
+            feature_scaler: str = None,
+            target_scaler: str = None,
+            performance_benchmark: str = 'MAPE',
+            performance_measures: list = ['MAPE'],
+            performance_mode: str = 'normal',
+            scenario: str or None = 'current',
+            validation_performance_report: bool = True,
+            testing_performance_report: bool = True,
+            save_predictions: bool = True,
+            save_ranked_features: bool = True,
+            plot_predictions: bool = False,
+            verbose: int = 0):
     
-    if not isinstance(data_list,list):
-        data_list = [data_list]
         
     if test_type == 'whole-as-one':
         
-        whole_as_one(data = data_list,
+        whole_as_one(data = data,
                     forecast_horizon = forecast_horizon,
                     feature_sets = feature_sets,
                     forced_covariates = forced_covariates,
@@ -91,7 +60,7 @@ def stpredict(data, forecast_horizon,
         
     elif test_type == 'one-by-one':
         
-        lafopafo(data = data_list,
+        lafopafo(data = data,
                     forecast_horizon = forecast_horizon,
                     feature_sets = feature_sets,
                     forced_covariates = forced_covariates,

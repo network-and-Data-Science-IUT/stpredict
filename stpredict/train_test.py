@@ -159,6 +159,12 @@ def train_test(
         if target_scaler is not None:
             target_scaler = None
             print("Warning: The input 'target_scaler' is set to None according to model_type=classification'.")
+    else:
+        if not set(performance_measures) <= set(REGRESSION_PERFORMANCE_MEASURES):
+            raise Exception("Error: The input 'performance_measures' is not valid according to 'model_type=regression'.")
+    
+    if model != 'glm' and any([measure in ['AIC','BIC'] for measure in performance_measures]):
+        print("Warning: 'AIC' and 'BIC' measures can only be measured for classification 'glm' model.")
 
     # get some information of the data
     target_mode, target_granularity, granularity, data = get_target_quantities(data=data.copy())
@@ -456,7 +462,7 @@ def train_test(
                 # removing test point numbers and overall performance to be updated
                 previous_test_point_performance = previous_test_point_performance.drop(['test point'], axis = 1)
                 previous_test_point_performance = previous_test_point_performance.iloc[:-1,:]
-            df = df.append(previous_test_point_performance)
+            df = previous_test_point_performance.append(df)
             df.insert(loc=0, column='test point', value=[str(i) for i in list(range(1,len(df)+1))])
             
             overall_performance = {'test point':'All test points', 'model name':'-', 'history length' : '-',

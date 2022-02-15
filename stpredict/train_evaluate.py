@@ -289,7 +289,7 @@ def inner_train_evaluate(training_data, validation_data, model, model_type, mode
     
     if model == 'gbm' or model == 'mixed_gbm':
         # get the number of trees
-        number_of_parameters = trained_model.n_estimators_
+        number_of_parameters = None # trained_model.n_estimators_
         
     elif model == 'glm' or model == 'mixed_glm':
         # get the number of coefficients and intercept
@@ -298,17 +298,17 @@ def inner_train_evaluate(training_data, validation_data, model, model_type, mode
             if not all(trained_model.intercept_ == 0):
                 number_of_parameters += trained_model.intercept_.shape[0]
         if model_type == 'regression':
-            number_of_parameters = trained_model.coef_.shape[0]
-            if trained_model.get_params()['fit_intercept']:
-                number_of_parameters += 1
+            number_of_parameters = None # trained_model.coef_.shape[0]
+            # if trained_model.get_params()['fit_intercept']:
+                # number_of_parameters += 1
                 
     elif model == 'knn' or model == 'mixed_knn':
         # get the number of nearest neighbours
-        number_of_parameters = trained_model.get_params()['n_neighbors']
+        number_of_parameters = None # trained_model.get_params()['n_neighbors']
         
     elif model == 'nn' or model == 'mixed_nn':
         # get the number of parameters
-        number_of_parameters = trained_model.count_params()
+        number_of_parameters = None # trained_model.count_params()
         
     else:
         number_of_parameters = None

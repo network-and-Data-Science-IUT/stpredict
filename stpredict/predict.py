@@ -7,5 +7,5 @@ from .train_evaluate import train_evaluate
 from .train_test import train_test
 from .train_validate import train_validate
 from .predict_future import predict_future
-from .predict_back import predict
-from .lafopafo import lafopafo
+from .predict_func import predict
+from .one_by_one import lafopafo
