@@ -187,15 +187,7 @@
 | 
 | 
 | 
-| 
-| 
-| 
-| 
 | ","| history_length
-| 
-| 
-| 
-| 
 | 
 | 
 | 
@@ -206,15 +198,11 @@
 | 
 | ","| **type:** int or dict
 | **default:** 1
-| **details:** The number of temporal units in the past which their
-| information is used to predict. If an integer is passed, function will
-| produce only a single data frame including the historical values of
-| all the covariates with the same history length (i.e., the specified
-| integer value), but if the maximum history length of each covariate is
-| specified in a dictionary with the temporal covariate names as it's
-| keys and the corresponding maximum history lengths as it's values, the
-| function will produce a dataframe for each combination of covariates'
-| history lengths, as an example is shown in :numref:`target tab 1`.
+| **details:** The maximum number of temporal units in the past which
+| their information is used to predict. If int, it represents the maximum
+| history length of all the covariates. If dict, it should include the temporal 
+| covariate names as it's keys and the corresponding maximum history
+| lengths as it's values.
 | 
 | **example:** {('temperature','precipitation'):3,'social distancing
 | policy':5}"

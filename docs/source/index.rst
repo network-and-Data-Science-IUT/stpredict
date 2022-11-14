@@ -59,3 +59,9 @@ We would thanks Nasrin Rafiei for contribution in the development of the package
    :hidden:
    :maxdepth: 2
    :caption: Base structures
+
+.. toctree::
+   example
+   :hidden:
+   :maxdepth: 2
+   :caption: Example
