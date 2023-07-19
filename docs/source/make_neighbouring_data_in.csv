@@ -1,0 +1,236 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+|
+|
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+|
+|
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or str
+| **default:** -
+| **details:** a data frame or address of a data frame containing
+| temporal or spatial covariates and the id of spatial (and temporal)
+| units.
+| The *data* must include the following columns with names in the
+| specified format in the description, or if the columns have arbitrary
+| names their content must be specified using the *column_identifier*
+| argument.
+| 
+| 
+| Spatial id:
+| The id of the units in the finest spatial scale of input data must be
+| included in the *data* with the name 'spatial id level 1'. The spatial
+| id must have unique values.
+| 
+| Temporal ids:
+| If data is time-dependent (i.e., *time_dependency_flag* = 1),  the id of
+| the temporal units recorded in the input data must be included in the 
+| *data* with the column name 'temporal id'. The temporal ids must have 
+| unique values and a sortable format. The time dimension of data can
+| also be specified in multiple scales (e.g., hour, min, sec). In that case,
+| each scale must have a separate temporal id with a column name of
+| the format 'temporal id level x', where 'x' is the corresponding temporal
+| scale level, starting with level 1 for the smallest scale (e.g. sec). The
+| combination of these temporal scale levels' ids should form a unique
+| identifier.
+| 
+| All the remaining columns are considered as covariates except those
+| with names of the format 'spatial id level x' or 'temporal id level x'
+| where x is the level of the corresponding spatial or temporal scale."
+"| 2
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+|","| column_identifier
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+|","| **type:** dict or None
+| **default:** None
+| **details:** If the input *data* column names do not match the
+| specific format of temporal and spatial ids and covariates (i.e.,
+| 'temporal id', 'temporal id level x', 'spatial id level x'),
+| a dictionary must be passed to specify the content of each column.
+| 
+| Keys must be a string in one of the formats: {'temporal id',
+| 'temporal id level x','spatial id level x'}
+| The values of 'temporal id level x' and 'spatial id level x' should be 
+| the names of the columns containing the temporal and spatial ids
+| in the x scale level respectively. If the input data has only one 
+| temporal scale, the name of the column including the temporal ids
+| must be specified with the key 'temporal id'.
+| 
+| **example:** {'temporal id level 1': 'week','temporal id level 2':
+| 'year','spatial id level 1': 'county_fips', 'spatial id level 2':
+| 'state_fips'}"
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| number_of_layers
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The number of neighbouring layers
+| Each neighbouring layer for a spatial unit includes neighbours with
+| a certain distance from this spatial unit. The first layer contains
+| adjacent neighbours, the second layer contains neighbours with a
+| distance of one spatial unit, and so on for other layers. For each
+| covariate, the average values of this covariate in the spatial units
+| included in a neighbouring layer are added to the data as a new 
+| covariate. Therefore, neighbouring_layers = n, for each covariate, 
+| adds n new covariates to the data."
+"| 4
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| neighbouring_matrix
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** numpy.ndarray or None
+| **default:** None
+| **details:** The adjacency matrix of spatial units
+| A two-dimensional binary array with dimensions equal to the number
+| of spatial units included in the data. The value of each element of this
+| array indicates the adjacency (value 1) or non-adjacency (value 0) of
+| two spatial units. Note that the order considered for the spatial units
+| in the rows and columns of the matrix should be based on their spatial
+| id order (numerical order for numeric ids or lexicographical order for
+| string ids).
+| 
+| **example:** numpy.array([[0,1,0],[1,0,1],[0,1,0]])"
+"| 5
+| 
+| 
+| 
+| ","| time_dependency_flag
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** Time dependency of the *data*
+| 0 if the *data* is time-dependent or 1 otherwise. In the second case,
+| *data* should be a single data frame or its address."
+"| 6
+| 
+| 
+| 
+| 
+| ","| verbose
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The level of details in produced logging information
+| available options:
+| 0: no logging
+| 1: only important information logging"

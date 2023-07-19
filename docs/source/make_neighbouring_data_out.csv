@@ -1,0 +1,17 @@
+#,Output Name,Output Description
+"| 1
+| 
+| 
+| 
+| 
+| ","| neighbouring_data
+| 
+| 
+| 
+| 
+| ","| **type:** dataframe
+| **details:** a data frame including extracted covariates from 
+| the neighbourhood. The name of the extracted covariates
+| have a special format, e.g. the covariate obtained by averaging the
+| 'temperature' in spatial units of the first neighbouring layer has
+| the name 'temperature_l1'."

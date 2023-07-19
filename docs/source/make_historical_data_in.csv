@@ -241,15 +241,15 @@
 | covariate x', 'spatial covariate x','target'), a dictionary must be
 | passed to specify the content of each column.
 | The keys must be a string in one of the formats: {'temporal
-| id','temporal id level x','spatial id level x', 'temporal covariate',
-| 'spatial covariate','target'}
+| id','temporal id level x','spatial id level x', 'temporal covariates',
+| 'spatial covariates','target'}
 | The values of 'temporal id level x' and 'spatial id level x' must be
 | the name of the column containing the temporal or spatial ids in the
 | scale level x respectively.
 | If the input *data* has integrated format for temporal ids, the name
 | of the corresponding column must be specified with the key 'temporal
 | id'.
-| The values of  'temporal covariate' and 'spatial covariate' are the
+| The values of  'temporal covariates' and 'spatial covariates' are the
 | list of temporal and spatial covariates respectively, and the value of
 | the 'target' is the column name of the target variable.
 | 

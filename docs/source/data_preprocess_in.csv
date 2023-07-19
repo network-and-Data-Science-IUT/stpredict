@@ -274,15 +274,15 @@
 | covariate x', 'spatial covariate x','target'), a dictionary must be
 | passed to specify the content of each column.
 | The keys must be a string in one of the formats: {'temporal
-| id','temporal id level x','spatial id level x', 'temporal covariate',
-| 'spatial covariate','target'}
+| id','temporal id level x','spatial id level x', 'temporal covariates',
+| 'spatial covariates', 'target'}
 | The values of 'temporal id level x' and 'spatial id level x' must be
 | the name of the column containing the temporal or spatial ids in the
 | scale level x respectively.
 | If the input *data* has integrated format for temporal ids, the name
 | of the corresponding column must be specified with the key 'temporal
 | id'.
-| The values of  'temporal covariate' and 'spatial covariate' are the
+| The values of  'temporal covariates' and 'spatial covariates' are the
 | list of temporal and spatial covariates respectively, and the value of
 | the 'target' is the column name of the target variable.
 | 
@@ -546,6 +546,80 @@
 | 
 | 
 | 
+|  
+| 
+| ","| neighbouring_matrix
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** numpy.ndarray or None
+| **default:** None
+| **details:** The adjacency matrix of spatial units
+| A two-dimensional binary array with dimensions equal to the number
+| of spatial units included in the data. The value of each element of this
+| array indicates the adjacency (value 1) or non-adjacency (value 0) of
+| two spatial units. Note that the order considered for the spatial units
+| in the rows and columns of the matrix should be based on their spatial
+| id order (numerical order for numeric ids or lexicographical order for
+| string ids).
+| 
+| **example:** numpy.array([[0,1,0],[1,0,1],[0,1,0]])"
+"| 16
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+|  
+| 
+| 
+| 
+| ","| neighbouring_layers
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 0
+| **details:** The number of neighbouring layers
+| Each neighbouring layer for a spatial unit includes neighbours with
+| a certain distance from this spatial unit. The first layer contains
+| adjacent neighbours, the second layer contains neighbours with a
+| distance of one spatial unit, and so on for other layers. For each
+| covariate, the average values of this covariate in the spatial units
+| included in a neighbouring layer are added to the data as a new 
+| covariate. Therefore, neighbouring_layers = n, for each covariate,
+| adds n new covariates to the data. The name of the new covariates
+| have a special format, e.g. the covariate obtained by averaging the
+| 'temperature' in spatial units of the first neighbouring layer has
+| the name 'temperature_l1'."
+"| 17
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
 | 
 | 
 | 
@@ -574,7 +648,7 @@
 | 'historical data h=x.csv'.
 | 
 | **example:** './'"
-"| 16
+"| 18
 | 
 | 
 | 

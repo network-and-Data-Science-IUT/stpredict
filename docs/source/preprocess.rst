@@ -19,6 +19,7 @@ preprocess
    spatial_scale_transform
    temporal_scale_transform
    target_modification
+   make_neighbouring_data
    make_historical_data
    plot_data
    :maxdepth: 3
