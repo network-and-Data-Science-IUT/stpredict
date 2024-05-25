@@ -2,12 +2,12 @@ import pytest
 import json
 import pandas as pd
 import numpy as np
-from stpredict import load_covid_data
+from stpredict import load_covid_data, load_earthquake_data
 from stpredict.preprocess import preprocess_data
 from stpredict.predict import split_data, predict, performance, select_features, predict_future, train_evaluate
 
 covid_data = load_covid_data()
-earthquake_data = pd.read_csv('transformed_data.csv')
+earthquake_data = load_earthquake_data()
 
 covid_data = covid_data[['date', 'epidemic_week', 'country', 'covid_19_deaths', 'covid_19_confirmed_cases', 
                          'retail_and_recreation_mobility_percent_change', 'transit_stations_mobility_percent_change',
@@ -121,7 +121,7 @@ def test_performance(model_type, performance_measures):
     perf = performance(true_values = y_true, predicted_values = y_pred, performance_measures=performance_measures, 
                       trivial_values=[i-1 for i in y_true], model_type=model_type)
     
-    assert perf == [33.74, 1.8524001256823672, 33.74, 1586.18, -1.034645072972102]
+    assert np.allclose(perf, [33.74, 1.8524001256823672, 33.74, 1586.18, -1.034645072972102])
 
   if model_type == 'classification':
     y_true = [0,1]*25
@@ -141,7 +141,7 @@ def test_performance(model_type, performance_measures):
           [0.96025618, 0.03974382],[0.60540504, 0.39459496],[0.16549305, 0.83450695],[0.95634686, 0.04365314]]
 
     perf = performance(true_values = y_true, predicted_values = y_pred, performance_measures=performance_measures, model_type=model_type, labels=[0,1])
-    assert perf == [0.4832,0.5036420450329683,0.9859123662067099,0.0794364946482684,5.883847737841566]
+    assert np.allclose(perf, [0.4832,0.5036420450329683,0.9859123662067099,0.0794364946482684,5.883847737841566])
 
 @pytest.mark.parametrize("data,ordered_covariates_or_features,history_length,item_type",[(covid_historical_data, ['covid_19_confirmed_cases t', 'percent_fully_vaccinated_people t'], 3, 'covariate'),
                                                                                          (covid_historical_data, ['covid_19_confirmed_cases t', 'percent_fully_vaccinated_people t-1'], 3, 'feature')])
