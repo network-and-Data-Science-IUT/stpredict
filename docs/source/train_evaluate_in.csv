@@ -61,7 +61,13 @@
 | 
 | 
 | 
+| 
+| 
+| 
 | ","| model
+| 
+| 
+| 
 | 
 | 
 | 
@@ -100,6 +106,9 @@
 | logistic regression for *model_type* of classification.
 | 
 | 'nn': Neural network with adjustable number of layers and neurons for
+| *model_type* of regression and classification.
+| 
+| 'sgcrf': Sparce gaussian conditional random field (See `sgcrfpy <https://github.com/dswah/sgcrfpy/tree/master>`_) for
 | *model_type* of regression and classification.
 | 
 | [callable]: a user-defined function that accepts the data frames of
@@ -187,7 +196,7 @@
 | be passed to the function using this argument and in a format of a
 | dictionary.
 | Since for 'knn', 'glm', and 'gbm' we use the implementation of the
-| Scikit Learn package1, all of the hyperparameters defined in this
+| Scikit Learn package, all of the hyperparameters defined in this
 | package are supported. For the 'nn' model the implementation of
 | TensorFlow is used, and the list of supported hyperparameters is as
 | below:

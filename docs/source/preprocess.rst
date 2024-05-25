@@ -22,5 +22,6 @@ preprocess
    make_neighbouring_data
    make_historical_data
    plot_data
+   temporal_test
    :maxdepth: 3
    

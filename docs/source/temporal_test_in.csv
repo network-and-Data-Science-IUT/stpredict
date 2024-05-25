@@ -1,0 +1,229 @@
+#,Input Name,Input Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| data
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** data frame or str
+| **default:**-
+| **details:** a data frame containing target variable. or its address.
+| 
+| The data must includes following columns:
+| 
+| Spatial ids: The id of the units in the finest spatial scale of input
+| data must be included in the *data* in a column with the name 'spatial
+| id level 1'.
+| 
+| Temporal ids: The id of time units recorded in the input data for each
+| temporal scale must be included as a separate column in the *data*
+| with a name in a format 'temporal id level x', where 'x' is the
+| related temporal scale level beginning with level 1 for the smallest
+| scale. The temporal units could have a free but sortable format like
+| year number, week number and so on. The combination of these
+| temporal scale levels' ids should form a unique identifier. However the
+| integrated format of date and time is also supported. In the case of
+| using integrated format, only the smallest temporal scale must be
+| included in the *data* with the column name of 'temporal id'. The
+| expected format of each scale is shown in :numref:`target tab 1`.
+| 
+| **example:**  'my_directory/my_data.csv'"
+"| 2
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| spatial_id
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:**  list<any type> or None
+| **default:** None
+| **details:** The ids of the spatial units whose target variable
+| values will be used in the test. If None is passed, the test is
+| performed for all spatial units in the data.
+| 
+| Note that only one spatial unit should be specified for the ACF
+| test.
+| 
+| **example:** [01001],[1001],['Alabama']"
+"| 3
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| test_type
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** {'ACF', 'ADF', 'autoreg'}
+| **default:** 'ADF'
+| **details:** The type of test that is used to check the
+| correlation of target variable in time.
+| 
+| 'ADF':
+| The augmented dickey-fuller (ADF) test is performed to check if
+| the target variable is a stationary time series.
+| 
+| 'ACF':
+| The autocorrelation function is plotted for specified *lags*. The 
+| resulting plot depicts correlation (vertical axis) against lag 
+| (horisontal axis).
+| 
+| 'autoreg':
+| An autoregressive model is fitted to the target variable values 
+| with specified *lags* to obtain coefficients."
+"| 4
+| 
+| 
+| 
+| 
+| ","| lags
+| 
+| 
+| 
+| 
+| ","| **type:** int
+| **default:** 1
+| **details:** The number of temporal lags considered in
+| the test.
+| 
+| **example:** 3"
+"| 5
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| column_identifier
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **default:** None
+| **details:** If the input data column names does not match the
+| specific format of temporal and spatial ids (i.e. 'temporal id',
+| 'temporal id level x','spatial id level x'), a dictionary must be
+| passed to specify the content of each column.
+| The keys must be a string in one of the formats: {'temporal
+| id','temporal id level x','spatial id level x'}
+| The values of 'temporal id level x' and 'spatial id level x' must be
+| the name of the column containing the temporal or spatial ids in the
+| scale level x respectively.
+| If the input data have integrated format for temporal ids, the name of
+| the corresponding column must be specified with the key 'temporal
+| id'.
+| 
+| **example:** {'temporal id level 1': 'week','temporal id level 2':
+| 'year','spatial id level 1': 'county_fips', 'spatial id level 2':
+| 'state_fips'}"
+"| 6
+| 
+| 
+| 
+| 
+| ","| saving_plot_path
+| 
+| 
+| 
+| 
+| ","| **type:** string or None
+| **default:** None
+| **details:** The path to save a plots
+| If None is passed, the plot will not be saved.
+| 
+| **example:** './'"
