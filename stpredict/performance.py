@@ -3,7 +3,6 @@ import warnings
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     import numpy as np
-    import matplotlib.pyplot as plt
     import warnings
     from sklearn import metrics
     from sklearn.preprocessing import label_binarize
@@ -24,12 +23,13 @@ def mase(true_values, predicted_values, trivial_values):
 def auc(true_values, y_score, labels=None):
     # detecting how many classes the classification problem have
     number_of_classes = len(labels)
-
+    
+    
     if number_of_classes == 1 or number_of_classes == 2:    # binary classification
+        true_values_binary = np.where(true_values == labels[0], np.full(true_values.shape, 0), np.full(true_values.shape, 1))
         auc = metrics.roc_auc_score(
-            y_true=true_values, 
-            y_score=y_score[:, 1], 
-            labels=labels
+            y_true=true_values_binary, 
+            y_score=y_score[:, 1]
         )
 
         # # Data to plot roc curve
@@ -168,8 +168,9 @@ def likelihood(y_true, y_pred, labels):
 
 def aic_classification(y_true, y_pred, k, labels):
     # k = number of independent variables to build model
+    n = len(y_true)
     likelihood_error = likelihood(y_true, y_pred, labels)
-    aic = 2*k - 2*log(likelihood_error)
+    aic = (2*k)/n + (2*likelihood_error)/n
     return aic
 
 def bic_classification(y_true, y_pred, k, labels):
@@ -177,7 +178,7 @@ def bic_classification(y_true, y_pred, k, labels):
     # n = sample size (#observations)
     n = len(y_true)
     likelihood_error = likelihood(y_true, y_pred, labels)
-    bic = k*log(n) - 2*log(likelihood_error)
+    bic = k*log(n) + 2*likelihood_error
     return bic
 
 def performance(
@@ -237,7 +238,7 @@ def performance(
         elif error_type.lower() == 'aupr':
             errors.append(aupr(true_values, predicted_values, labels))
         elif error_type.lower() == 'aic':
-            if num_params == None:    # if num_params is None, then None value for AIC will be returned
+            if num_params is None:    # if num_params is None, then None value for AIC will be returned
                 errors.append(None)
             else:
                 if model_type == 'regression':
@@ -245,7 +246,7 @@ def performance(
                 elif model_type == 'classification':
                     errors.append(aic_classification(true_values, predicted_values, num_params, labels))
         elif error_type.lower() == 'bic':
-            if num_params == None:    # if num_params is None, then None value for BIC will be returned
+            if num_params is None:    # if num_params is None, then None value for BIC will be returned
                 errors.append(None)
             else:
                 if model_type == 'regression':

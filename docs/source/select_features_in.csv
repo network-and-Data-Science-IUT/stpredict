@@ -45,7 +45,9 @@
 | If the list contains covariate names, the selected feature set
 | includes the covariates and all their historical values in the input
 | data frame.
+| To specify a covariate, its name must be written with a suffix ' t'
+| for temporal covariates and with a suffix ' t+' for futuristic covariates.
 | 
-| **example:** ['temperature', 'population', 'cofirmed_cases']
-| or ['temperature t', 'population', 'cofirmed_cases t', 'temperature
-| t-1']"
+| **example:** ['temperature t', 'population', 'cofirmed_cases t', 
+| 'social distancing t+'] or ['temperature t-2', 'population', 'cofirmed_cases t'
+| , 'temperature t-1']"

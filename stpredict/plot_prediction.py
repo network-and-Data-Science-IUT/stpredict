@@ -5,14 +5,10 @@ with warnings.catch_warnings():
     import pandas as pd
     import numpy as np
     from os import listdir
-    from os.path import isfile, join
+    from os.path import isfile, join, exists
     import matplotlib.pyplot as plt
     import matplotlib as mpl
-    import datetime
-    from datetime import timedelta
-    from dateutil.relativedelta import relativedelta
     import random
-    import sys
     import os
 
 
@@ -36,9 +32,9 @@ def create_plot(df, forecast_horizon, granularity, spatial_ids, save_address, pl
         stage = 'training' if plot_type == 'test' else 'forecast'
         
         if test_point is not None:
-            save_file_name = '{0}{2} stage for test point #{3}.pdf'.format(save_address, spatial_id, stage, test_point+1)
+            save_file_name = '{0}{1} stage for test point #{2}.pdf'.format(save_address, stage, test_point+1)
         else:
-            save_file_name = '{0}{2} stage.pdf'.format(save_address, spatial_id, stage)
+            save_file_name = '{0}{1} stage.pdf'.format(save_address, stage)
         
         
         ax=fig.add_subplot(len(spatial_ids),1, index+1)
@@ -51,7 +47,8 @@ def create_plot(df, forecast_horizon, granularity, spatial_ids, save_address, pl
             temp_train_df = temp_df[temp_df['sort'] == 'train']
             ax.plot(list(temp_train_df['temporal id']),list(temp_train_df['prediction']),label='Training set predicted values', marker = 'o', markersize=20, linewidth=3.0, color = 'green')
             temp_val_df = temp_df[temp_df['sort'] == 'validation']
-            ax.plot(list(temp_val_df['temporal id']),list(temp_val_df['prediction']),label='validation set predicted values', marker = 'o', markersize=20, linewidth=3.0, color = 'orange')
+            if len(temp_val_df)>0:
+                ax.plot(list(temp_val_df['temporal id']),list(temp_val_df['prediction']),label='validation set predicted values', marker = 'o', markersize=20, linewidth=3.0, color = 'orange')
             temp_test_df = temp_df[temp_df['sort'] == 'test']
             ax.plot(list(temp_test_df['temporal id']),list(temp_test_df['prediction']),label='Testing set predicted values', marker = 'o', markersize=20, linewidth=3.0, color = 'crimson')
 
@@ -89,7 +86,7 @@ def create_plot(df, forecast_horizon, granularity, spatial_ids, save_address, pl
     plt.tight_layout()
     
     try:
-        if not os.path.exists(save_address):
+        if not exists(save_address):
             os.makedirs(save_address)
         plt.savefig(save_file_name, bbox_inches='tight', pad_inches=1)
         plt.close()
@@ -107,45 +104,53 @@ def plot_prediction(data, test_type = 'whole-as-one', forecast_horizon = 1, plot
     
     path = validation_dir
     files = [f for f in listdir(path) if isfile(join(path, f))]
-    prefix = 'validation prediction forecast horizon = {0}, T ='.format(forecast_horizon)
+    prefix = 'training prediction forecast horizon = {0}, test-point #'.format(forecast_horizon)
     files = [file for file in files if file.startswith(prefix)]
-    file_temporal_units = [int(file.split('T = ')[1][:-4]) for file in files]
-    file_temporal_units.sort()
+    file_test_points = [int(file.split('test-point #')[1][:-4]) for file in files]
+    file_test_points.sort()
     
-    if plot_type == 'test':
-        address = testing_dir + 'test'
-    elif plot_type == 'future':
-        address = future_dir + 'future'
+#     if plot_type == 'test':
+#         address = testing_dir + 'test'
+#     elif plot_type == 'future':
+#         address = future_dir + 'future'
         
     data = data.rename(columns={'target temporal id':'temporal id'})
 
     if test_type == 'whole-as-one':
-
-        temporal_units_number = file_temporal_units[0]
+        
+        test_csv_file = testing_dir + 'test prediction forecast horizon = {0}.csv'.format(forecast_horizon)
+        train_csv_file = validation_dir + 'training prediction forecast horizon = {0}.csv'.format(forecast_horizon)
+        validation_csv_file = validation_dir + 'validation prediction forecast horizon = {0}.csv'.format(forecast_horizon)
+        future_csv_file = future_dir + 'future prediction forecast horizon = {0}.csv'.format(forecast_horizon)
             
         if plot_type == 'test':
-            test_df = pd.read_csv(testing_dir + 'test prediction forecast horizon = {0}.csv'.format(forecast_horizon))
+            test_df = pd.read_csv(test_csv_file)
             selected_model = list(test_df['model name'].unique())[0]
             test_df = test_df.assign(sort = 'test')
-            train_df = pd.read_csv(validation_dir + 'training prediction forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
+            train_df = pd.read_csv(train_csv_file)
             train_df = train_df[train_df['model name'] == selected_model]
             train_df = train_df.assign(sort = 'train')
-            validation_df = pd.read_csv(validation_dir + 'validation prediction forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
-            validation_df = validation_df[validation_df['model name'] == selected_model]
-            validation_df = validation_df.assign(sort = 'validation')
+            if exists(validation_csv_file):
+                validation_df = pd.read_csv(validation_csv_file)
+                validation_df = validation_df[validation_df['model name'] == selected_model]
+                validation_df = validation_df.assign(sort = 'validation')
+            else: 
+                validation_df = pd.DataFrame(columns = train_df.columns)
             gap_df = data.rename(columns = {'Normal target':'real'})
-            gap_df = gap_df.assign(prediction = np.NaN)
+            gap_df = gap_df.assign(prediction = np.nan)
             gap_df = gap_df.assign(sort = 'gap')
-            gap_df = gap_df[(gap_df['temporal id'] < test_df['temporal id'].min()) & (gap_df['temporal id'] > train_df.append(validation_df)['temporal id'].max())]
-            all_df = train_df[needed_columns].append(validation_df[needed_columns]).append(gap_df[needed_columns]).append(test_df[needed_columns])
+            gap_df = gap_df[(gap_df['temporal id'] < test_df['temporal id'].min()) & (gap_df['temporal id'] > pd.concat([train_df,validation_df],ignore_index = True)['temporal id'].max())]
+            all_df = pd.concat([train_df[needed_columns],validation_df[needed_columns]],ignore_index = True)
+            all_df = pd.concat([all_df,gap_df[needed_columns]],ignore_index = True)
+            all_df = pd.concat([all_df,test_df[needed_columns]],ignore_index = True)
             
         elif plot_type == 'future':
-            future_df = pd.read_csv(future_dir + 'future prediction forecast horizon = {0}.csv'.format(forecast_horizon))
+            future_df = pd.read_csv(future_csv_file)
             future_df = future_df.assign(sort = 'future')
             train_df = data.rename(columns = {'Normal target':'real'})
-            train_df = train_df.assign(prediction = np.NaN)
+            train_df = train_df.assign(prediction = np.nan)
             train_df = train_df.assign(sort = 'train')
-            all_df = train_df[needed_columns].append(future_df[needed_columns])
+            all_df = pd.concat([train_df[needed_columns],future_df[needed_columns]],ignore_index = True)
         
         try:
             create_plot(df = all_df, forecast_horizon = forecast_horizon, granularity = granularity, spatial_ids = spatial_ids, 
@@ -155,34 +160,43 @@ def plot_prediction(data, test_type = 'whole-as-one', forecast_horizon = 1, plot
 
     if test_type == 'one-by-one':    
         
-        test_point_number = len(file_temporal_units)
+        test_point_number = len(file_test_points)
         all_test_points_df = pd.read_csv(testing_dir + 'test prediction forecast horizon = {0}.csv'.format(forecast_horizon))
         test_temporal_units = all_test_points_df['temporal id'].unique()
         test_temporal_units.sort()
+        test_temporal_units = test_temporal_units[::-1]
         
         if plot_type == 'test':
             for test_point in range(test_point_number):
                 test_df = all_test_points_df[all_test_points_df['temporal id'] == test_temporal_units[test_point]]
                 selected_model = list(test_df['model name'].unique())[0]
                 test_df = test_df.assign(sort='test')
-                temporal_units_number = file_temporal_units[test_point]
-
-                train_df = pd.read_csv(validation_dir + 'training prediction forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
+                tp_number = file_test_points[test_point]
+                
+                train_csv_file = validation_dir + 'training prediction forecast horizon = {0}, test-point #{1}.csv'.format(forecast_horizon,tp_number)
+                validation_csv_file = validation_dir + 'validation prediction forecast horizon = {0}, test-point #{1}.csv'.format(forecast_horizon,tp_number)
+                
+                train_df = pd.read_csv(train_csv_file)
                 train_df = train_df[train_df['model name'] == selected_model]
                 train_df = train_df.assign(sort = 'train')
-                validation_df = pd.read_csv(validation_dir + 'validation prediction forecast horizon = {0}, T = {1}.csv'.format(forecast_horizon,temporal_units_number))
-                validation_df = validation_df[validation_df['model name'] == selected_model]
-                validation_df = validation_df.assign(sort = 'validation')
+                if exists(validation_csv_file):
+                    validation_df = pd.read_csv(validation_csv_file)
+                    validation_df = validation_df[validation_df['model name'] == selected_model]
+                    validation_df = validation_df.assign(sort = 'validation')
+                else: 
+                    validation_df = pd.DataFrame(columns = train_df.columns)
                 gap_df = data.rename(columns = {'Normal target':'real'})
-                gap_df = gap_df.assign(prediction = np.NaN)
+                gap_df = gap_df.assign(prediction = np.nan)
                 gap_df = gap_df.assign(sort = 'gap')
-                gap_df = gap_df[(gap_df['temporal id'] < test_df['temporal id'].min()) & (gap_df['temporal id'] > train_df.append(validation_df)['temporal id'].max())]
-                all_df = train_df[needed_columns].append(validation_df[needed_columns]).append(gap_df[needed_columns]).append(test_df[needed_columns])
+                gap_df = gap_df[(gap_df['temporal id'] < test_df['temporal id'].min()) & (gap_df['temporal id'] > pd.concat([train_df,validation_df],ignore_index = True)['temporal id'].max())]
+                all_df = pd.concat([train_df[needed_columns],validation_df[needed_columns]],ignore_index = True)
+                all_df = pd.concat([all_df,gap_df[needed_columns]],ignore_index = True)
+                all_df = pd.concat([all_df,test_df[needed_columns]],ignore_index = True)
 
                 try:
                     create_plot(df = all_df, forecast_horizon = forecast_horizon, granularity = granularity, spatial_ids = spatial_ids, 
                                 save_address = './plots/', plot_type = plot_type, test_point = test_point)
-                except Exception as e:
+                except Exception:
                     print('There is a problem in plotting predictions.')
         
         elif plot_type == 'future':
@@ -190,9 +204,9 @@ def plot_prediction(data, test_type = 'whole-as-one', forecast_horizon = 1, plot
             future_df = pd.read_csv(future_dir + 'future prediction forecast horizon = {0}.csv'.format(forecast_horizon))
             future_df = future_df.assign(sort = 'future')
             train_df = data.rename(columns = {'Normal target':'real'})
-            train_df = train_df.assign(prediction = np.NaN)
+            train_df = train_df.assign(prediction = np.nan)
             train_df = train_df.assign(sort = 'train')
-            all_df = train_df[needed_columns].append(future_df[needed_columns])
+            all_df = pd.concat([train_df[needed_columns], future_df[needed_columns]], ignore_index = True)
         
             try:
                 create_plot(df = all_df, forecast_horizon = forecast_horizon, granularity = granularity, spatial_ids = spatial_ids, 

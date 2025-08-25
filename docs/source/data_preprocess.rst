@@ -1,14 +1,14 @@
-data_preprocess
+preprocess_data
 ===============
 
 **Description**
 
 Transform data to the user defined format and prepare it for modeling.
-The preprocessing procedure has several steps. First the imputation of missing values will be performed; and in the second step the temporal and spatial scales of data are transformed to the user's desired scale for prediction. Then in the third step, the target variable will be modified based on the user specified mode, and the last step is to reform the data to the historical format containing the historical values of input data covariates and values of the target variable at the forecast horizon. In addition, if the user prefers to output data frame(s) include the values of some covariates in the future temporal units, the name of these covariates could be specified using the futuristic_covariates argument.
+The preprocessing procedure has several steps. First the imputation of missing values will be performed; and in the second step the temporal and spatial scales of data are transformed to the user's desired scale for prediction. Then in the third step, the target variable will be modified based on the user specified mode. In the fourth step, if the user prefers, the values of covariates in the neighbouring spatial units to each unit are averaged and added to the data as new covariates. The last step is to reform the data to the historical format containing the historical values of input data covariates and values of the target variable at the forecast horizon. Additionally, if the user prefers that the output data frame(s) contain the values of some covariates in future temporal units, the names of these covariates can be specified using the futuristic_covariates argument.
 
 **Usage**
 
-.. py:function:: preprocess.data_preprocess(data, forecast_horizon, history_length = 1, column_identifier = None, spatial_scale_table = None, spatial_scale_level = 1, temporal_scale_level = 1, target_mode = 'normal', imputation = True, aggregation_mode = 'mean', augmentation = False, futuristic_covariates = None, future_data_table = None, save_address = None, verbose = 0)
+.. py:function:: preprocess.preprocess_data(data, forecast_horizon, history_length = 1, column_identifier = None, spatial_scale_table = None, spatial_scale_level = 1, temporal_scale_level = 1, target_mode = 'normal', imputation = True, aggregation_mode = 'mean', augmentation = False, futuristic_covariates = None, future_data_table = None, neighbouring_matrix = None, neighbouring_layers = 0, save_address = None, verbose = 0)
 
 
 **Parameters**
@@ -35,12 +35,12 @@ The preprocessing procedure has several steps. First the imputation of missing v
 .. code-block:: python
 
    import pandas as pd
-   from stpredict.preprocess import data_preprocess
+   from stpredict.preprocess import preprocess_data
 
    df1 = pd.read_csv('USA COVID-19 temporal data.csv')
    df2 = pd.read_csv('USA COVID-19 spatial data.csv')
 
-   historical_data = data_preprocess(data = {'temporal_data':df1,'spatial_data':df2},
+   historical_data = preprocess_data(data = {'temporal_data':df1,'spatial_data':df2},
                                      forecast_horizon = 2, history_length = 2,
                                      futuristic_covariates = {'Social distancing policy':[1,2]})
 

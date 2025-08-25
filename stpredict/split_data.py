@@ -5,7 +5,6 @@ with warnings.catch_warnings():
     import pandas as pd 
     import numpy as np
     from sklearn.model_selection import KFold
-    import sys
 
 def temporal_shuffle(data):
     # create df of temporal ids, shuffle the temporal ids in the df and
@@ -24,7 +23,7 @@ def split_data(data, splitting_type = 'instance', instance_testing_size = None, 
                instance_random_partitioning = False, fold_total_number = None, fold_number = None,
                forecast_horizon = 1, granularity = 1, verbose = 0):
     
-    if type(data) == str:
+    if isinstance(data, str):
         try:
             data = pd.read_csv(data)
         except FileNotFoundError:
@@ -47,14 +46,14 @@ def split_data(data, splitting_type = 'instance', instance_testing_size = None, 
     if splitting_type == 'instance':
         
         # check the type of instance_testing_size and instance_validation_size
-        if type(instance_testing_size) == float:
+        if isinstance(instance_testing_size, float):
             if instance_testing_size > 1:
                 raise ValueError("The float instance_testing_size will be interpreted to the proportion of data that is considered as the test set and must be less than 1.")
             instance_testing_size = round(instance_testing_size * (number_of_temporal_units))
-        elif (type(instance_testing_size) != int) and (instance_testing_size is not None):
+        elif (not isinstance(instance_testing_size, int)) and (instance_testing_size is not None):
             raise TypeError("The type of instance_testing_size must be int or float.")
 
-        if type(instance_validation_size) == float:
+        if isinstance(instance_validation_size, float):
             if instance_validation_size > 1:
                 raise ValueError("The float instance_validation_size will be interpreted to the proportion of data which is considered as validation set and must be less than 1.")
             
@@ -63,7 +62,7 @@ def split_data(data, splitting_type = 'instance', instance_testing_size = None, 
             else:
                 instance_validation_size = round(instance_validation_size * (number_of_temporal_units))
                 
-        elif (type(instance_validation_size) != int) and (instance_validation_size is not None):
+        elif (not isinstance(instance_validation_size, int)) and (instance_validation_size is not None):
             raise TypeError("The type of instance_validation_size must be int or float.")                
                 
                 
@@ -84,7 +83,7 @@ def split_data(data, splitting_type = 'instance', instance_testing_size = None, 
             if (instance_validation_size*number_of_spatial_units) >= len(data):
                 raise ValueError("The specified instance_validation_size is too large for input data.")
             # shuffling the temporal ids in the data for random partitioning
-            if instance_random_partitioning == True:
+            if instance_random_partitioning:
                 data = temporal_shuffle(data.copy())
             validation_data = data.tail(instance_validation_size * number_of_spatial_units).copy()
             if instance_validation_size > 0:
@@ -104,7 +103,7 @@ def split_data(data, splitting_type = 'instance', instance_testing_size = None, 
                 train_data = data.iloc[:-((instance_testing_size + gap) * number_of_spatial_units)].copy()
             else:
                 train_data = data
-            if instance_random_partitioning == True:
+            if instance_random_partitioning:
                 train_data = temporal_shuffle(train_data.copy())
             validation_data = train_data.tail(instance_validation_size * number_of_spatial_units).copy()
             if instance_validation_size > 0:
@@ -121,7 +120,7 @@ def split_data(data, splitting_type = 'instance', instance_testing_size = None, 
         
         if (fold_total_number is None) or (fold_number is None):
             raise Exception("if the splitting_type is 'fold', the fold_total_number and fold_number must be specified.")
-        if (type(fold_total_number) != int) or (type(fold_number) != int):
+        if (not isinstance(fold_total_number, int)) or (not isinstance(fold_number, int)):
             raise TypeError("The fold_total_number and fold_number must be of type int.")
         elif (fold_number > fold_total_number) or (fold_number < 1):
             raise ValueError("The fold_number must be a number in a range between 1 and fold_total_number.")

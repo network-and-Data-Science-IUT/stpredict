@@ -17,6 +17,7 @@ training and testing process on the preprocessed data based on best configuratio
    :widths: 1 , 3, 15
    :file: train_test_in.csv
 
+.. Note:: In the current version, 'AIC' and 'BIC' can only be calculated for the 'glm' model and 'classification' model_type.
 
 **Returns** 
 

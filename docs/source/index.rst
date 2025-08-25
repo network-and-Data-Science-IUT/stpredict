@@ -48,6 +48,7 @@ We would thanks Nasrin Rafiei for contribution in the development of the package
 .. toctree::
    preprocess
    predict
+   stpredict
    :hidden:
    :maxdepth: 3
    :caption: The API
@@ -58,3 +59,9 @@ We would thanks Nasrin Rafiei for contribution in the development of the package
    :hidden:
    :maxdepth: 2
    :caption: Base structures
+
+.. toctree::
+   example
+   :hidden:
+   :maxdepth: 2
+   :caption: Example

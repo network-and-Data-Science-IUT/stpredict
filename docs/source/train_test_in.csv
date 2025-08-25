@@ -80,8 +80,12 @@
 | 
 | 
 | 
+| 
+| 
 | ","| feature_or\
 | _covariate_set
+| 
+| 
 | 
 | 
 | 
@@ -96,8 +100,10 @@
 | If the list contains covariate names, the selected features includes
 | the covariates and all their historical values in the input data
 | frame.
+| To specify a covariate, its name must be written with a suffix ' t'
+| for temporal covariates and with a suffix ' t+' for futuristic covariates.
 | 
-| **example:** ['temperature', 'population']
+| **example:** ['temperature t', 'population', 'social distancing t+']
 | or ['temperature t', 'population', 'temperature t-1']"
 "| 5
 | 

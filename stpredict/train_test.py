@@ -8,7 +8,7 @@ with warnings.catch_warnings():
     import pathlib
     import re
     import os
-    from .configurations import *
+    from .configurations import * # noqa
 
     from .performance import performance
     from .select_features import select_features
@@ -57,7 +57,7 @@ def train_test(
             string: one of the pre-defined model names 
             function: a user-defined function
             dict: pre-defined model names and corresponding hyper parameters
-            pre-defined model names: 'knn', 'nn' , 'gbm', 'glm'
+            pre-defined model names: 'knn', 'nn' , 'gbm', 'glm', 'sgcrf'
 
         model_type:    string
 
@@ -121,16 +121,16 @@ def train_test(
     if not(isinstance(model_type, str)):
         raise TypeError("Expected a string for model_type.")
     
-    if not(isinstance(model_parameters, dict) or model_parameters == None):
+    if not(isinstance(model_parameters, dict) or model_parameters is None):
         raise TypeError("Expected a dictionary or None value for model_parameters.")
     
-    if not(isinstance(feature_scaler, str) or feature_scaler == None):
+    if not(isinstance(feature_scaler, str) or feature_scaler is None):
         raise TypeError("Expected a string or None value for feature_scaler.")
     
-    if not(isinstance(target_scaler, str) or target_scaler == None):
+    if not(isinstance(target_scaler, str) or target_scaler is None):
         raise TypeError("Expected a string or None value for target_scaler.")
 
-    if not(isinstance(labels, list) or labels == None):
+    if not(isinstance(labels, list) or labels is None):
         raise TypeError("Expected a list or None value for labels.")
     
     if not(isinstance(performance_measures, list)):
@@ -159,6 +159,12 @@ def train_test(
         if target_scaler is not None:
             target_scaler = None
             print("Warning: The input 'target_scaler' is set to None according to model_type=classification'.")
+    else:
+        if not set(performance_measures) <= set(REGRESSION_PERFORMANCE_MEASURES):
+            raise Exception("Error: The input 'performance_measures' is not valid according to 'model_type=regression'.")
+    
+    if model != 'glm' and any([measure in ['AIC','BIC'] for measure in performance_measures]):
+        print("Warning: 'AIC' and 'BIC' measures can only be measured for classification 'glm' model.")
 
     # get some information of the data
     target_mode, target_granularity, granularity, data = get_target_quantities(data=data.copy())
@@ -186,20 +192,20 @@ def train_test(
     
     # check if model is a string or function
     model_name = ''
-    if isinstance(model, str) == False:
+    if not isinstance(model, str):
         model_name = model.__name__
-        if model_name in ['nn', 'knn', 'glm', 'gbm']:
+        if model_name in ['nn', 'knn', 'glm', 'gbm', 'sgcrf']:
             raise TypeError("Name of the user defined model matches the name of one of our predefined models.")
     else:
         model_name = model
 
     # find labels for classification problem
-    if labels == None:
+    if labels is None:
         if model_type == 'regression':    # just an empty list
             labels = []
         elif model_type == 'classification':    # unique values in 'Target' column of data
             labels = data.Target.unique()
-            labels.sort()
+    labels.sort()
 
     # select features
     processed_data = select_features(
@@ -261,7 +267,7 @@ def train_test(
 
     # checking for some files to exit which will be used in the next phases
     test_process_backup_file_name = 'test_process_backup.csv'
-    if pathlib.Path(test_process_backup_file_name).is_file() == False:
+    if not pathlib.Path(test_process_backup_file_name).is_file():
         test_type = 'whole-as-one'
         if model_type == 'regression':
             df = pd.DataFrame(columns=['spatial id', 'temporal id', 'model name', 'Target', 'Normal target', 'prediction'])
@@ -278,7 +284,7 @@ def train_test(
     
     # append current point to previous points
     test_target.insert(2, 'model name', model_name, True)
-    test_target = test_target.append(previous_test_points[['spatial id', 'temporal id', 'model name', 'Target', 'Normal target']], ignore_index=True)
+    test_target = pd.concat([test_target, previous_test_points[['spatial id', 'temporal id', 'model name', 'Target', 'Normal target']]], ignore_index=True)
     if model_type == 'regression':
         previous_testing_predictions = previous_test_points['prediction'].tolist()
         testing_predictions = list(testing_predictions) + previous_testing_predictions
@@ -300,7 +306,7 @@ def train_test(
 
     # get normal data
     training_target, test_target, training_prediction, test_prediction = get_normal_target(
-        training_target=training_target.append(gap_data[['spatial id', 'temporal id', 'Target', 'Normal target']], ignore_index=True), 
+        training_target=pd.concat([training_target,gap_data[['spatial id', 'temporal id', 'Target', 'Normal target']]], ignore_index=True), 
         test_target=test_target.copy(), 
         training_prediction=list(training_predictions) + gap_data['Target'].tolist(), 
         test_prediction=testing_predictions, 
@@ -375,19 +381,19 @@ def train_test(
                 labels=labels)
     
     # checking for existance of some directories for logging purpose
-    if pathlib.Path('prediction/test process').is_dir() == False:
+    if not pathlib.Path('prediction/test process').is_dir():
         pathlib.Path('prediction/test process').mkdir(parents=True, exist_ok=True)
-    if pathlib.Path('performance/test process').is_dir() == False:
+    if not pathlib.Path('performance/test process').is_dir():
         pathlib.Path('performance/test process').mkdir(parents=True, exist_ok=True)
 
     # saving predictions based on model_type
     pred_file_name = 'prediction/test process/test prediction forecast horizon = %s.csv' % (forecast_horizon)
     testing_predictions = np.array(testing_predictions)
 
-    if save_predictions == True:
+    if save_predictions:
         try:
             labels = [int(item) for item in labels]
-        except:
+        except Exception:
             pass
         if model_type == 'regression':
             df = pd.DataFrame()
@@ -431,7 +437,7 @@ def train_test(
     else:
         processed_feature_or_covariate_set = feature_or_covariate_set.copy()
         
-    if performance_report == True:
+    if performance_report:
         
         df_data = {
                 'model name': list([model_name]), 
@@ -445,7 +451,7 @@ def train_test(
                 if overall_prediction_errors[i] is not None:
                     df[performance_measures[i]] = list([float(overall_prediction_errors[i])])
                 else:
-                    df[performance_measures[i]] = np.NaN
+                    df[performance_measures[i]] = np.nan
             df.to_csv(performance_file_name, index=False)
         
         if test_type == 'one-by-one':
@@ -456,14 +462,14 @@ def train_test(
                 # removing test point numbers and overall performance to be updated
                 previous_test_point_performance = previous_test_point_performance.drop(['test point'], axis = 1)
                 previous_test_point_performance = previous_test_point_performance.iloc[:-1,:]
-            df = df.append(previous_test_point_performance)
+            df = pd.concat([previous_test_point_performance, df], ignore_index=True)
             df.insert(loc=0, column='test point', value=[str(i) for i in list(range(1,len(df)+1))])
             
             overall_performance = {'test point':'All test points', 'model name':'-', 'history length' : '-',
                                    'feature or covariate set':'-'}
             for i in range(len(performance_measures)):
                 overall_performance[performance_measures[i]] = float(overall_prediction_errors[i])
-            df = df.append(overall_performance, ignore_index=True)
+            df = pd.concat([df, overall_performance], ignore_index=True)
             
             df.to_csv(performance_file_name, index=False)
     

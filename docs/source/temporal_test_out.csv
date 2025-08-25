@@ -1,0 +1,26 @@
+#,Output Name,Output Description
+"| 1
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| test result
+| 
+| 
+| 
+| 
+| 
+| 
+| 
+| ","| **type:** dict or None
+| **details:** If *test_type* is 'ADF', the test statistics and critical
+| values is returned.
+| 
+| If *test_type* is 'autoreg', the coefficients of the fitted
+| autoregressive model is returned.
+| 
+| If *test_type* is 'ACF', nothing is returned and the plot is saved in
+| *saving_plot_path*."
