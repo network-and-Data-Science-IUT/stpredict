@@ -26,11 +26,10 @@ def get_normal_target(training_target, test_target, training_prediction, test_pr
     training_target.loc[:, ('type')] = 1
     test_target.loc[:, ('type')] = 2
     
-    training_dates = list(training_target['temporal id'].unique())
     test_dates = list(test_target['temporal id'].unique())
-    data = training_target.append(test_target)
+    data = pd.concat([training_target,test_target],ignore_index=True)
     
-    if same_train_test == True:
+    if same_train_test:
         test_dates = []
         test_prediction = []
         data = training_target
@@ -125,7 +124,7 @@ def get_normal_target(training_target, test_target, training_prediction, test_pr
     training_target = training_set.drop(['type', 'prediction', 'train_real_test_prediction'], axis=1)
     test_target = test_set.drop(['type', 'prediction', 'train_real_test_prediction'], axis=1)
 
-    if same_train_test == True:
+    if same_train_test:
         test_target = training_target
         test_prediction = training_prediction
         

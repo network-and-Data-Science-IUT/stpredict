@@ -2,7 +2,8 @@ import warnings
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-
+    
+    import sys
     import pandas as pd 
     import numpy as np
     from sklearn.preprocessing import MinMaxScaler, StandardScaler

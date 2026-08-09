@@ -110,11 +110,11 @@ def predict_future(data: pd.DataFrame or str,
     else:
         training_data['sort'] = 'train'
         testing_data['sort'] = 'test'
-        all_data = training_data.copy().append(testing_data.copy())
+        all_data = pd.concat([training_data.copy(), testing_data.copy()], ignore_index=True)
         all_data, temporal_format = get_target_temporal_ids(temporal_data = all_data, forecast_horizon = forecast_horizon,
                                                granularity = granularity)
         shift_flag = True if temporal_format == 'integrated' else False
-        if shift_flag == True:
+        if shift_flag:
             training_data = all_data[all_data['sort'] == 'train']
             testing_data = all_data[all_data['sort'] == 'test']
         training_data = training_data.drop(['sort'],axis = 1)
@@ -122,17 +122,17 @@ def predict_future(data: pd.DataFrame or str,
         
         # in the case user call the saved files must be removed to prevent overwriting 
         save_path = f'prediction/future prediction/future prediction forecast horizon = {forecast_horizon}.csv'
-        if save_predictions == True and os.path.isfile(save_path):
+        if save_predictions and os.path.isfile(save_path):
             os.remove(save_path)
     
     
     # find labels for classification problem
-    if labels == None:
+    if labels is None:
         if model_type == 'regression':    # just an empty list
             labels = []
         elif model_type == 'classification':    # unique values in 'Target' column of data
             labels = training_data.Target.unique()
-            labels.sort()
+    labels.sort()
             
     training_data = select_features(data=training_data.copy(),
                                     ordered_covariates_or_features=feature_or_covariate_set)
@@ -166,11 +166,12 @@ def predict_future(data: pd.DataFrame or str,
                                                              feature_scaler=feature_scaler,
                                                              target_scaler=target_scaler)
 
-    scaled_training_data.drop(NON_FEATURE_COLUMNS_NAMES, axis=1, inplace=True)
+    # scaled_training_data.drop(NON_FEATURE_COLUMNS_NAMES, axis=1, inplace=True)
     scaled_training_data.drop(NORMAL_TARGET_COLUMN_NAME, axis=1, inplace=True)
-    scaled_testing_data.drop(NON_FEATURE_COLUMNS_NAMES, axis=1, inplace=True)
+    # scaled_testing_data.drop(NON_FEATURE_COLUMNS_NAMES, axis=1, inplace=True)
     scaled_testing_data.drop(NORMAL_TARGET_COLUMN_NAME, axis=1, inplace=True)
-
+    
+    
     scaled_training_predictions, scaled_testing_predictions, trained_model = \
         train_evaluate(training_data=scaled_training_data,
                        validation_data=scaled_testing_data,
@@ -200,7 +201,7 @@ def predict_future(data: pd.DataFrame or str,
     
     try:
         labels = [int(item) for item in labels]
-    except:
+    except Exception:
         pass
     
     testing_data_spatial_ids = normal_testing_target['spatial id'].copy()
@@ -218,7 +219,7 @@ def predict_future(data: pd.DataFrame or str,
         for index, label in enumerate(labels):
             data_to_save.loc[:, f'class {label}'] = list(converted_normal_testing_predictions[index])
     
-    if shift_flag == False:
+    if not shift_flag:
         data_to_save = data_to_save.rename(columns={'temporal id':'predictive time point'})
             
     

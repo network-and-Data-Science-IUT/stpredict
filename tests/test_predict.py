@@ -65,7 +65,8 @@ def test_predict_regression(data, forecast_horizon,  feature_sets, models):
   validation_prediction_df = pd.read_csv(f'./prediction/validation process/validation prediction forecast horizon = {forecast_horizon}.csv')
   test_prediction_df = pd.read_csv(f'./prediction/test process/test prediction forecast horizon = {forecast_horizon}.csv')
 
-  prediction_data = training_prediction_df.append(validation_prediction_df).append(test_prediction_df)
+  prediction_data = pd.concat([training_prediction_df, validation_prediction_df], ignore_index=True)
+  prediction_data = pd.concat([prediction_data, test_prediction_df], ignore_index=True)
 
   best_measure = validation_performance_df['MAPE'].min()
   val_best_conf = validation_performance_df.loc[validation_performance_df['MAPE'] == best_measure].iloc[-1]
@@ -91,7 +92,8 @@ def test_predict_classification(data, forecast_horizon,  feature_sets, models):
   validation_prediction_df = pd.read_csv(f'./prediction/validation process/validation prediction forecast horizon = {forecast_horizon}.csv')
   test_prediction_df = pd.read_csv(f'./prediction/test process/test prediction forecast horizon = {forecast_horizon}.csv')
 
-  prediction_data = training_prediction_df.append(validation_prediction_df).append(test_prediction_df)
+  prediction_data = pd.concat([training_prediction_df, validation_prediction_df], ignore_index=True)
+  prediction_data = pd.concat([prediction_data, test_prediction_df], ignore_index=True)
 
   best_measure = validation_performance_df['AUC'].max()
   val_best_conf = validation_performance_df.loc[validation_performance_df['AUC'] == best_measure].iloc[-1]

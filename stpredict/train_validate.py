@@ -4,19 +4,11 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     import pandas as pd
     import numpy as np
-    import sys
-    import shutil
-    import datetime
-    from .models import KNN_REGRESSOR,KNN_CLASSIFIER,NN_REGRESSOR,NN_CLASSIFIER,GLM_REGRESSOR,GLM_CLASSIFIER,GBM_REGRESSOR,GBM_CLASSIFIER
     from sklearn.model_selection import ParameterGrid
-    from sklearn.model_selection import KFold
-    from multiprocessing import Pool
+    from multiprocessing import Pool # noqa
     from functools import partial
     from tqdm import tqdm
-    import random
     import os
-    import matplotlib.pyplot as plt
-    import datetime
     from .split_data import split_data
     from .performance import performance
     from .scaling import data_scaling
@@ -31,8 +23,8 @@ with warnings.catch_warnings():
     from .rank_covariates import rank_covariates
     from .rank_features import rank_features
     from .get_target_temporal_ids import get_target_temporal_ids
-    from .configurations import *
-    import imp
+    from .configurations import * # noqa
+    import importlib
     import inspect
     import multiprocessing
     from multiprocessing import get_context
@@ -48,7 +40,7 @@ warnings.filterwarnings("once")
 # producing list of parameter values combinations from parameter grid specified by user
 def get_parameter_list(model_name, user_params, model_type):
 
-    grid_flag = False
+#     grid_flag = False
     if model_name == 'nn':
 
         if 'hidden_layers_structure' in user_params:
@@ -56,7 +48,7 @@ def get_parameter_list(model_name, user_params, model_type):
             if not isinstance(user_params['hidden_layers_structure'],list):
                 raise ValueError(error_msg)
             elif all([isinstance(item, list) for item in user_params['hidden_layers_structure']]):
-                grid_flag = True
+#                 grid_flag = True
                 for grid in user_params['hidden_layers_structure']:
                     if not all([isinstance(item, tuple) for item in grid]):
                         raise ValueError(error_msg)
@@ -65,7 +57,8 @@ def get_parameter_list(model_name, user_params, model_type):
             elif all([isinstance(item, tuple) for item in user_params['hidden_layers_structure']]):
                 if not all([len(item) == 2 for item in user_params['hidden_layers_structure']]):
                     raise ValueError(error_msg)
-            else:raise ValueError(error_msg)
+            else:
+                raise ValueError(error_msg)
             # remove duplicate information on network structure
             user_params = {key:user_params[key] for key in user_params.keys() if key not in ['hidden_layers_neurons', 'hidden_layers_activations', 'hidden_layers_number']}
             
@@ -74,10 +67,10 @@ def get_parameter_list(model_name, user_params, model_type):
             if 'hidden_layers_neurons' not in user_params:
                 user_params['hidden_layers_neurons'] = [None]
             elif type(user_params['hidden_layers_neurons']) in (np.ndarray,list):
-                grid_flag = True
+#                 grid_flag = True
                 if not all([isinstance(item , int) for item in user_params['hidden_layers_neurons']]):
                     raise TypeError('The value of hidden_layers_neurons must be of type integer or list of integers.')
-            elif type(user_params['hidden_layers_neurons']) == int:
+            elif isinstance(user_params['hidden_layers_neurons'], int):
                 user_params['hidden_layers_neurons'] = list([user_params['hidden_layers_neurons']])
             else:
                 raise TypeError('The value of hidden_layers_neurons must be of type integer or list of integers.')
@@ -85,17 +78,18 @@ def get_parameter_list(model_name, user_params, model_type):
             if 'hidden_layers_activations' not in user_params:
                 user_params['hidden_layers_activations'] = [None]
             elif type(user_params['hidden_layers_activations']) in (np.ndarray,list):
-                grid_flag = True
+                pass
+#                 grid_flag = True
             else:
                 user_params['hidden_layers_activations'] = list([user_params['hidden_layers_activations']])
 
             if 'hidden_layers_number' not in user_params:
                 user_params['hidden_layers_number'] = [1]
             elif type(user_params['hidden_layers_number']) in (np.ndarray,list):
-                grid_flag = True
+#                 grid_flag = True
                 if not all([isinstance(item,int) for item in user_params['hidden_layers_number']]):
                     raise TypeError('The value of hidden_layers_number must be of type integer or list of integers.')
-            elif type(user_params['hidden_layers_number']) == int:
+            elif isinstance(user_params['hidden_layers_number'], int):
                 user_params['hidden_layers_number'] = list([user_params['hidden_layers_number']])
             else:
                 raise TypeError('The value of hidden_layers_number must be of type integer or list of integers.')
@@ -114,11 +108,11 @@ def get_parameter_list(model_name, user_params, model_type):
                            not in ['hidden_layers_neurons', 'hidden_layers_activations', 'hidden_layers_number']}
 
         # checking other parameters if have multiple values
-        for parameter in ['output_activation', 'loss', 'optimizer', 'early_stopping_monitor',
-                          'early_stopping_patience', 'batch_size', 'validation_split', 'epochs']:
-            if parameter in user_params.keys():
-                if type(user_params[parameter]) in (np.ndarray,list):
-                    grid_flag = True
+#         for parameter in ['output_activation', 'loss', 'optimizer', 'early_stopping_monitor',
+#                           'early_stopping_patience', 'batch_size', 'validation_split', 'epochs']:
+#             if parameter in user_params.keys():
+#                 if type(user_params[parameter]) in (np.ndarray,list):
+#                     grid_flag = True
                     
         for key in user_params.keys():
             if type(user_params[key]) not in [np.ndarray,list]:
@@ -128,11 +122,11 @@ def get_parameter_list(model_name, user_params, model_type):
 
     if model_name == 'knn':
 
-        for parameter in ['n_neighbors', 'weights', 'algorithm', 'leaf_size', 'p',
-                              'metric', 'metric_params', 'n_jobs']:
-            if parameter in user_params.keys():
-                if type(user_params[parameter]) in (np.ndarray,list):
-                    grid_flag = True
+#         for parameter in ['n_neighbors', 'weights', 'algorithm', 'leaf_size', 'p',
+#                               'metric', 'metric_params', 'n_jobs']:
+#             if parameter in user_params.keys():
+#                 if type(user_params[parameter]) in (np.ndarray,list):
+#                     grid_flag = True
         
         for key in user_params.keys():
             if type(user_params[key]) not in [np.ndarray,list]:
@@ -141,22 +135,22 @@ def get_parameter_list(model_name, user_params, model_type):
         parameter_list = list(ParameterGrid(user_params))
 
     if model_name == 'gbm':
-        if model_type == 'regression':
-            parameters = ['loss', 'learning_rate', 'n_estimators', 'subsample', 'criterion', 'min_samples_split',
-                          'min_samples_leaf', 'min_weight_fraction_leaf', 'max_depth', 'min_impurity_decrease',
-                          'init', 'random_state', 'max_features', 'alpha', 'verbose', 'max_leaf_nodes',
-                          'warm_start', 'validation_fraction', 'n_iter_no_change', 'tol', 'ccp_alpha']
+#         if model_type == 'regression':
+#             parameters = ['loss', 'learning_rate', 'n_estimators', 'subsample', 'criterion', 'min_samples_split',
+#                           'min_samples_leaf', 'min_weight_fraction_leaf', 'max_depth', 'min_impurity_decrease',
+#                           'init', 'random_state', 'max_features', 'alpha', 'verbose', 'max_leaf_nodes',
+#                           'warm_start', 'validation_fraction', 'n_iter_no_change', 'tol', 'ccp_alpha']
 
-        elif model_type == 'classification':
-            parameters = ['loss', 'learning_rate', 'n_estimators', 'subsample', 'criterion', 'min_samples_split',
-                          'min_samples_leaf', 'min_weight_fraction_leaf', 'max_depth', 'min_impurity_decrease',
-                          'init', 'random_state', 'max_features', 'verbose', 'max_leaf_nodes',
-                          'warm_start', 'validation_fraction', 'n_iter_no_change', 'tol', 'ccp_alpha']
+#         elif model_type == 'classification':
+#             parameters = ['loss', 'learning_rate', 'n_estimators', 'subsample', 'criterion', 'min_samples_split',
+#                           'min_samples_leaf', 'min_weight_fraction_leaf', 'max_depth', 'min_impurity_decrease',
+#                           'init', 'random_state', 'max_features', 'verbose', 'max_leaf_nodes',
+#                           'warm_start', 'validation_fraction', 'n_iter_no_change', 'tol', 'ccp_alpha']
 
-        for parameter in parameters:
-            if parameter in user_params.keys():
-                if type(user_params[parameter]) in (np.ndarray,list):
-                    grid_flag = True
+#         for parameter in parameters:
+#             if parameter in user_params.keys():
+#                 if type(user_params[parameter]) in (np.ndarray,list):
+#                     grid_flag = True
         
         for key in user_params.keys():
             if type(user_params[key]) not in [np.ndarray,list]:
@@ -166,24 +160,39 @@ def get_parameter_list(model_name, user_params, model_type):
 
     if model_name == 'glm':
 
-        if model_type == 'regression':
-            parameters = ['alpha', 'l1_ratio', 'fit_intercept', 'normalize', 'precompute', 'max_iter', 'copy_X', 'tol',
-                          'warm_start', 'positive', 'random_state', 'selection']
+#         if model_type == 'regression':
+#             parameters = ['alpha', 'l1_ratio', 'fit_intercept', 'normalize', 'precompute', 'max_iter', 'copy_X', 'tol',
+#                           'warm_start', 'positive', 'random_state', 'selection']
 
-        elif model_type == 'classification':
-            parameters = ['penalty', 'dual', 'tol', 'C', 'fit_intercept', 'intercept_scaling', 'class_weight', 'random_state',
-                          'solver', 'max_iter', 'multi_class', 'verbose', 'warm_start', 'n_jobs', 'l1_ratio']
+#         elif model_type == 'classification':
+#             parameters = ['penalty', 'dual', 'tol', 'C', 'fit_intercept', 'intercept_scaling', 'class_weight', 'random_state',
+#                           'solver', 'max_iter', 'multi_class', 'verbose', 'warm_start', 'n_jobs', 'l1_ratio']
 
-        for parameter in parameters:
-            if parameter in user_params.keys():
-                if type(user_params[parameter]) in (np.ndarray,list):
-                    grid_flag = True
+#         for parameter in parameters:
+#             if parameter in user_params.keys():
+#                 if type(user_params[parameter]) in (np.ndarray,list):
+#                     grid_flag = True
 
         
         for key in user_params.keys():
             if type(user_params[key]) not in [np.ndarray,list]:
                 user_params[key] = list([user_params[key]])
 
+        parameter_list = list(ParameterGrid(user_params))
+    
+    if model_name == 'sgcrf':
+
+#         for parameter in ['learning_rate', 'n_iter', 'lamL', 'lamT']:
+#             if parameter in user_params.keys():
+#                 if type(user_params[parameter]) in (np.ndarray,list):
+#                     grid_flag = True
+        
+        for key in user_params.keys():
+            if type(user_params[key]) not in [np.ndarray,list]:
+                user_params[key] = list([user_params[key]])
+                
+        user_params['neighbouring_matrix'] = list([user_params['neighbouring_matrix']])
+        
         parameter_list = list(ParameterGrid(user_params))
         
         
@@ -213,8 +222,8 @@ def report_performance(errors_dict, max_history, ordered_covariates_or_features,
                         
                     feature_sets[feature_set_number].append(feature_original_name)
 
-            temp = pd.DataFrame(columns = ['model name', 'history length', 'feature or covariate set'] + list(performance_measures))
-            temp.loc[:,('feature or covariate set')] = list([' , '.join(feature_sets[feature_set_number]) for feature_set_number in range(len(feature_sets_indices[history-1]))])
+            temp = pd.DataFrame()
+            temp['feature or covariate set'] = list([' , '.join(feature_sets[feature_set_number]) for feature_set_number in range(len(feature_sets_indices[history-1]))])
             temp.loc[:,('model name')] = model_name
             temp.loc[:,('history length')] = history
             
@@ -224,8 +233,8 @@ def report_performance(errors_dict, max_history, ordered_covariates_or_features,
                     model_best_parameters_number = models_best_parameters_number[model_name][(history, feature_set_number)]
                     errors_list.append(errors_dict[measure][model_name][(history, feature_set_number, model_best_parameters_number)])
                 temp.loc[:,(measure)] = list(errors_list)
-            
-            output_data_frame = output_data_frame.append(temp)
+
+            output_data_frame = pd.concat([output_data_frame,temp], ignore_index=True)
     
     address = './performance/validation process/'
     if os.path.exists(address):
@@ -266,7 +275,7 @@ def save_prediction_data_frame(models_name_list, target_real_values, fold_valida
     
     try:
         labels = [int(item) for item in labels]
-    except:
+    except Exception:
         pass
     
     if model_type == 'regression':
@@ -312,7 +321,7 @@ def save_prediction_data_frame(models_name_list, target_real_values, fold_valida
         elif model_type == 'classification':
             temp = temp[['model name', 'spatial id', 'temporal id', 'real'] + ['class '+str(item) for item in labels]]
 
-        prediction_data_frame = prediction_data_frame.append(temp)
+        prediction_data_frame = pd.concat([prediction_data_frame,temp],ignore_index=True)
     
     # prediction_data_frame = prediction_data_frame.rename(columns = {'temporal id':'predictive time point'})
     address = './prediction/validation process/'
@@ -346,7 +355,8 @@ def save_ranking(ranked_features_to_save, feature_selection_type, ordered_covari
             else:
                 i = i+1
                 rank.append(i)
-            if i>len(ordered_covariates_or_features[0]):break
+            if i>len(ordered_covariates_or_features[0]):
+                break
         ranked_df['rank'] = rank
         
     else:
@@ -380,7 +390,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                    feature_scaler = None, target_scaler = None, labels = None, performance_report = True,
                    save_predictions = True, save_ranked_features = True, verbose = 0):
     
-    supported_models_name = ['nn', 'knn', 'glm', 'gbm']
+    supported_models_name = ['nn', 'knn', 'glm', 'gbm', 'sgcrf']
     supported_performance_measures = ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AIC', 'BIC', 'likelihood', 'AUC', 'AUPR']
     models_list = [] # list of models (str or callable)
     models_parameter_list = [] # list of models' parameters (dict or None)
@@ -394,17 +404,17 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
     
     ############## forecast horizon
     
-    if (type(forecast_horizon) != int) or (forecast_horizon<=0):
+    if (not isinstance(forecast_horizon, int)) or (forecast_horizon<=0):
         raise ValueError("The forecast_horizon input must be an integer greater than 0.")
     
     ############## data input
     
     data_list = []
-    if type(data) == list:
+    if isinstance(data, list):
         for history in range(1,len(data)+1):
-            if type(data[history-1]) == pd.DataFrame:
+            if isinstance(data[history-1], pd.DataFrame):
                 data_list.append(data[history-1])
-            elif type(data[history-1]) == str:
+            elif isinstance(data[history-1], str):
                 try:
                     data_list.append(pd.read_csv(data[history-1]))
                 except FileNotFoundError:
@@ -436,7 +446,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         
     ############## models input
     
-    if type(models) != list:
+    if not isinstance(models, list):
         raise TypeError("The models input must be of type list.")
         
     number_of_user_defined_models = 0
@@ -444,7 +454,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
     for item in models:
         
         # if the item is the dictionary of model name and its parameters
-        if type(item) == dict:       
+        if isinstance(item, dict):       
             model_name = list(item.keys())[0]
             
             # if the dictionary contain only one of the supported models
@@ -458,7 +468,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                         models_name_list.append(model_name)
                         base_models_name_list.append(model_name)
                         # if the value of the model name is dictionary of models parameter list
-                        if type(item[model_name]) == dict:
+                        if isinstance(item[model_name], dict):
                             # get list of different combinations of model parameters
                             model_parameters = get_parameter_list(model_name = model_name, user_params = item[model_name],\
                                                                        model_type = model_type)
@@ -477,7 +487,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                 print("\nWarning: Each dictionary item in models list must contain only one item with a name of one of the supported models as a key and the parameters of that model as value. The incompatible cases will be ignored.\n")
         
         # if the item is only name of model whithout parameters
-        elif type(item) == str:
+        elif isinstance(item, str):
             if (item in supported_models_name):
                 if (item not in models_list):
                     models_list.append(item)
@@ -491,7 +501,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         # if the item is user defined function
         elif callable(item):
             if item.__name__ in supported_models_name:
-                raise Exception("User-defined model names must be different from predefined models:['knn', 'glm', 'gbm', 'nn']")
+                raise Exception("User-defined model names must be different from predefined models:['knn', 'glm', 'gbm', 'nn', 'sgcrf']")
             if item.__name__ in models_name_list:
                 raise Exception("User-defined models can not have the same names.")
             models_list.append(item)
@@ -502,7 +512,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
             
             callable_source_code = inspect.getsource(item)
             mode = "a" if number_of_user_defined_models>1 else "w"
-            user_defined_models = open(imp.find_module('stpredict')[1]+"/user_defined_models.py",mode)
+            user_defined_models = open(importlib.util.find_spec('stpredict').submodule_search_locations[0]+"/user_defined_models.py",mode)
             for line in callable_source_code:
                 user_defined_models.write(line)
             user_defined_models.close()
@@ -516,13 +526,13 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
 
     ############## mixed models input
     
-    if type(mixed_models) != list:
+    if not isinstance(mixed_models, list):
         raise TypeError("The mixed_models input must be of type list.")
     
     for item in mixed_models:
         
         # if the item is the dictionary of model name and its parameters
-        if type(item) == dict:       
+        if isinstance(item, dict):       
             model_name = list(item.keys())[0]
             
             # if the dictionary contain only one of the supported models
@@ -535,7 +545,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                         models_name_list.append('mixed_' + model_name)
                         mixed_models_name_list.append('mixed_' + model_name)
                         # if the value of the model name is dictionary of models parameter list
-                        if type(item[model_name]) == dict:
+                        if isinstance(item[model_name], dict):
                             # get list of different combinations of model parameters
                             model_parameters = get_parameter_list(model_name = model_name, user_params = item[model_name],\
                                                                        model_type = model_type)
@@ -554,7 +564,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                 print("\nWarning: Each dictionary item in mixed_models list must contain only one item with a name of one of the supported models as a key and the parameters of that model as value. The incompatible cases will be ignored.\n")
         
         # if the item is only name of model whithout parameters
-        elif type(item) == str:
+        elif isinstance(item, str):
             if (item in supported_models_name):
                 if ('mixed_'+item not in mixed_models_name_list):
                     models_list.append('mixed_'+item)
@@ -568,7 +578,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         # if the item is user defined function
         elif callable(item):
             if item.__name__ in supported_models_name:
-                raise Exception("User-defined model names must be different from predefined models:['knn', 'glm', 'gbm', 'nn']")
+                raise Exception("User-defined model names must be different from predefined models:['knn', 'glm', 'gbm', 'nn', 'sgcrf']")
             if item.__name__ in models_name_list:
                 raise Exception("User-defined models can not have the same names.")
             models_list.append(item)
@@ -579,7 +589,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
             
             callable_source_code = inspect.getsource(item)
             mode = "a" if number_of_user_defined_models>1 else "w"
-            user_defined_models = open(imp.find_module('stpredict')[1]+"/user_defined_models.py",mode)
+            user_defined_models = open(importlib.util.find_spec('stpredict').submodule_search_locations[0]+"/user_defined_models.py",mode)
             for line in callable_source_code:
                 user_defined_models.write(line)
             user_defined_models.close()
@@ -591,19 +601,21 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         
     ############## performance measure input
     
-    if (type(performance_measures) != list) and (performance_measures is not None):
+    if (not isinstance(performance_measures, list)) and (performance_measures is not None):
         raise TypeError("The performance_measures must be of type list.")
         
     zero_encounter_flag = 0
     for history in range(1,max_history+1):
         data = data_list[history-1].copy()
-        if len(data[data['Target']==0]) > 0: zero_encounter_flag = 1
+        if len(data[data['Target']==0]) > 0:
+            zero_encounter_flag = 1
         
     if performance_measures is None:
         if model_type == 'regression':
             if zero_encounter_flag == 0:
                 performance_measures = ['MAPE']
-            else: performance_measures = ['MAE']
+            else:
+                performance_measures = ['MAE']
         else:
             performance_measures = ['AUC']
         
@@ -617,7 +629,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         performance_measures.remove('MASE')
         print("\nWarning: The 'MASE' measure cannot be measured in cross-validation splitting mode.\n")
     
-    if (splitting_type != 'cross-validation') and (instance_random_partitioning == True) and ('MASE' in performance_measures):
+    if (splitting_type != 'cross-validation') and (instance_random_partitioning) and ('MASE' in performance_measures):
         performance_measures.remove('MASE')
         print("\nWarning: The 'MASE' measure cannot be measured in random partitioning mode.\n")
         
@@ -638,13 +650,14 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
     if (performance_benchmark not in supported_performance_measures) or (performance_benchmark is None):
         if model_type == 'regression':
             if zero_encounter_flag == 0:
-                performance_benchmark = 'MAPE'
+                alternative_performance_benchmark = 'MAPE'
             else:
-                performance_benchmark = 'MAE'
+                alternative_performance_benchmark = 'MAE'
         else:
-            performance_benchmark = 'AUC'
+            alternative_performance_benchmark = 'AUC'
         if performance_benchmark is not None:
-            print("\nWarning: The specified performance_benchmark must be one of the supported performance measures: ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AIC', 'BIC', 'likelihood', 'AUC', 'AUPR']\nThe incompatible cases will be ignored and replaced with '{0}'.\n".format(performance_benchmark))
+            print("\nWarning: The specified performance_benchmark must be one of the supported performance measures: ['MAE', 'MAPE', 'MASE', 'MSE', 'R2_score', 'AIC', 'BIC', 'likelihood', 'AUC', 'AUPR']\nThe incompatible cases will be ignored and replaced with '{0}'.\n".format(alternative_performance_benchmark))
+        performance_benchmark = alternative_performance_benchmark
             
     if (performance_benchmark in ['likelihood', 'AUC', 'AUPR', 'AIC', 'BIC']) and (model_type == 'regression'): 
         if zero_encounter_flag == 0:
@@ -679,7 +692,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         #     performance_benchmark = 'MAE'
         raise Exception("Error: The 'MASE' measure cannot be measured in cross-validation splitting mode.")
 
-    if (splitting_type != 'cross-validation') and (instance_random_partitioning == True) and (performance_benchmark == 'MASE'):
+    if (splitting_type != 'cross-validation') and (instance_random_partitioning) and (performance_benchmark == 'MASE'):
         # if zero_encounter_flag == 0:
         #     performance_benchmark = 'MAPE'
         # else:
@@ -695,11 +708,11 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
     if model_type == 'classification':
         if labels is None:
             labels = list(data_list[0]['Normal target'].unique())
-            labels.sort()
-        elif type(labels) != list:
+        elif not isinstance(labels, list):
             raise TypeError("The labels input must be of type list.")
         elif any([len(set(data['Normal target'].dropna().unique())-set(labels))>0 for data in data_list]):
             raise ValueError("Some of the class labels in the input data are not in labels input.")
+        labels.sort()
         
         if performance_mode != 'normal':
             if performance_mode is not None:
@@ -717,9 +730,10 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         raise ValueError("The specified model_type is not valid. The supported values are 'regression' and 'classification'.")
     
     
+    
     ############## feature_sets, forced_covariates
     
-    if (type(feature_sets) != dict) or (len(feature_sets) > 1):
+    if (not isinstance(feature_sets, dict)) or (len(feature_sets) > 1):
         raise TypeError("The feature_sets input must be of type dictionary with only one item.")
         
     feature_selection_type = list(feature_sets.keys())[0]
@@ -729,7 +743,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
     if ranking_method not in RANKING_METHODS:
         raise ValueError(f"The value of the item in the feature_sets dictionary must be from the list {RANKING_METHODS}.")
     
-    if type(forced_covariates) != list:
+    if not isinstance(forced_covariates, list):
         raise TypeError("The forced_covariates input must be of type list.")
         
     ############## splitting_type, fold_total_number, instance_testing_size, and instance_validation_size inputs
@@ -739,17 +753,17 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
 
         if fold_total_number is None:
             raise Exception("if the splitting_type is 'cross-validation', the fold_total_number must be specified.")
-        if (type(fold_total_number) != int) or (fold_total_number <= 1):
+        if (not isinstance(fold_total_number, int)) or (fold_total_number <= 1):
             raise ValueError("The fold_total_number must be an integer greater than 1.")
 
     # check validity of instance_validation_size
     elif splitting_type == 'training-validation':
     
-        if type(instance_validation_size) == float:
+        if isinstance(instance_validation_size, float):
             if instance_validation_size > 1:
                 raise ValueError("The float instance_validation_size will be interpreted to the proportion of data which is considered as validation set and must be less than 1.")
                 
-        elif (type(instance_validation_size) != int):
+        elif not isinstance(instance_validation_size, int):
             raise TypeError("The type of instance_validation_size must be int or float.")
         
         # if instance_validation_size is zero the validation of models are performed based on training set
@@ -759,13 +773,13 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         raise ValueError("The specified splitting_type is ambiguous. The supported values are 'training-validation' and 'cross-validation'.")
     
     # check validity of instance_testing_size
-    if type(instance_testing_size) == float:
+    if isinstance(instance_testing_size, float):
         if instance_testing_size > 1:
             raise ValueError("The float instance_testing_size will be interpreted to the proportion of data that is considered as the test set and must be less than 1.")
-    elif type(instance_testing_size) != int:
+    elif not isinstance(instance_testing_size, int):
         raise TypeError("The type of instance_testing_size must be int or float.")
     
-    if type(instance_random_partitioning) != bool:
+    if not isinstance(instance_random_partitioning, bool):
         raise TypeError("instance_random_partitioning must be type boolean.")
     
     # for non cross val splitting_type, the fold_total_number  will be set to 1, to perform the prediction process only one time
@@ -788,13 +802,13 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
     if not any(performance_mode.startswith(item) for item in ['normal', 'cumulative', 'moving average']):
         raise ValueError("The performance_mode input is not valid.")
         
-    if type(performance_report) != bool:
+    if not isinstance(performance_report, bool):
         raise TypeError("performance_report must be type boolean.")
         
-    if type(save_predictions) != bool:
+    if not isinstance(save_predictions, bool):
         raise TypeError("save_predictions must be type boolean.")
     
-    if type(verbose) != int:
+    if not isinstance(verbose, int):
         raise TypeError("verbose must be of type int.")
         
     ############## check the possibility of data deficiency
@@ -899,7 +913,8 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                 if feature in forced_covariates:
                     start_point +=1
                     
-        if start_point == 0 : start_point = 1
+        if start_point == 0 :
+            start_point = 1
         for number_of_features in range(start_point,len(ordered_covariates_or_features[history])+1):
             history_feature_sets_indices.append(list(range(number_of_features)))
         feature_sets_indices.append(history_feature_sets_indices)
@@ -965,12 +980,12 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                                                               splitting_type = split_data_splitting_type, instance_random_partitioning = instance_random_partitioning, 
                                                               granularity = granularity[history-1], verbose = 0)
                                 
-                                if same_train_validation_sets == True:
+                                if same_train_validation_sets:
                                     validation_data = training_data.copy()
                                     
                                 if model_parameters is not None:
                                     if 'n_neighbors' in model_parameters.keys():
-                                        if type(model_parameters['n_neighbors']) == int:
+                                        if isinstance(model_parameters['n_neighbors'], int):
                                             if (model_parameters['n_neighbors']>len(training_data)) and (knn_alert_flag == 0):
                                                 print("\nWarning: The number of neighbors for KNN algorithm is not specified or is too large for input data shape.")
                                                 print("The number of neighbors will be set to the best number of neighbors obtained by grid search in the range [1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ,20 ,40 ,60 ,80, 100, 120, 140, 160, 180, 200]\n")
@@ -1129,11 +1144,11 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                             fold_training_error_list = list([fold_training_error[fold_number][measure][0] for fold_number in range(1, fold_total_number + 1)])
 
 
-                            if not None in fold_validation_error_list:
+                            if None not in fold_validation_error_list:
                                 validation_errors[measure][model_name][(history, feature_set_number, model_parameters_number)] = np.mean(fold_validation_error_list)
                             else:
                                 validation_errors[measure][model_name][(history, feature_set_number, model_parameters_number)] = None
-                            if not None in fold_training_error_list:
+                            if None not in fold_training_error_list:
                                 training_errors[measure][model_name][(history, feature_set_number, model_parameters_number)] = np.mean(fold_training_error_list)
                             else:
                                 training_errors[measure][model_name][(history, feature_set_number, model_parameters_number)] = None
@@ -1204,7 +1219,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
 
                                     if model_parameters is not None:
                                         if 'n_neighbors' in model_parameters.keys():
-                                            if type(model_parameters['n_neighbors']) == int:
+                                            if isinstance(model_parameters['n_neighbors'], int):
                                                 if (model_parameters['n_neighbors']>len(training_data)) and (knn_alert_flag == 0):
                                                     print("\nWarning: The number of neighbors for KNN algorithm is not specified or is too large for input data shape.")
                                                     print("The number of neighbors will be set to the best number of neighbors obtained by grid search in the range [1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ,20 ,40 ,60 ,80, 100, 120, 140, 160, 180, 200]\n")
@@ -1353,11 +1368,11 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                             fold_training_error_list = list([fold_training_error[fold_number][measure][0] for fold_number in range(1, fold_total_number + 1)])
 
 
-                            if not None in fold_validation_error_list:
+                            if None not in fold_validation_error_list:
                                 validation_errors[measure][model_name][(history, feature_set_number, model_parameters_number)] = np.mean(fold_validation_error_list)
                             else:
                                 validation_errors[measure][model_name][(history, feature_set_number, model_parameters_number)] = None
-                            if not None in fold_training_error_list:
+                            if None not in fold_training_error_list:
                                 training_errors[measure][model_name][(history, feature_set_number, model_parameters_number)] = np.mean(fold_training_error_list)
                             else:
                                 training_errors[measure][model_name][(history, feature_set_number, model_parameters_number)] = None
@@ -1397,14 +1412,14 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
     
     # save the real and predicted value of target variable in training and validation set for each model
     
-    if (save_predictions == True) and (fold_total_number == 1): # if cross validation mode is on, predictions are not saved
+    if (save_predictions) and (fold_total_number == 1): # if cross validation mode is on, predictions are not saved
         
         save_prediction_data_frame(models_name_list = models_name_list, target_real_values = normal_target_real_values, 
                                    fold_validation_predictions = normal_fold_validation_predictions, fold_training_predictions = normal_fold_training_predictions,
                                    models_best_history_length = models_best_history_length, models_best_feature_set_number = models_best_feature_set_number,
                                    models_best_parameters_number = models_best_parameters_number, forecast_horizon = forecast_horizon, 
                                    data_temporal_size = number_of_temporal_units, prediction_type = 'training', model_type = model_type, labels = labels)
-        if same_train_validation_sets == False:
+        if not same_train_validation_sets:
             save_prediction_data_frame(models_name_list = models_name_list, target_real_values = normal_target_real_values, 
                                    fold_validation_predictions = normal_fold_validation_predictions, fold_training_predictions = normal_fold_training_predictions,
                                    models_best_history_length = models_best_history_length, models_best_feature_set_number = models_best_feature_set_number,
@@ -1413,8 +1428,8 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                                                          
     #################################################### reporting performance
     
-    if performance_report == True:
-        if same_train_validation_sets == False:
+    if performance_report:
+        if not same_train_validation_sets:
             report_performance(errors_dict = validation_errors, max_history = max_history, ordered_covariates_or_features = ordered_covariates_or_features,
                               feature_sets_indices = feature_sets_indices, performance_measures = performance_measures, feature_selection_type = feature_selection_type,
                               models_name_list = models_name_list, models_best_parameters_number = models_best_parameters_number, forecast_horizon = forecast_horizon,
@@ -1426,7 +1441,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
         
     #################################################### save the ranking
     
-    if save_ranked_features == True:
+    if save_ranked_features:
         save_ranking(ranked_features_to_save, feature_selection_type, ordered_covariates_or_features)
     
     #################################################### finding best model and overall best history length and feature set
@@ -1441,7 +1456,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                 best_parameters_number = models_best_parameters_number[model_name][(best_history_length, best_feature_set_number)]             
                 best_parameters = models_parameter_list[model_number][best_parameters_number]
                 best_model = models_list[model_number]
-                best_model_number = model_number
+                # best_model_number = model_number
                 best_model_name = model_name
                 
         else:
@@ -1453,7 +1468,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                 best_parameters_number = models_best_parameters_number[model_name][(best_history_length, best_feature_set_number)]              
                 best_parameters = models_parameter_list[model_number][best_parameters_number]
                 best_model = models_list[model_number]
-                best_model_number = model_number
+                # best_model_number = model_number
                 best_model_name = model_name
     
     
@@ -1498,7 +1513,7 @@ def train_validate(data, feature_sets, forced_covariates = [], instance_validati
                                               verbose = 0)
         
     
-    path_to_user_defined_models_dumb_files = imp.find_module('stpredict')[1]+"/user_defined_models.py"
+    path_to_user_defined_models_dumb_files = importlib.util.find_spec('stpredict').submodule_search_locations[0]+"/user_defined_models.py"
     if os.path.isfile(path_to_user_defined_models_dumb_files):
         os.remove(path_to_user_defined_models_dumb_files)
     

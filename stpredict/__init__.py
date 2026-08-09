@@ -1,9 +1,19 @@
 import warnings
+import pandas as pd
+import pkg_resources
 from .whole_as_one import whole_as_one
 from .preprocess import preprocess_data
 from .one_by_one import lafopafo
 
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+
+def load_covid_data():
+    stream = pkg_resources.resource_stream(__name__, 'data/USA_COVID_19_data.csv')
+    return pd.read_csv(stream)
+
+def load_earthquake_data():
+    stream = pkg_resources.resource_stream(__name__, 'data/earthquake_data.csv')
+    return pd.read_csv(stream)
 
 def stpredict(data, forecast_horizon,
                     history_length = 1, 

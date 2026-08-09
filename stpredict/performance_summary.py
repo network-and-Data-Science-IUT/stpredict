@@ -7,17 +7,12 @@ with warnings.catch_warnings():
     import matplotlib.pyplot as plt
     from os import listdir
     from os.path import isfile, join, exists
-    import datetime
-    from datetime import timedelta
-    from dateutil.relativedelta import relativedelta
-    import random
-    import sys
     import os
     import matplotlib as mpl
     from matplotlib.backends.backend_pdf import PdfPages
     import matplotlib.patches as mpatches
-    from matplotlib import colors as mcolors
-    import matplotlib.ticker as ticker
+    from matplotlib import colors as mcolors # noqa
+    import matplotlib.ticker as ticker # noqa
 
 warnings.filterwarnings("ignore")
 
@@ -56,7 +51,7 @@ def mergecells(table, cells, selected_text = 'L'):
         trans = (tpos[-1] - tpos[0])/2
         # didn't had to check for ha because I only want ha='center'
         txts[0].set_transform(mpl.transforms.Affine2D().translate(*trans))
-        if bold == True:
+        if bold:
             txts[0].set_weight('bold')
         for txt in txts[1:]:
             txt.set_visible(False)
@@ -66,7 +61,7 @@ def mergecells(table, cells, selected_text = 'L'):
         trans = (tpos[0] - tpos[-1])/2
         # didn't had to check for ha because I only want ha='center'
         txts[-1].set_transform(mpl.transforms.Affine2D().translate(*trans))
-        if bold == True:
+        if bold:
             txts[-1].set_weight('bold')
         for txt in txts[:-1]:
             txt.set_visible(False)
@@ -97,8 +92,6 @@ def merge_same_values(row_number,column,offset,the_table):
 
 # find the consecutive cells with same values and colours them with the same color
 def color_same_values(row_number,column_number,column,offset,the_table,color_dict):
-    
-    colors = ['#008e99','#424242','#ba4c4d','#858585','#acc269','#7255b2']
     
     # find cells with same text
     values = [the_table.get_celld()[(i,column)].get_text().get_text() for i in range(offset,row_number+1)]
@@ -139,7 +132,7 @@ def prepare_df(df,base_columns,measure_names,performance_benchmark,test_type,plo
 
 def table_add(table, df, best_loc, measure_names, performance_benchmark, best_loc_flag):
     
-    if best_loc_flag == True:
+    if best_loc_flag:
         df = df.reset_index(drop = True)
         df[performance_benchmark] = df[performance_benchmark].astype(float)
         
@@ -166,8 +159,6 @@ def plot_table(train_df,validation_df,test_df,test_type,performance_benchmark,te
     if test_type == 'one-by-one':
         base_columns = ['Test point', 'Dataset', 'model name', 'history length', 'feature or covariate set']
     measure_names = list(filter(lambda x: x not in base_columns, test_df.columns))
-    models_number = len(train_df['model name'].unique())
-    max_history = len(train_df['history length'].unique())
     
     models = train_df['model name'].unique()
     colors = ['#008e99','#424242','#ba4c4d','#858585','#acc269','#7255b2']
@@ -455,7 +446,7 @@ def plot_bar(train_df,validation_df,test_type,performance_benchmark,test_point_n
                     step = (y_max-y_min)/10
                     ax.set_yticks(np.arange(y_min, y_max, step))
                     
-                if log_flag == True:
+                if log_flag:
                     ax.set_yscale('log')
                 
             
@@ -531,13 +522,13 @@ def performance_summary(forecast_horizon,test_type,performance_benchmark):
             temp_train_df = pd.read_csv(train_csv_file)
             temp_train_df.insert(0, 'Test point', str(test_point))
             temp_train_df.insert(1, 'Dataset', 'Training')
-            train_df = train_df.append(temp_train_df)
+            train_df = pd.concat([train_df,temp_train_df], ignore_index=True)
             
             if exists(validation_csv_file):
                 temp_validation_df = pd.read_csv(validation_csv_file)
                 temp_validation_df.insert(0, 'Test point', str(test_point))
                 temp_validation_df.insert(1, 'Dataset', 'Validation')
-                validation_df = validation_df.append(temp_validation_df)
+                validation_df = pd.concat([validation_df,temp_validation_df], ignore_index=True)
             else:
                 validation_df = None
 
@@ -602,13 +593,13 @@ def performance_bar_plot(forecast_horizon,test_type,performance_benchmark):
             temp_train_df = pd.read_csv(train_csv_file)
             temp_train_df.insert(0, 'Test point', test_point)
             temp_train_df.insert(1, 'Dataset', 'Training')
-            train_df = train_df.append(temp_train_df)
+            train_df = pd.concat([train_df,temp_train_df],ignore_index=True)
             
             if exists(validation_csv_file):
                 temp_validation_df = pd.read_csv(validation_csv_file)
                 temp_validation_df.insert(0, 'Test point', test_point)
                 temp_validation_df.insert(1, 'Dataset', 'Validation')
-                validation_df = validation_df.append(temp_validation_df)
+                validation_df = pd.concat([validation_df,temp_validation_df],ignore_index=True)
             else:
                 validation_df = None
 

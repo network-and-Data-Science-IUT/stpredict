@@ -23,5 +23,6 @@ predict
    performance
    train_test
    predict_future
+   get_map
    :maxdepth: 3
    

@@ -58,7 +58,7 @@
 | 
 | 
 | ","| **type:** data frame or str
-| default:-
+| **default:**-
 | **details:** a data frame containing temporal (and spatial) covariates
 | or its address.
 | 

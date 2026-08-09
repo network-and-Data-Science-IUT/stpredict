@@ -16,6 +16,13 @@ Plot the temporal covariates evolution in the user specified time interval.
    :widths: 1 , 3, 15
    :file: plot_data_in.csv
 
+**Returns** 
+
+.. csv-table::   
+   :header-rows: 1
+   :widths: 1 , 3, 15
+   :file: stpredict_out.csv
+
 **Example** 
 
 .. code-block:: python

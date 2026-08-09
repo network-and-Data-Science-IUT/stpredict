@@ -21,7 +21,7 @@ RANKING_METHODS = ['mRMR', 'correlation', 'variance']
 
 FEATURE_SELECTION_TYPES = ['covariate', 'feature']
 
-PRE_DEFINED_MODELS = ['nn', 'knn', 'glm', 'gbm']
+PRE_DEFINED_MODELS = ['nn', 'knn', 'glm', 'gbm', 'sgcrf']
 
 MODEL_TYPES = ['regression', 'classification']
 

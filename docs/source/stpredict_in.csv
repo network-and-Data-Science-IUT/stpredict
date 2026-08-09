@@ -426,7 +426,13 @@
 | 
 | 
 | 
+| 
+| 
+| 
 | ","| models
+| 
+| 
+| 
 | 
 | 
 | 
@@ -503,6 +509,9 @@
 | logistic regression for *model_type* of classification.
 | 
 | 'nn': Neural network with adjustable number of layers and neurons for
+| *model_type* of regression and classification.
+| 
+| 'sgcrf': Sparce gaussian conditional random field (See `sgcrfpy <https://github.com/dswah/sgcrfpy/tree/master>`_) for
 | *model_type* of regression and classification.
 | 
 | [callable]: a user-defined function that accepts the data frames of

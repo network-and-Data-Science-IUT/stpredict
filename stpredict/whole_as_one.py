@@ -4,12 +4,11 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     import os
     import shutil
-    import sys
 
     import pandas as pd
     import random
 
-    from .configurations import *
+    from .configurations import * # noqa
     from .get_future_data import get_future_data
     from .get_target_quantities import get_target_quantities
     from .train_validate import train_validate
@@ -115,20 +114,23 @@ def whole_as_one(data: list,
                 raise Exception("models input is not valid.")
             elif model not in models_list:
                 models_list.append(model)
-            else:models.remove(model)
+            else:
+                models.remove(model)
         elif isinstance(model, dict):
             if len(list(model.keys())) == 1:
                 if list(model.keys())[0] not in PRE_DEFINED_MODELS:
                     raise Exception("models input is not valid.")
                 elif list(model.keys())[0] not in models_list:
                     models_list.append(list(model.keys())[0])
-                else:models.remove(model)
+                else:
+                    models.remove(model)
             else:
                 raise Exception("models input is not valid.")
         elif callable(model):
             if model.__name__ not in models_list:
                 models_list.append(model.__name__)
-            else:models.remove(model)
+            else:
+                models.remove(model)
         else:
             raise Exception("Models input is not valid.")
     # mixed_models input checking
@@ -140,20 +142,23 @@ def whole_as_one(data: list,
                 raise Exception("Mixed_models input is not valid.")
             elif 'mixed_'+model not in models_list:
                 models_list.append('mixed_'+model)
-            else:mixed_models.remove(model)
+            else:
+                mixed_models.remove(model)
         elif isinstance(model, dict):
             if len(list(model.keys())) == 1:
                 if list(model.keys())[0] not in PRE_DEFINED_MODELS:
                     raise Exception("Mixed_models input is not valid.")
                 elif 'mixed_'+list(model.keys())[0] not in models_list:
                     models_list.append('mixed_'+list(model.keys())[0])
-                else:mixed_models.remove(model)
+                else:
+                    mixed_models.remove(model)
             else:
                 raise Exception("Mixed_models input is not valid.")
         elif callable(model):
             if model.__name__ not in models_list:
                 models_list.append(model.__name__)
-            else:mixed_models.remove(model)
+            else:
+                mixed_models.remove(model)
         else:
             raise Exception("Mixed_models input is not valid.")
     # instance_testing_size input checking
@@ -203,9 +208,9 @@ def whole_as_one(data: list,
     # plot_predictions input checking
     if not isinstance(plot_predictions, bool):
         raise Exception("plot_predictions input is not valid.")
-    elif (plot_predictions == True) and (save_predictions == False):
+    elif (plot_predictions) and (not save_predictions):
         raise Exception("For plotting the predictions, both plot_predictions and save_predictions inputs must be set to TRUE.")
-    elif (plot_predictions == True) and (model_type == 'classification'):
+    elif (plot_predictions) and (model_type == 'classification'):
         raise Exception("The plot_predictions input can be set to True only for regression model_type.")
         
     # verbose input checking
@@ -253,6 +258,7 @@ def whole_as_one(data: list,
         target_column_name = list(filter(lambda x: x.startswith('Target'), data[0].columns.values))[0]
         labels = data[0].loc[:, target_column_name].unique().tolist()
         labels = [label for label in labels if not (label is None or str(label) == 'nan')]
+        labels = sorted(labels)
         if len(labels) < 2:
             raise Exception("Error: The labels length must be at least two.")
     else:
@@ -331,7 +337,7 @@ def whole_as_one(data: list,
     if verbose > 0:
         print(100 * '-')
         print('Train Test Process')
-    test_trained_model = train_test(data=data[best_history_length - 1].copy(),
+    _ = train_test(data=data[best_history_length - 1].copy(),
                                                    forecast_horizon=forecast_horizon,
                                                    history_length=best_history_length,
                                                    feature_scaler=feature_scaler,
@@ -384,7 +390,7 @@ def whole_as_one(data: list,
     best_future_data = future_data[best_history_length - 1].copy()
     best_data_temporal_ids = best_data['target temporal id'].unique()
     temp = forecast_horizon*granularity[best_history_length - 1] - 1
-    trained_model = predict_future(data=best_data[best_data['target temporal id'].isin((best_data_temporal_ids
+    _ = predict_future(data=best_data[best_data['target temporal id'].isin((best_data_temporal_ids
                                                                                  if temp == 0
                                                                                  else best_data_temporal_ids[:-temp]
                                                                                  ))].copy(),
@@ -402,11 +408,11 @@ def whole_as_one(data: list,
                                    save_predictions=save_predictions,
                                    verbose=verbose)
             
-    if validation_performance_report == True and testing_performance_report == True:
+    if validation_performance_report and testing_performance_report:
         performance_bar_plot(forecast_horizon,test_type,performance_benchmark)
         performance_summary(forecast_horizon,test_type,performance_benchmark)
         
-    if plot_predictions == True:
+    if plot_predictions:
         if len(data[0]['spatial id'].unique())<3:
             spatial_ids = data[0]['spatial id'].unique()
         else:

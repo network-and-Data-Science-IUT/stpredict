@@ -34,10 +34,10 @@ def get_trivial_values(train_true_values_df, validation_true_values_df, train_pr
     
     train_true_values_df.loc[:,('prediction')] = train_prediction
     train_true_values_df.loc[:,('type')] = 1
-    if same_train_validation == False:
+    if not same_train_validation:
         validation_true_values_df.loc[:,('prediction')] = validation_prediction
         validation_true_values_df.loc[:,('type')] = 2
-        whole_data = train_true_values_df.append(validation_true_values_df)
+        whole_data = pd.concat([train_true_values_df, validation_true_values_df], ignore_index=True)
     else:
         whole_data = train_true_values_df
     
@@ -47,7 +47,7 @@ def get_trivial_values(train_true_values_df, validation_true_values_df, train_pr
     accessible_data = whole_data.copy().iloc[(forecast_horizon * granularity * number_of_spatial_units):,:]
     accessible_data['trivial values'] = list(whole_data.iloc[:-(forecast_horizon * granularity * number_of_spatial_units),:]['Normal target'])
     
-    if same_train_validation == False:
+    if not same_train_validation:
         train_true_values = list(np.array(accessible_data.loc[accessible_data['type'] == 1,'Normal target']).reshape(-1))
         train_predicted_values = list(np.array(accessible_data.loc[accessible_data['type'] == 1,'prediction']).reshape(-1))
         train_trivial_values = list(np.array(accessible_data.loc[accessible_data['type'] == 1,'trivial values']).reshape(-1))
